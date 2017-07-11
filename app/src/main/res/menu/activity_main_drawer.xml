@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_iceboxList"
+            android:icon="@drawable/ic_icebox"
+            android:title="@string/navigation_drawer_icebox" />
+        <item
+            android:id="@+id/nav_recipeSearch"
+            android:icon="@drawable/ic_search"
+            android:title="@string/navigation_drawer_search" />
+        <item
+            android:id="@+id/nav_cookedList"
+            android:icon="@drawable/ic_cooked_list"
+            android:title="@string/navigation_drawer_coocked_list" />
+        <item
+            android:id="@+id/nav_trash"
+            android:icon="@drawable/ic_delete"
+            android:title="@string/navigation_drawer_trash" />
+    </group>
+</menu>
