@@ -9,6 +9,8 @@ import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.model.Vegetable
 
 class IceboxAdapter(val vegetableList :MutableList<Vegetable>): RecyclerView.Adapter<IceboxAdapter.ViewHolder>() {
+  constructor(): this(mutableListOf() )
+
   override fun getItemCount(): Int {
     return vegetableList.size
   }
@@ -24,11 +26,9 @@ class IceboxAdapter(val vegetableList :MutableList<Vegetable>): RecyclerView.Ada
     holder.date.text = vegetableList[position].date
   }
 
-  fun addItem(position: Int, vegetable: Vegetable) {
-    var itemPositon = position
-    if(itemPositon > vegetableList.size) {itemPositon = vegetableList.size}
-    vegetableList.add(itemPositon, vegetable)
-    notifyItemInserted(position)
+  fun addItem(vegetable: Vegetable) {
+    vegetableList.add(vegetable)
+    notifyItemInserted(vegetableList.size)
   }
 
   fun removeItem(position: Int) {
@@ -43,6 +43,10 @@ class IceboxAdapter(val vegetableList :MutableList<Vegetable>): RecyclerView.Ada
     vegetableList.removeAt(fromPosition)
     vegetableList.add(toPosition, target)
     notifyItemMoved(fromPosition, toPosition)
+  }
+
+  fun getItem(): List<Vegetable> {
+    return vegetableList
   }
 
   inner class ViewHolder(v: View):RecyclerView.ViewHolder(v) {
