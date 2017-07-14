@@ -13,6 +13,8 @@ class RegisterActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.fragment_icebox_register)
+    // TODO RecyclerView系のセットアップメソッドを追加する
+
     fragment_icebox_register_cancel_btn.setOnClickListener {
       finish()
     }
@@ -27,8 +29,7 @@ class RegisterActivity : AppCompatActivity() {
 
       val vegetable = Vegetable(name, memo, year, month, day)
 
-      val iceboxAdapter = IceboxAdapter()
-      iceboxAdapter.addItem(vegetable)
+      IceboxAdapter.addItem(vegetable)
 
       finish()
     }

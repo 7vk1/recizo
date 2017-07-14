@@ -4,23 +4,23 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import jp.gr.java_conf.item.recizo.R
+import jp.gr.java_conf.item.recizo.model.IceboxViewHolder
 import jp.gr.java_conf.item.recizo.model.Vegetable
 
-class IceboxAdapter(val vegetableList :MutableList<Vegetable>): RecyclerView.Adapter<IceboxAdapter.ViewHolder>() {
-  constructor(): this(mutableListOf() )
+object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
+  val vegetableList = mutableListOf<Vegetable>()
 
   override fun getItemCount(): Int {
     return vegetableList.size
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+  override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): IceboxViewHolder {
     val v: View = LayoutInflater.from(parent!!.context).inflate(R.layout.icebox_item, parent, false)
-    return ViewHolder(v)
+    return IceboxViewHolder(v)
   }
 
-  override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+  override fun onBindViewHolder(holder: IceboxViewHolder?, position: Int) {
     holder!!.title.text = vegetableList[position].name
     holder.memo.text = vegetableList[position].memo
     holder.date.text = vegetableList[position].date
@@ -47,11 +47,5 @@ class IceboxAdapter(val vegetableList :MutableList<Vegetable>): RecyclerView.Ada
 
   fun getItem(): List<Vegetable> {
     return vegetableList
-  }
-
-  inner class ViewHolder(v: View):RecyclerView.ViewHolder(v) {
-    val title: TextView = v.findViewById(R.id._icebox_item_title)
-    val memo: TextView = v.findViewById(R.id._icebox_item_memo)
-    val date: TextView = v.findViewById(R.id._icebox_item_date)
   }
 }
