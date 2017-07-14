@@ -1,7 +1,11 @@
 package jp.gr.java_conf.item.recizo.view
 
+import android.app.Dialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.text.TextUtils
+import android.widget.Toast
 
 import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.model.Vegetable
@@ -24,11 +28,17 @@ class RegisterActivity : AppCompatActivity() {
       val month: String = (fragment_icebox_register_date.month + 1).toString()
       val day: String = fragment_icebox_register_date.dayOfMonth.toString()
 
-      val vegetable = Vegetable(name, memo, year, month, day)
-
-      IceboxAdapter.addItem(vegetable)
-
-      finish()
+      if(!TextUtils.isEmpty(name) ) {
+        val vegetable = Vegetable(name, memo, year, month, day)
+        IceboxAdapter.addItem(vegetable)
+        finish()
+      } else {
+        AlertDialog.Builder(this).
+            setTitle("エラー").
+            setMessage("野菜の名前が入力されていません!").
+            setPositiveButton("OK", null).
+            show()
+      }
     }
   }
 }
