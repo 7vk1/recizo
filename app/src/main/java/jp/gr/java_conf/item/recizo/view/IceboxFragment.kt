@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import jp.gr.java_conf.item.recizo.R
+import jp.gr.java_conf.item.recizo.model.Vegetable
 import jp.gr.java_conf.item.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
 
@@ -46,6 +47,7 @@ class IceboxFragment() : Fragment() {
       // どのような動きを許可するか
       // ViewHolder ごとに分ける等の場合はここで制御する
       override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
+        // TODO 左スワイプの時は検索に使えるようにする
         return makeMovementFlags(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
       }
 
@@ -57,8 +59,7 @@ class IceboxFragment() : Fragment() {
       // スワイプされた場合
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         // 項目を消去
-        val list = IceboxAdapter.getItem()
-        IceboxAdapter.removeItem(list[viewHolder.adapterPosition].name)
+          IceboxAdapter.removeItem(viewHolder.adapterPosition)
       }
     })
 
