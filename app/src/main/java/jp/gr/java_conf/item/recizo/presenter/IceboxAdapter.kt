@@ -38,6 +38,15 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     }
   }
 
+  fun removeItem(name: String) {
+    for(i in vegetableList.indices) {
+      if (vegetableList[i].name == name) {
+        removeItem(i)
+        break
+      }
+    }
+  }
+
   fun moveItem(fromPosition: Int, toPosition: Int) {
     val target: Vegetable = vegetableList[fromPosition]
     vegetableList.removeAt(fromPosition)

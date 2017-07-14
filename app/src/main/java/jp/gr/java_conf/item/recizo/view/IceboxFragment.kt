@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,11 +32,36 @@ class IceboxFragment() : Fragment() {
       startActivity(Intent(activity, RegisterActivity::class.java) )
     }
     setUpViews()
+    swiped()
   }
 
   fun setUpViews() {
     recyclerView.layoutManager = LinearLayoutManager(activity)
     recyclerView.adapter = IceboxAdapter
 //    recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, LinearLayoutManager(activity).orientation) )
+  }
+
+  fun swiped() {
+    val helper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+      // どのような動きを許可するか
+      // ViewHolder ごとに分ける等の場合はここで制御する
+      override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
+        return makeMovementFlags(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+      }
+
+      // 動いた場合
+      override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        return false
+      }
+
+      // スワイプされた場合
+      override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        // 項目を消去
+        val list = IceboxAdapter.getItem()
+        IceboxAdapter.removeItem(list[viewHolder.adapterPosition].name)
+      }
+    })
+
+    helper.attachToRecyclerView(recyclerView)
   }
 }
