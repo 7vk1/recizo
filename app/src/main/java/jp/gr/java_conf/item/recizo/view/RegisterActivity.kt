@@ -29,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
       val day: String = fragment_icebox_register_date.dayOfMonth.toString()
 
       if(!TextUtils.isEmpty(name) ) {
+        // TODO TODO 第一引数はidだけど内部的にはSQLiteのAutoIncrementを使っているので意味は無い。Nullを許容するように変更する
         val vegetable = Vegetable(0, name, memo, year, month, day)
         IceboxAdapter.addItem(vegetable)
         finish()
