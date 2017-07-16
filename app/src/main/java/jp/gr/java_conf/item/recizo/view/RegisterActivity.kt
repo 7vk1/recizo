@@ -29,7 +29,7 @@ class RegisterActivity : AppCompatActivity() {
       val day: String = fragment_icebox_register_date.dayOfMonth.toString()
 
       if(!TextUtils.isEmpty(name) ) {
-        val vegetable = Vegetable(name, memo, year, month, day)
+        val vegetable = Vegetable(0, name, memo, year, month, day)
         IceboxAdapter.addItem(vegetable)
         finish()
       } else {

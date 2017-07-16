@@ -1,15 +1,20 @@
 package jp.gr.java_conf.item.recizo.presenter
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.gr.java_conf.item.recizo.R
+import jp.gr.java_conf.item.recizo.model.IceboxDatabaseHelper
 import jp.gr.java_conf.item.recizo.model.IceboxViewHolder
 import jp.gr.java_conf.item.recizo.model.Vegetable
 
 object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
-  val vegetableList = mutableListOf<Vegetable>()
+  var vegetableList = mutableListOf<Vegetable>()
+  lateinit var useContext: Context
 
   override fun getItemCount(): Int {
     return vegetableList.size
@@ -26,13 +31,23 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     holder.date.text = vegetableList[position].date
   }
 
+  fun setContext(context: Context) {
+    this.useContext = context
+  }
+
   fun addItem(vegetable: Vegetable) {
-    vegetableList.add(vegetable)
+    val idh = IceboxDatabaseHelper(this.useContext)
+    idh.writebleOpen()
+    idh.addVegetable(vegetable)
+    vegetableList.add(idh.getVegetableLast() )
     notifyItemInserted(vegetableList.size)
   }
 
   fun removeItem(position: Int) {
     if(position < vegetableList.size) {
+      val idh = IceboxDatabaseHelper(this.useContext)
+      idh.writebleOpen()
+      idh.deleteVegetable(vegetableList[position].id)
       vegetableList.removeAt(position)
       notifyItemRemoved(position)
     }
@@ -49,12 +64,22 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
 
   fun moveItem(fromPosition: Int, toPosition: Int) {
     val target: Vegetable = vegetableList[fromPosition]
-    vegetableList.removeAt(fromPosition)
-    vegetableList.add(toPosition, target)
+    this.vegetableList.removeAt(fromPosition)
+    this.vegetableList.add(toPosition, target)
     notifyItemMoved(fromPosition, toPosition)
   }
 
-  fun getItem(): List<Vegetable> {
+  fun getItem(): MutableList<Vegetable> {
+    val idh = IceboxDatabaseHelper(this.useContext)
+    idh.readableOpen()
+    this.vegetableList = idh.getVegetableAll()
+
     return vegetableList
+  }
+
+  fun initItem() {
+    // TODO RecyclerViewのItemが移動(Move)されていた場合反映されない問題
+    val list = getItem()
+    notifyItemRangeInserted(0, list.size)
   }
 }

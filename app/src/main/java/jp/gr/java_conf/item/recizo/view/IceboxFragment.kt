@@ -32,6 +32,7 @@ class IceboxFragment() : Fragment() {
     fab.setOnClickListener {
       startActivity(Intent(activity, RegisterActivity::class.java) )
     }
+    IceboxAdapter.setContext(activity)
     setUpViews()
     swiped()
   }
@@ -39,7 +40,7 @@ class IceboxFragment() : Fragment() {
   fun setUpViews() {
     recyclerView.layoutManager = LinearLayoutManager(activity)
     recyclerView.adapter = IceboxAdapter
-//    recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, LinearLayoutManager(activity).orientation) )
+    IceboxAdapter.initItem()
   }
 
   fun swiped() {
