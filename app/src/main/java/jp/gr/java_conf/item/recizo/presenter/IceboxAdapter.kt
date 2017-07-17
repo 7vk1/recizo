@@ -1,6 +1,8 @@
 package jp.gr.java_conf.item.recizo.presenter
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -11,6 +13,7 @@ import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.model.IceboxDatabaseHelper
 import jp.gr.java_conf.item.recizo.model.IceboxViewHolder
 import jp.gr.java_conf.item.recizo.model.Vegetable
+import jp.gr.java_conf.item.recizo.view.ChangeActivity
 
 object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
   var vegetableList = mutableListOf<Vegetable>()
@@ -29,10 +32,31 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     holder!!.title.text = vegetableList[position].name
     holder.memo.text = vegetableList[position].memo
     holder.date.text = vegetableList[position].date
+
+    val intent = Intent(useContext as Activity , ChangeActivity::class.java)
+    holder.cardView.setOnClickListener {
+      intent.putExtra("vegetable", vegetableList[position])
+      intent.putExtra("position", position)
+      (useContext as Activity).startActivity(intent)
+    }
   }
 
   fun setContext(context: Context) {
     this.useContext = context
+  }
+
+  fun updateItem(vegetable: Vegetable, position: Int) {
+    val idh = IceboxDatabaseHelper(this.useContext)
+    idh.writebleOpen()
+    idh.updateVegetable(vegetable)
+    // vegetableListの更新
+    for(i in vegetableList.indices) {
+      if(vegetable.id == vegetableList[i].id) {
+        vegetableList[i] = vegetable
+        break
+      }
+    }
+    notifyItemChanged(position)
   }
 
   fun addItem(vegetable: Vegetable) {

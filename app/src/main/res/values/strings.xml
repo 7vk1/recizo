@@ -14,7 +14,8 @@
     <string name="register_view_memo">メモ</string>
     <string name="register_view_date">登録日</string>
     <string name="register_view_register_button">登録</string>
-    <string name="register_view_register_cancel">キャンセル</string>
+    <string name="cancel_button">キャンセル</string>
+    <string name="change_view_change_button">変更</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -23,6 +23,18 @@ class IceboxDatabaseHelper(context: Context) {
     db = dbHelper.readableDatabase
   }
 
+  fun updateVegetable(vegetable: Vegetable) {
+    val values = ContentValues()
+    values.put("name", vegetable.name)
+    values.put("memo", vegetable.memo)
+    val dates = vegetable.date.split("/".toRegex() )
+    values.put("year", dates[0])
+    values.put("month", dates[1])
+    values.put("day", dates[2])
+    val id = vegetable.id
+    db.update(TABLE_NAME, values, "_id=$id", null)
+  }
+
   fun getVegetableAll(): MutableList<Vegetable> {
     val query = "SELECT _id, name, memo, year, month, day FROM $TABLE_NAME"
     var list = mutableListOf<Vegetable>()

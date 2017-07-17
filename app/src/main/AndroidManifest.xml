@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".view.RegisterActivity">
         </activity>
+        <activity android:name=".view.ChangeActivity">
+        </activity>
     </application>
 
 </manifest>
