@@ -60,7 +60,12 @@ class IceboxFragment() : Fragment() {
       // スワイプされた場合
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         // 項目を消去
-          IceboxAdapter.removeItem(viewHolder.adapterPosition)
+        Log.d("Direction",direction.toString())
+        fab.setOnClickListener {
+          //TODO 料理検索一覧にFragmentTransactionしつつ、こっちで確保しといた値を投げる感じ。
+        }
+        // TODO 左右スワイプで処理分けする時はここのdirection使ってやるっぽい。左は4、右は8。
+        IceboxAdapter.removeItem(viewHolder.adapterPosition)
       }
     })
 
