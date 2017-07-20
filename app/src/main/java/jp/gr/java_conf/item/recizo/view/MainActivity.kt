@@ -1,6 +1,5 @@
 package jp.gr.java_conf.item.recizo.view
 
-import android.app.Fragment
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -37,6 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
   override fun onBackPressed() {
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+
     if (drawer.isDrawerOpen(GravityCompat.START)) {
       drawer.closeDrawer(GravityCompat.START)
     } else {
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     // Inflate the menu; this adds items to the action bar if it is present.
     menuInflater.inflate(R.menu.main, menu)
+
     return true
   }
 
@@ -55,7 +56,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     // automatically handle clicks on the Home/Up button, so long
     // as you specify a parent activity in AndroidManifest.xml.
     val id = item.itemId
-
 
     if (id == R.id.action_settings) {
       return true
