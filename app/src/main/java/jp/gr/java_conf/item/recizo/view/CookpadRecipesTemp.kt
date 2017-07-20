@@ -34,7 +34,8 @@ class CookpadRecipesTemp {
               val title = recipeDoc.getElementsByClass("recipe-title").text()
               val description = recipeDoc.getElementsByClass("recipe_description").text()
               val cookpadLinkUrl = cookpadUrlBase + recipeDoc.getElementsByClass("recipe-title").attr("href")
-              yield(CookpadRecipe(title, description, imgUrl, cookpadLinkUrl))
+              val name = Jsoup.parse(recipeDoc.getElementsByClass("recipe_author_name").html() ).getElementsByTag("a").text()
+              yield(CookpadRecipe(title, description, imgUrl, cookpadLinkUrl, name))
             }
           })
 
@@ -48,7 +49,5 @@ class CookpadRecipesTemp {
         }
       })
     }
-
-
   }
 }
