@@ -35,8 +35,14 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
 
     val intent = Intent(useContext as Activity , ChangeActivity::class.java)
     holder.cardView.setOnClickListener {
+      if(position == vegetableList.size){
+        intent.putExtra("vegetable", vegetableList[position - 1])
+        intent.putExtra("position", position -1)
+      }else {
       intent.putExtra("vegetable", vegetableList[position])
       intent.putExtra("position", position)
+      }
+
       (useContext as Activity).startActivity(intent)
     }
   }
@@ -77,20 +83,9 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     }
   }
 
-  fun removeItem(name: String) {
-    for(i in vegetableList.indices) {
-      if (vegetableList[i].name == name) {
-        removeItem(i)
-        break
-      }
-    }
-  }
-
-  fun moveItem(fromPosition: Int, toPosition: Int) {
-    val target: Vegetable = vegetableList[fromPosition]
-    this.vegetableList.removeAt(fromPosition)
-    this.vegetableList.add(toPosition, target)
-    notifyItemMoved(fromPosition, toPosition)
+  fun getOneItem(position: Int): String{
+    val target: String = vegetableList[position].name
+    return target
   }
 
   fun getItem(): MutableList<Vegetable> {
