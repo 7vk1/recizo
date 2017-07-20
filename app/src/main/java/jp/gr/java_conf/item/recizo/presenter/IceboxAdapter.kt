@@ -83,20 +83,9 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     }
   }
 
-  fun removeItem(name: String) {
-    for(i in vegetableList.indices) {
-      if (vegetableList[i].name == name) {
-        removeItem(i)
-        break
-      }
-    }
-  }
-
-  fun moveItem(fromPosition: Int, toPosition: Int) {
-    val target: Vegetable = vegetableList[fromPosition]
-    this.vegetableList.removeAt(fromPosition)
-    this.vegetableList.add(toPosition, target)
-    notifyItemMoved(fromPosition, toPosition)
+  fun getOneItem(position: Int): String{
+    val target: String = vegetableList[position].name
+    return target
   }
 
   fun getItem(): MutableList<Vegetable> {
