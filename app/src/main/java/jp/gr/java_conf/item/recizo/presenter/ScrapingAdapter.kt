@@ -20,4 +20,10 @@ class ScrapingAdapter(keywords: List<String>) {
       }
     })
   }
+  fun pageToNext() {
+    cookpad.pageToNext()
+  }
+  fun pageToPrev() {
+    cookpad.pageToPrev()
+  }
 }

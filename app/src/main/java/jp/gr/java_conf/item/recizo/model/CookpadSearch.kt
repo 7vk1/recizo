@@ -1,6 +1,5 @@
 package jp.gr.java_conf.item.recizo.model
 
-import android.util.Log
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
@@ -15,8 +14,8 @@ import kotlin.properties.Delegates
 class CookpadSearch(val searchKeyWords: List<String>){
   val urlBase = "https://cookpad.com/search/"
   var numberOfItem: Int by Delegates.notNull()
-  var totalNumberOfPages: Int by Delegates.notNull()
-  var nowPage: Int by Delegates.notNull()
+  var totalNumberOfPages = 0
+  var nowPage = 0
 
   init{
     this.nowPage = 0
@@ -45,7 +44,7 @@ class CookpadSearch(val searchKeyWords: List<String>){
   }
 
   fun pageToNext():Boolean {
-    if(nowPage >= totalNumberOfPages) {
+    if(nowPage > totalNumberOfPages) {
       return false
     } else {
       nowPage++
@@ -54,7 +53,7 @@ class CookpadSearch(val searchKeyWords: List<String>){
   }
 
   fun pageToPrev(): Boolean {
-    if(nowPage <= 1) {
+    if(nowPage < 1) {
       return false
     } else {
       nowPage--
