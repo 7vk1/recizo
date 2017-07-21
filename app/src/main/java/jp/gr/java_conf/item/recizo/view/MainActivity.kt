@@ -1,5 +1,7 @@
 package jp.gr.java_conf.item.recizo.view
 
+import android.app.Fragment
+import android.app.FragmentTransaction
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -10,8 +12,10 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import jp.gr.java_conf.item.recizo.R
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+  var transaction: FragmentTransaction by Delegates.notNull()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -25,13 +29,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     drawer.addDrawerListener(toggle)
     toggle.syncState()
 
+    // icebox fragment init
+    transaction = fragmentManager.beginTransaction()
+    transaction.add(R.id.fragment_frame, IceboxFragment() )
+    transaction.commit()
+
     val navigationView = findViewById(R.id.nav_view) as NavigationView
     navigationView.setNavigationItemSelectedListener(this)
-
-    // icebox fragment init
-    val transaction = fragmentManager.beginTransaction()
-    transaction.replace(R.id.fragment_frame, IceboxFragment() )
-    transaction.commit()
   }
 
   override fun onBackPressed() {
@@ -70,10 +74,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     when (id) {
       R.id.nav_iceboxList -> {
+        drawerNavSwitchingOfFragment(IceboxFragment() )
       }//TODO
       R.id.nav_cookedList -> {
       }//TODO
       R.id.nav_recipeSearch -> {
+        drawerNavSwitchingOfFragment(SearchedRecipeFragment() )
       } //TODO
       R.id.nav_trash -> {
       } //TODO
@@ -82,5 +88,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
     drawer.closeDrawer(GravityCompat.START)
     return true
+  }
+
+  private fun drawerNavSwitchingOfFragment(fragment: Fragment) {
+    transaction = fragmentManager.beginTransaction()
+    transaction.replace(R.id.fragment_frame, fragment)
+    transaction.commit()
   }
 }

@@ -22,6 +22,7 @@ class CookpadSearch(val searchKeyWords: List<String>){
   }
 
   fun scrapingHTML(callback: CookpadCallBack) = launch(UI) {
+    // TODO 取得中に表示するプログレスバー（くるくる）
     val html = getHTML(getSearchUrl(), nowPage).await()
 
     when(html) {
