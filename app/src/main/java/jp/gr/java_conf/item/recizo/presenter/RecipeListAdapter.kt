@@ -22,17 +22,13 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
   }
 
   override fun onBindViewHolder(holder: RecipeViewHolder?, position: Int) {
-    fun asyncSetImage() = launch(UI) {
-      val image = getImageStream(recipeList[position].imgUrl).await()
-      holder!!.imageUrl.setImageBitmap(image)
-    }
-
     holder!!.title.text = recipeList[position].title
     holder.author.text = recipeList[position].author
     holder.description.text = recipeList[position].description
-    asyncSetImage()
-
-
+    launch(UI) {
+      val image = getImageStream(recipeList[position].imgUrl).await()
+      holder.imageUrl.setImageBitmap(image)
+    }
   }
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecipeViewHolder {

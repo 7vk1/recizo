@@ -1,6 +1,15 @@
 package jp.gr.java_conf.item.recizo.model
 
+import android.content.Context
+import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
+import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
+import kotlinx.android.synthetic.main.loading_spinner.*
+import kotlinx.android.synthetic.main.searched_recipe_list.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -9,9 +18,10 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
 import java.lang.Exception
+import java.util.zip.Inflater
 import kotlin.properties.Delegates
 
-class CookpadSearch(val searchKeyWords: List<String>){
+class CookpadSearch(val searchKeyWords: List<String>): AppCompatActivity() {
   val urlBase = "https://cookpad.com/search/"
   var numberOfItem: Int by Delegates.notNull()
   var totalNumberOfPages = 0
@@ -21,9 +31,10 @@ class CookpadSearch(val searchKeyWords: List<String>){
     this.nowPage = 0
   }
 
-  fun scrapingHTML(callback: CookpadCallBack) = launch(UI) {
-    // TODO 取得中に表示するプログレスバー（くるくる）
+  fun scrapingHTML(progressCallback: ProgressBarCallBack, callback: CookpadCallBack) = launch(UI) {
+    progressCallback.progressBarStart()
     val html = getHTML(getSearchUrl(), nowPage).await()
+    progressCallback.progressBarStop()
 
     when(html) {
       "IoError" -> callback.failed(ErrorCode.IO_ERROR)
@@ -63,7 +74,10 @@ class CookpadSearch(val searchKeyWords: List<String>){
   }
 
   private fun getHTML(url: String, pageNum: Int = 1) = async(CommonPool) {
-    return@async try {Jsoup.connect(url + "?order=date&page=$pageNum").get()} catch (e: IOException) {"IoError"} catch (e:Exception){"OtherError"}
+    // TODO ProgressSpinnerの追加
+    val result = try {Jsoup.connect(url + "?order=date&page=$pageNum").get()} catch (e: IOException) {"IoError"} catch (e:Exception){"OtherError"}
+
+    return@async result
   }
 
   private fun parseNumberOfItem(html: Document): Int {

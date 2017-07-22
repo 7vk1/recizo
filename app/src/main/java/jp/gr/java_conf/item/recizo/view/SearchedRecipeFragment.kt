@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
+import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
 import jp.gr.java_conf.item.recizo.model.CookpadRecipe
 import jp.gr.java_conf.item.recizo.model.ErrorCode
 import jp.gr.java_conf.item.recizo.presenter.RecipeListAdapter
@@ -32,8 +33,10 @@ class SearchedRecipeFragment : Fragment() {
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+  }
 
-    Toast.makeText(activity, "SearchedRecipeFragment", Toast.LENGTH_SHORT).show()
+  override fun onStart() {
+    super.onStart()
 
     searched_recyclerView.layoutManager = LinearLayoutManager(activity)
     val recipeListAdapter = RecipeListAdapter()
@@ -47,7 +50,15 @@ class SearchedRecipeFragment : Fragment() {
     for(i in 0..2) {
       test.pageToNext()
 
-      test.cookpadScraping(object : CookpadCallBack {
+      test.cookpadScraping(object: ProgressBarCallBack {
+        override fun progressBarStart() {
+          searched_recipe_progressBar.visibility = View.VISIBLE
+        }
+
+        override fun progressBarStop() {
+          searched_recipe_progressBar.visibility = View.GONE
+        }
+      }, object : CookpadCallBack {
         private val cookpadUrlBase = "https://cookpad.com"
         override fun succeed(html: Document?) {
           val recipesHtml = buildSequence {
@@ -76,6 +87,5 @@ class SearchedRecipeFragment : Fragment() {
         }
       })
     }
-
   }
 }

@@ -1,6 +1,8 @@
 package jp.gr.java_conf.item.recizo.presenter
 
+import android.content.Context
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
+import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
 import jp.gr.java_conf.item.recizo.model.CookpadSearch
 import jp.gr.java_conf.item.recizo.model.ErrorCode
 import org.jsoup.nodes.Document
@@ -9,14 +11,23 @@ import org.jsoup.nodes.Document
 class ScrapingAdapter(keywords: List<String>) {
   private val cookpad = CookpadSearch(keywords)
 
-  fun cookpadScraping(callback: CookpadCallBack){
-    cookpad.scrapingHTML(object: CookpadCallBack {
+  fun cookpadScraping(progressCallback: ProgressBarCallBack, cookpadCallback: CookpadCallBack){
+    cookpad.scrapingHTML(object: ProgressBarCallBack {
+      override fun progressBarStart() {
+        progressCallback.progressBarStart()
+      }
+
+      override fun progressBarStop() {
+        progressCallback.progressBarStop()
+      }
+
+    }, object: CookpadCallBack {
       override fun succeed(html: Document?) {
-        callback.succeed(html)
+        cookpadCallback.succeed(html)
       }
 
       override fun failed(errorCode: ErrorCode) {
-        callback.failed(errorCode)
+        cookpadCallback.failed(errorCode)
       }
     })
   }
