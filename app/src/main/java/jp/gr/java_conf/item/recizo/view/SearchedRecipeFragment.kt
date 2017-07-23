@@ -65,21 +65,17 @@ class SearchedRecipeFragment : Fragment() {
             for (i in 0..9) yield(html?.getElementById("recipe_$i")?.html())
           }
 
-          val recipes = (buildSequence {
-            recipesHtml.filterNotNull().forEach { recipe ->
-              val recipeDoc = Jsoup.parse(recipe)
-              val imgUrl = Jsoup.parse(recipeDoc.getElementsByClass("recipe-image").html() ).getElementsByTag("img").attr("src")
-              val title = recipeDoc.getElementsByClass("recipe-title").text()
-              val description = recipeDoc.getElementsByClass("recipe_description").text()
-              val cookpadLinkUrl = cookpadUrlBase + recipeDoc.getElementsByClass("recipe-title").attr("href")
-              val author = Jsoup.parse(recipeDoc.getElementsByClass("recipe_author_name").html() ).getElementsByTag("a").text()
-              yield(CookpadRecipe(title, description, imgUrl, cookpadLinkUrl, author))
-            }
-          })
+          recipesHtml.filterNotNull().forEach { recipe ->
+            val recipeDoc = Jsoup.parse(recipe)
+            val imgUrl = Jsoup.parse(recipeDoc.getElementsByClass("recipe-image").html() ).getElementsByTag("img").attr("src")
+            val title = recipeDoc.getElementsByClass("recipe-title").text()
+            val description = recipeDoc.getElementsByClass("recipe_description").text()
+            val cookpadLinkUrl = cookpadUrlBase + recipeDoc.getElementsByClass("recipe-title").attr("href")
+            val author = Jsoup.parse(recipeDoc.getElementsByClass("recipe_author_name").html() ).getElementsByTag("a").text()
 
-          recipes.forEach {
-            recipeListAdapter.addRecipe(it)
+            recipeListAdapter.addRecipe(CookpadRecipe(title, description, imgUrl, cookpadLinkUrl, author) )
           }
+
         }
 
         override fun failed(errorCode: ErrorCode) {

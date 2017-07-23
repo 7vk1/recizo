@@ -1,15 +1,8 @@
 package jp.gr.java_conf.item.recizo.model
 
-import android.content.Context
 import android.support.v7.app.AppCompatActivity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
-import kotlinx.android.synthetic.main.loading_spinner.*
-import kotlinx.android.synthetic.main.searched_recipe_list.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -18,7 +11,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
 import java.lang.Exception
-import java.util.zip.Inflater
 import kotlin.properties.Delegates
 
 class CookpadSearch(val searchKeyWords: List<String>): AppCompatActivity() {
@@ -45,14 +37,6 @@ class CookpadSearch(val searchKeyWords: List<String>): AppCompatActivity() {
         callback.succeed(html)
       }
     }
-  }
-
-  fun pageToFirst() {
-    nowPage = 1
-  }
-
-  fun pageToLast() {
-    nowPage = totalNumberOfPages
   }
 
   fun pageToNext():Boolean {
