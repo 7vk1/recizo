@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       R.id.nav_season -> {
       } //TODO
       R.id.nav_flyer -> {
+        drawerNavSwitchingOfFragment(FlyerFragment() )
       } //TODO
       R.id.nav_market_price -> {
       } //TODO
