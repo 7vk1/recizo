@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       R.id.nav_flyer -> {
       } //TODO
       R.id.nav_market_price -> {
+        drawerNavSwitchingOfFragment(VegetableGraphFragment())
       } //TODO
     }
 
