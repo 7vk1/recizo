@@ -3,6 +3,10 @@
   <item
       android:state_checked="true"
       android:state_pressed="true"
-      android:drawable="@drawable/on_pressed"
+      android:drawable="@drawable/ic_staractive"
+      />
+  <item
+      android:state_checked="false"
+      android:drawable="@drawable/ic_starblank"
       />
 </selector>
