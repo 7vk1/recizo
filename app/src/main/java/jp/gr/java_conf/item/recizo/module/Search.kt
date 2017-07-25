@@ -1,4 +1,4 @@
-package jp.gr.java_conf.item.recizo.model.module
+package jp.gr.java_conf.item.recizo.module
 
 import android.support.v7.app.AppCompatActivity
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
