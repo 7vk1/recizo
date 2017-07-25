@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerNavSwitchingOfFragment(FlyerFragment() )
       } //TODO
       R.id.nav_market_price -> {
+        drawerNavSwitchingOfFragment(VegetableGraphFragment())
       } //TODO
     }
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
