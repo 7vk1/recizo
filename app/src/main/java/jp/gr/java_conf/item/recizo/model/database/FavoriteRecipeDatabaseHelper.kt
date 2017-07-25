@@ -10,33 +10,20 @@ import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
 class FavoriteRecipeDatabaseHelper(context: Context) {
   private val dbHelper: DatabaseHelper
   lateinit var db: SQLiteDatabase
-
-  init {
-    this.dbHelper = DatabaseHelper(context)
-  }
-
-  fun writableOpen() {
-    db = dbHelper.writableDatabase
-  }
-
-  fun readableOpen() {
-    db = dbHelper.readableDatabase
-  }
-
-  fun getRecipeAll(): MutableList<CookpadRecipe> {
+  init { this.dbHelper = DatabaseHelper(context) }
+  fun writableOpen() { db = dbHelper.writableDatabase }
+  fun readableOpen() { db = dbHelper.readableDatabase }
+  fun getRecipeAll(): List<CookpadRecipe> {
     val query = "SELECT title, description, author, imgurl, link FROM ${TABLE_NAME}"
     val list = mutableListOf<CookpadRecipe>()
-
     db.rawQuery(query, null).use {
       while (it.moveToNext() ) {
-        list.add(
-            CookpadRecipe(
-                title = it.getString(it.getColumnIndex("title")),
-                description = it.getString(it.getColumnIndex("description")),
-                author = it.getString(it.getColumnIndex("author")),
-                imgUrl = it.getString(it.getColumnIndex("imgurl")),
-                cookpadLink = it.getString(it.getColumnIndex("link"))
-            )
+        list.add(CookpadRecipe(
+            title = it.getString(it.getColumnIndex("title")),
+            description = it.getString(it.getColumnIndex("description")),
+            author = it.getString(it.getColumnIndex("author")),
+            imgUrl = it.getString(it.getColumnIndex("imgurl")),
+            cookpadLink = it.getString(it.getColumnIndex("link")))
         )
       }
     }
@@ -73,7 +60,6 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
           "imgurl text, " +
           "link text" +
           ")"
-
       db!!.execSQL(query)
     }
 

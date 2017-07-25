@@ -19,7 +19,6 @@ class RegisterActivity : AppCompatActivity() {
     fragment_icebox_register_cancel_btn.setOnClickListener {
       finish()
     }
-
     fragment_icebox_register_register_btn.setOnClickListener {
       val name: String = fragment_icebox_register_name.text.toString()
       val memo: String = fragment_icebox_register_memo.text.toString()
@@ -33,11 +32,11 @@ class RegisterActivity : AppCompatActivity() {
         IceboxAdapter.addItem(vegetable)
         finish()
       } else {
-        AlertDialog.Builder(this).
-            setTitle("エラー").
-            setMessage("野菜の名前が入力されていません!").
-            setPositiveButton("OK", null).
-            show()
+        AlertDialog.Builder(this)
+            .setTitle("エラー")
+            .setMessage("野菜の名前が入力されていません!")
+            .setPositiveButton("OK", null)
+            .show()
       }
     }
   }

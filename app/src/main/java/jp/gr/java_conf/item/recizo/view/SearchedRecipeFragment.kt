@@ -60,10 +60,7 @@ class SearchedRecipeFragment : Fragment() {
       }, object : CookpadCallBack {
         private val cookpadUrlBase = "https://cookpad.com"
         override fun succeed(html: Document?) {
-          val recipesHtml = buildSequence {
-            for (i in 0..9) yield(html?.getElementById("recipe_$i")?.html())
-          }
-
+          val recipesHtml = (0..9).map { i -> html?.getElementById("recipe_$i")?.html()  }
           recipesHtml.filterNotNull().forEach { recipe ->
             val recipeDoc = Jsoup.parse(recipe)
             val imgUrl = Jsoup.parse(recipeDoc.getElementsByClass("recipe-image").html() ).getElementsByTag("img").attr("src")
