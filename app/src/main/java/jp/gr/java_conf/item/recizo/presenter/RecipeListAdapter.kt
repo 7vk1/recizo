@@ -43,6 +43,7 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
 
   private fun getImageStream(imageUrl: String) = async(CommonPool) {
     val url = URL(imageUrl)
+    // image scale
     val scale = 3
     val bitmapImage = BitmapFactory.decodeStream(url.openConnection().getInputStream())
     val width = bitmapImage.width * scale

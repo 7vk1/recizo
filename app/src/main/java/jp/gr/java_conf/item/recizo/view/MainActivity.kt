@@ -76,12 +76,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       R.id.nav_iceboxList -> {
         drawerNavSwitchingOfFragment(IceboxFragment() )
       }//TODO
-      R.id.nav_cookedList -> {
-      }//TODO
       R.id.nav_recipeSearch -> {
         drawerNavSwitchingOfFragment(SearchedRecipeFragment() )
       } //TODO
-      R.id.nav_trash -> {
+      R.id.nav_season -> {
+      } //TODO
+      R.id.nav_flyer -> {
+      } //TODO
+      R.id.nav_market_price -> {
       } //TODO
     }
 

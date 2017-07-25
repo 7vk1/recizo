@@ -11,12 +11,16 @@
             android:icon="@drawable/ic_search"
             android:title="@string/navigation_drawer_search" />
         <item
-            android:id="@+id/nav_cookedList"
-            android:icon="@drawable/ic_cooked_list"
-            android:title="@string/navigation_drawer_cooked_list" />
-        <item
-            android:id="@+id/nav_trash"
+            android:id="@+id/nav_flyer"
             android:icon="@drawable/ic_delete"
-            android:title="@string/navigation_drawer_trash" />
+            android:title="@string/navigation_drawer_flyer" />
+        <item
+            android:id="@+id/nav_season"
+            android:icon="@drawable/ic_delete"
+            android:title="@string/navigation_drawer_season" />
+        <item
+            android:id="@+id/nav_market_price"
+            android:icon="@drawable/ic_delete"
+            android:title="@string/navigation_drawer_market_price" />
     </group>
 </menu>
