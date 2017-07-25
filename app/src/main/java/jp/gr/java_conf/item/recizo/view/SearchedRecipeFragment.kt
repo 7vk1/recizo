@@ -8,11 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
-import jp.gr.java_conf.item.recizo.model.CookpadRecipe
+import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
 import jp.gr.java_conf.item.recizo.model.ErrorCode
 import jp.gr.java_conf.item.recizo.presenter.RecipeListAdapter
 import jp.gr.java_conf.item.recizo.presenter.ScrapingAdapter
@@ -73,7 +72,7 @@ class SearchedRecipeFragment : Fragment() {
             val cookpadLinkUrl = cookpadUrlBase + recipeDoc.getElementsByClass("recipe-title").attr("href")
             val author = Jsoup.parse(recipeDoc.getElementsByClass("recipe_author_name").html() ).getElementsByTag("a").text()
 
-            recipeListAdapter.addRecipe(CookpadRecipe(title, description, imgUrl, cookpadLinkUrl, author) )
+            recipeListAdapter.addRecipe(CookpadRecipe(title, description, imgUrl, cookpadLinkUrl, author))
           }
 
         }

@@ -1,4 +1,4 @@
-package jp.gr.java_conf.item.recizo.model
+package jp.gr.java_conf.item.recizo.model.entity
 
 import java.io.Serializable
 

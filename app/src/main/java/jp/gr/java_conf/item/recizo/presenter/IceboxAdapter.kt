@@ -3,16 +3,14 @@ package jp.gr.java_conf.item.recizo.presenter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.gr.java_conf.item.recizo.R
-import jp.gr.java_conf.item.recizo.model.IceboxDatabaseHelper
-import jp.gr.java_conf.item.recizo.model.IceboxViewHolder
-import jp.gr.java_conf.item.recizo.model.Vegetable
+import jp.gr.java_conf.item.recizo.model.database.IceboxDatabaseHelper
+import jp.gr.java_conf.item.recizo.model.viewholder.IceboxViewHolder
+import jp.gr.java_conf.item.recizo.model.entity.Vegetable
 import jp.gr.java_conf.item.recizo.view.ChangeActivity
 
 object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {

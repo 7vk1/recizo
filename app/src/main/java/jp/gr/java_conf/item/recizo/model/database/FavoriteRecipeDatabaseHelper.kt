@@ -1,9 +1,10 @@
-package jp.gr.java_conf.item.recizo.model
+package jp.gr.java_conf.item.recizo.model.database
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
 
 // TODO Operation check
 class FavoriteRecipeDatabaseHelper(context: Context) {
@@ -23,18 +24,18 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
   }
 
   fun getRecipeAll(): MutableList<CookpadRecipe> {
-    val query = "SELECT title, description, author, imgurl, link FROM $TABLE_NAME"
+    val query = "SELECT title, description, author, imgurl, link FROM ${TABLE_NAME}"
     val list = mutableListOf<CookpadRecipe>()
 
     db.rawQuery(query, null).use {
       while (it.moveToNext() ) {
         list.add(
             CookpadRecipe(
-              title = it.getString(it.getColumnIndex("title") ),
-              description = it.getString(it.getColumnIndex("description") ),
-              author = it.getString(it.getColumnIndex("author") ),
-              imgUrl = it.getString(it.getColumnIndex("imgurl") ),
-              cookpadLink = it.getString(it.getColumnIndex("link") )
+                title = it.getString(it.getColumnIndex("title")),
+                description = it.getString(it.getColumnIndex("description")),
+                author = it.getString(it.getColumnIndex("author")),
+                imgUrl = it.getString(it.getColumnIndex("imgurl")),
+                cookpadLink = it.getString(it.getColumnIndex("link"))
             )
         )
       }
@@ -64,7 +65,7 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
 
   inner class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {
-      val query = "CREATE TABLE $TABLE_NAME (" +
+      val query = "CREATE TABLE ${TABLE_NAME} (" +
           "_id integer primary key autoincrement, " +
           "title char(256) not null, " +
           "description text, " +

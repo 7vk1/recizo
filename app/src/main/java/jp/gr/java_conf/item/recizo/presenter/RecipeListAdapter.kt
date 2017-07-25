@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import jp.gr.java_conf.item.recizo.R
-import jp.gr.java_conf.item.recizo.model.CookpadRecipe
-import jp.gr.java_conf.item.recizo.model.RecipeViewHolder
+import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
+import jp.gr.java_conf.item.recizo.model.viewholder.RecipeViewHolder
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async

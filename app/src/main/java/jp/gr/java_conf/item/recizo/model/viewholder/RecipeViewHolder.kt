@@ -1,4 +1,4 @@
-package jp.gr.java_conf.item.recizo.model
+package jp.gr.java_conf.item.recizo.model.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
