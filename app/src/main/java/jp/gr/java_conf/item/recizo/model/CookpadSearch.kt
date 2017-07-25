@@ -1,6 +1,6 @@
 package jp.gr.java_conf.item.recizo.model
 
-import jp.gr.java_conf.item.recizo.model.module.Search
+import jp.gr.java_conf.item.recizo.module.Search
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
