@@ -53,15 +53,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   override fun onNavigationItemSelected(item: MenuItem): Boolean {
     val id = item.itemId
     when (id) {
-      R.id.nav_iceboxList -> changeFragment(IceboxFragment() )
-      R.id.nav_recipeSearch -> changeFragment(SearchedRecipeFragment() )
+      R.id.nav_iceboxList -> changeFragment(IceboxFragment())
+      R.id.nav_recipeSearch -> changeFragment(SearchedRecipeFragment())
       R.id.nav_season -> {
       } //TODO
       R.id.nav_flyer -> {
-        drawerNavSwitchingOfFragment(FlyerFragment() )
+        changeFragment(FlyerFragment())
       } //TODO
       R.id.nav_market_price -> {
-        drawerNavSwitchingOfFragment(VegetableGraphFragment())
+        changeFragment(VegetableGraphFragment())
       } //TODO
     }
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
