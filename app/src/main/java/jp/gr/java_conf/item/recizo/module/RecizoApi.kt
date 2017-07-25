@@ -71,13 +71,8 @@ class RecizoApi {
   fun get(callback: Callback) {
     val http = Http("$BASE_URL + ${if(this.isRecent) "recent" else "past"}/${if(this.vegetable == Vegetables.all) "" else this.vegetable.name}")
     val cb = object : Http.Callback {
-      override fun onSuccess(body: String) {
-        val gson = Gson()
-        callback.onSuccess(gson.fromJson(body, Response::class.java))
-      }
-      override fun onError(code: Http.ErrorCode) {
-        callback.onError(code)
-      }
+      override fun onSuccess(body: String) { callback.onSuccess(Gson().fromJson(body, Response::class.java)) }
+      override fun onError(code: Http.ErrorCode) { callback.onError(code) }
     }
     http.setCallback(cb)
     http.execute()
