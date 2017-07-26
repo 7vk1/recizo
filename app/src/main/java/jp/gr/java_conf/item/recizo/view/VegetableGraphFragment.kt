@@ -19,6 +19,7 @@ import jp.gr.java_conf.item.recizo.module.RecizoApi
 import kotlinx.android.synthetic.main.fragment_vegetable_graph.*
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
 
 class VegetableGraphFragment : Fragment() {
@@ -27,17 +28,13 @@ class VegetableGraphFragment : Fragment() {
     private var xAxisValue: Array<String> = arrayOf()
 
     private fun createDataSet(arr: Array<RecizoApi.DairyData>, vData: VegetableData): LineDataSet {
-      val dateList = mutableListOf<String>()
       val data = mutableListOf<Entry>()
-
       for(i in 0..arr.size - 1) {
-        dateList.add(arr[i].date)
         if(arr[i].price != -1) data.add(Entry(i.toFloat(), arr[i].price.toFloat()))
       }
 //      val data = arr.filter {(it.price != -1)}.mapIndexed { index, ( date, price) ->
 //        dateList.add(date)
 //        Entry(index.toFloat(), price.toFloat())}
-      this.xAxisValue = dateList.toTypedArray()
       val dataSet = LineDataSet(data, vData.vegetable.name_jp)
       dataSet.color = vData.color
       dataSet.valueTextColor = vData.color
@@ -66,11 +63,16 @@ class VegetableGraphFragment : Fragment() {
       dataSet.color = vegetableData.color
       dataSet.valueTextColor = vegetableData.color
       dataSet.setDrawCircles(false)
-      val lineData = LineData(dataSet)
+      val lineData = LineData(mutableListOf(dataSet) as MutableList<ILineDataSet>)
       lineData.setDrawValues(false)
+      val dateList = mutableListOf<String>()
+
+      this.xAxisValue = dateList.toTypedArray()
       chart.xAxis.valueFormatter = XAxisValueFormatter(xAxisValue)
       chart.data = lineData
       chart.invalidate()
+    }
+    private fun getDateList(response: RecizoApi.Response) {
     }
     fun onItemChange(v: VegetableData) {
       RecizoApi().recent().vegetable(v.vegetable).get(object : RecizoApi.Callback {
