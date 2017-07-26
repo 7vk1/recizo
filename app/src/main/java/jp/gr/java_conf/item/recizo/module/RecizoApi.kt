@@ -1,6 +1,5 @@
 package jp.gr.java_conf.item.recizo.module
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -34,11 +33,8 @@ class RecizoApi {
     val cb = object : Http.Callback {
       override fun onSuccess(body: String) {
         val typeToken = object : TypeToken<Map<String, Collection<DairyData>>>() {}
-        val map: Map<String, Array<DairyData>> = Gson().fromJson(body, typeToken.type)
-        map.keys.forEach {
-          Log.d("keys", it)
-        }
-        callback.onSuccess(Gson().fromJson(body, Response::class.java)) }
+        val res: Map<String, ArrayList<DairyData>> = Gson().fromJson(body, typeToken.type)
+        callback.onSuccess(res) }
       override fun onError(code: Http.ErrorCode) { callback.onError(code) }
     }
     http.setCallback(cb)
@@ -49,10 +45,10 @@ class RecizoApi {
     val BASE_URL = "http://recizo.com/api/"
   }
   interface Callback {
-    fun onSuccess(response: Response)
+    fun onSuccess(response: Map<String, List<DairyData>>)
     fun onError(errCode: Http.ErrorCode)
   }
-  data class DairyData(val date: String?, val price: Int?)
+  data class DairyData(val date: String, val price: Int)
   class Response {
     val burokkori: Array<DairyData>? = null
     val daikon: Array<DairyData>? = null

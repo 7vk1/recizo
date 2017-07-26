@@ -4,6 +4,7 @@ package jp.gr.java_conf.item.recizo.view
 import android.app.Fragment
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,72 +20,103 @@ import jp.gr.java_conf.item.recizo.module.RecizoApi
 import kotlinx.android.synthetic.main.fragment_vegetable_graph.*
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
 
 class VegetableGraphFragment : Fragment() {
 
   private class LineDataAdapter(private val chart: LineChart) {
-    private var xAxisValue: Array<String> = arrayOf()
-
-    private fun createDataSet(arr: Array<RecizoApi.DairyData>, vData: VegetableData): LineDataSet {
-      val data = mutableListOf<Entry>()
-      val dateList = mutableListOf<String>()
-      for(i in 0..arr.size - 1) {
-        if(arr[i].price != -1) data.add(Entry(i.toFloat(), arr[i].price!!.toFloat()))
-      }
-
-      this.xAxisValue = dateList.toTypedArray()
-//      val data = arr.filter {(it.price != -1)}.mapIndexed { index, ( date, price) ->
-//        dateList.add(date)
-//        Entry(index.toFloat(), price.toFloat())}
-      val dataSet = LineDataSet(data, vData.vegetable.name_jp)
-      dataSet.color = vData.color
-      dataSet.valueTextColor = vData.color
-      dataSet.setDrawCircles(false)
-      return dataSet
+    var dataSet: LineDataSet? = null
+    var isOtherFinish = false
+    val colors = HashMap<RecizoApi.Vegetables, Int>()
+    init {
+      colors.put(RecizoApi.Vegetables.burokkori, Color.rgb(255,0,0))
+      colors.put(RecizoApi.Vegetables.daikon,Color.rgb(255,102,0))
+      colors.put(RecizoApi.Vegetables.hakusai,Color.rgb(255,204,0))
+      colors.put(RecizoApi.Vegetables.hourensou,Color.rgb(204,255,0))
+      colors.put(RecizoApi.Vegetables.jagaimo,Color.rgb(102,255,0))
+      colors.put(RecizoApi.Vegetables.kyabetsu,Color.rgb(0,255,0))
+      colors.put(RecizoApi.Vegetables.kyuri,Color.rgb(0,255,102))
+      colors.put(RecizoApi.Vegetables.nasu,Color.rgb(0,255,204))
+      colors.put(RecizoApi.Vegetables.negi,Color.rgb(0,204,255))
+      colors.put(RecizoApi.Vegetables.ninjin,Color.rgb(0,102,255))
+      colors.put(RecizoApi.Vegetables.piman,Color.rgb(0,0,255))
+      colors.put(RecizoApi.Vegetables.retasu,Color.rgb(102,0,255))
+      colors.put(RecizoApi.Vegetables.satoimo,Color.rgb(204,0,255))
+      colors.put(RecizoApi.Vegetables.tamanegi,Color.rgb(255,0,204))
+      colors.put(RecizoApi.Vegetables.tomato,Color.rgb(255,0,102))
     }
-    private fun onResponse(response: RecizoApi.Response, vegetableData: VegetableData){
-      val dataSet = when (vegetableData.vegetable) {
-        RecizoApi.Vegetables.all -> createDataSet(response.burokkori!!, vegetableData)//todo impl all
-        RecizoApi.Vegetables.burokkori ->  createDataSet(response.burokkori!!, vegetableData)
-        RecizoApi.Vegetables.daikon -> createDataSet(response.daikon!!, vegetableData)
-        RecizoApi.Vegetables.hakusai -> createDataSet(response.hakusai!!, vegetableData)
-        RecizoApi.Vegetables.hourensou -> createDataSet(response.hourensou!!, vegetableData)
-        RecizoApi.Vegetables.jagaimo -> createDataSet(response.jagaimo!!, vegetableData)
-        RecizoApi.Vegetables.kyabetsu -> createDataSet(response.kyabetsu!!, vegetableData)
-        RecizoApi.Vegetables.kyuri -> createDataSet(response.kyuri!!, vegetableData)
-        RecizoApi.Vegetables.nasu -> createDataSet(response.nasu!!, vegetableData)
-        RecizoApi.Vegetables.negi -> createDataSet(response.negi!!, vegetableData)
-        RecizoApi.Vegetables.ninjin -> createDataSet(response.ninjin!!, vegetableData)
-        RecizoApi.Vegetables.piman -> createDataSet(response.piman!!, vegetableData)
-        RecizoApi.Vegetables.retasu -> createDataSet(response.retasu!!, vegetableData)
-        RecizoApi.Vegetables.satoimo -> createDataSet(response.satoimo!!, vegetableData)
-        RecizoApi.Vegetables.tamanegi -> createDataSet(response.tamanegi!!, vegetableData)
-        RecizoApi.Vegetables.tomato -> createDataSet(response.tomato!!, vegetableData)
+    private fun onResponseAll(response: Map<String, List<RecizoApi.DairyData>>){
+      val lists: List<LineDataSet> = response.keys.map {
+        Log.d("DD", response[it]!![0].toString())
+        val data = mutableListOf<Entry>()
+        for(i in 0..response[it]!!.size -1) {
+          if(response[it]!![i].price != -1) data.add(Entry(i.toFloat(),response[it]!![i].price.toFloat()))
+        }
+        val dataSet = LineDataSet(data, RecizoApi.Vegetables.valueOf(it).name_jp)
+        dataSet.color = colors[RecizoApi.Vegetables.valueOf(it)]!!
+        dataSet.valueTextColor = colors[RecizoApi.Vegetables.valueOf(it)]!!
+        dataSet.setDrawCircles(false)
+        dataSet
       }
-      dataSet.color = vegetableData.color
-      dataSet.valueTextColor = vegetableData.color
-      dataSet.setDrawCircles(false)
-      val lineData = LineData(mutableListOf(dataSet) as MutableList<ILineDataSet>)
+      val dateList = response[response.keys.first()]!!.map { it.date }
+      val lineData = LineData(lists)
       lineData.setDrawValues(false)
-      chart.xAxis.valueFormatter = XAxisValueFormatter(xAxisValue)
+      chart.xAxis.valueFormatter = XAxisValueFormatter(dateList.toTypedArray())
       chart.data = lineData
       chart.invalidate()
     }
-    private fun getDateList(response: RecizoApi.Response) {
+    private fun onResponse(response: Map<String, List<RecizoApi.DairyData>>, isRecent: Boolean){
+      val key = response.keys.first()
+      val vegetableData = response[key]!!
+      val list = mutableListOf<Entry>()
+      val date = mutableListOf<String>()
+      for(i in 0..vegetableData.size -1) {
+        date.add(vegetableData[i].date)
+        if(vegetableData[i].price != -1) list.add(Entry(i.toFloat(), vegetableData[i].price.toFloat()))
+      }
+      val dataSet = LineDataSet(list, if(isRecent) "今年" else "過去")
+      val color = if(isRecent)colors[RecizoApi.Vegetables.valueOf(key)]!! else Color.BLACK
+      dataSet.color = color
+      dataSet.valueTextColor = color
+      dataSet.setDrawCircles(false)
+      if(isOtherFinish) {
+        chart.data = LineData(dataSet, this.dataSet)
+        chart.xAxis.valueFormatter = XAxisValueFormatter(date.toTypedArray())
+        chart.invalidate()
+      } else {
+        this.dataSet = dataSet
+        this.isOtherFinish = true
+      }
+    }
+    private fun onError(code: Http.ErrorCode) {//TODO IMPL
     }
     fun onItemChange(v: VegetableData) {
-      RecizoApi().recent().vegetable(v.vegetable).get(object : RecizoApi.Callback {
-        override fun onSuccess(response: RecizoApi.Response) {
-          onResponse(response, v)
-        }
-        override fun onError(errCode: Http.ErrorCode) {
-          TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-      })
+      chart.data = LineData()
+      chart.data.setDrawValues(false)
+      chart.invalidate()
+      dataSet = null
+      isOtherFinish = false
+
+      if( v.vegetable == RecizoApi.Vegetables.all) {
+        RecizoApi().recent().all().get(object : RecizoApi.Callback {
+          override fun onSuccess(response: Map<String, List<RecizoApi.DairyData>>) { onResponseAll(response) }
+          override fun onError(errCode: Http.ErrorCode) { this.onError(errCode) }
+        })
+      } else {
+        RecizoApi().past().vegetable(v.vegetable).get(object : RecizoApi.Callback {
+          override fun onSuccess(response: Map<String, List<RecizoApi.DairyData>>) { onResponse(response, false) }
+          override fun onError(errCode: Http.ErrorCode) { this.onError(errCode) }
+        })
+        RecizoApi().recent().vegetable(v.vegetable).get(object : RecizoApi.Callback {
+          override fun onSuccess(response: Map<String, List<RecizoApi.DairyData>>) { onResponse(response, true) }
+          override fun onError(errCode: Http.ErrorCode) { this.onError(errCode) }
+        })
+      }
     }
   }
+
+
+
 
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
