@@ -3,6 +3,7 @@ package jp.gr.java_conf.item.recizo.presenter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import jp.gr.java_conf.item.recizo.R
@@ -28,6 +29,25 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
     launch(UI) {
       val image = getImageStream(recipeList[position].imgUrl).await()
       holder.imageUrl.setImageBitmap(image)
+    }
+
+    Log.d("TEST RECIPE TITLE", holder.title.text.toString() )
+
+    holder.starButton.isChecked = false
+    if(FavoriteRecipeDao.getRecipe(holder.title.text.toString() ) != null ) {
+      Log.d("TEST", "FAV DB HIT")
+      holder.starButton.isChecked = true
+    }
+
+    holder.starButton.setOnClickListener {
+      Log.d("TEST STAR BUTTON", "CLICK")
+      FavoriteRecipeDao.add(
+          CookpadRecipe(title = holder.title.text.toString(),
+              author = holder.author.text.toString(),
+              description = holder.description.text.toString(),
+              imgUrl = holder.imageUrl.toString(),
+              cookpadLink = recipeList[position].cookpadLink)
+      )
     }
   }
 

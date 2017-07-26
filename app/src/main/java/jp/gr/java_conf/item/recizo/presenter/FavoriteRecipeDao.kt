@@ -37,7 +37,9 @@ object FavoriteRecipeDao {
     var recipe: CookpadRecipe? = null
     try {
       recipe = favoriteRecipeDatabaseHelper?.getRecipe(recipeTitle)
-    }catch (e: Exception) {}
-    return recipe
+      return recipe
+    }catch (e: Exception) {
+      return null
+    }
   }
 }

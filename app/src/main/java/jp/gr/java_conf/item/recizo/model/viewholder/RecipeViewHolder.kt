@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ToggleButton
 import jp.gr.java_conf.item.recizo.R
 
 class RecipeViewHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -11,4 +12,5 @@ class RecipeViewHolder(v: View): RecyclerView.ViewHolder(v) {
   val author: TextView = v.findViewById(R.id.recipe_author)
   val description: TextView = v.findViewById(R.id.recipe_description)
   val imageUrl: ImageView = v.findViewById(R.id.recipe_image)
+  val starButton: ToggleButton = v.findViewById(R.id.recipe_favorite_button)
 }
