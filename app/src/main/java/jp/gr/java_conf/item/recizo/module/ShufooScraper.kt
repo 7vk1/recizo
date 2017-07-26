@@ -3,10 +3,9 @@ package jp.gr.java_conf.item.recizo.module
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
 import jp.gr.java_conf.item.recizo.model.ErrorCode
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-class ShufooScraper(val postCode: String): Search(){
+class ShufooScraper(val postCode: String): Scraper(){
 
   companion object {
     val BASE_URL = "http://www.shufoo.net/pntweb/chirashiList.php/"
@@ -54,6 +53,12 @@ class ShufooScraper(val postCode: String): Search(){
         cookpadCallback.failed(errorCode)
       }
     })
+  }
+
+  enum class Flyer(val num: Int) {
+    STORE(0),
+    DESCRIPTION(1),
+    URL(2)
   }
 
 }

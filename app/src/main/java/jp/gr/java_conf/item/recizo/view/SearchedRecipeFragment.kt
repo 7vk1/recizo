@@ -13,12 +13,12 @@ import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
 import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
 import jp.gr.java_conf.item.recizo.model.ErrorCode
+import jp.gr.java_conf.item.recizo.module.CookpadScraper
 import jp.gr.java_conf.item.recizo.presenter.RecipeListAdapter
-import jp.gr.java_conf.item.recizo.presenter.ScrapingAdapter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import kotlin.coroutines.experimental.buildSequence
+import jp.gr.java_conf.item.recizo.module.CookpadScraper.Recipe.*
+
 
 class SearchedRecipeFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,12 +44,12 @@ class SearchedRecipeFragment : Fragment() {
     searched_recyclerView.addItemDecoration(dividerItemDecoration)
     searched_recyclerView.adapter = recipeListAdapter
 
-    val test = ScrapingAdapter(listOf("りんご") )
+    val test = CookpadScraper(listOf("りんご") )
 
     for(i in 0..2) {
       test.pageToNext()
 
-      test.cookpadScraping(object: ProgressBarCallBack {
+      test.scraping(object: ProgressBarCallBack {
         override fun progressBarStart() {
           searched_recipe_progressBar.visibility = View.VISIBLE
         }
@@ -58,22 +58,13 @@ class SearchedRecipeFragment : Fragment() {
           searched_recipe_progressBar.visibility = View.GONE
         }
       }, object : CookpadCallBack {
-        private val cookpadUrlBase = "https://cookpad.com"
         override fun succeed(html: Document?) {
-          val recipesHtml = (0..9).map { i -> html?.getElementById("recipe_$i")?.html()  }
-          recipesHtml.filterNotNull().forEach { recipe ->
-            val recipeDoc = Jsoup.parse(recipe)
-            val imgUrl = Jsoup.parse(recipeDoc.getElementsByClass("recipe-image").html() ).getElementsByTag("img").attr("src")
-            val title = recipeDoc.getElementsByClass("recipe-title").text()
-            val description = recipeDoc.getElementsByClass("recipe_description").text()
-            val cookpadLinkUrl = cookpadUrlBase + recipeDoc.getElementsByClass("recipe-title").attr("href")
-            val author = Jsoup.parse(recipeDoc.getElementsByClass("recipe_author_name").html() ).getElementsByTag("a").text()
-
-            recipeListAdapter.addRecipe(CookpadRecipe(title, description, imgUrl, cookpadLinkUrl, author))
+          val es = test.requestGetRecipeItem(html)
+          for (j in es[TITLE.num].indices) {
+            recipeListAdapter.addRecipe(CookpadRecipe(es[TITLE.num][i],es[DESCRIPTION.num][i],
+                    es[IMG_URL.num][j],es[LINK_URL.num][j],es[AUTHOR.num][j]))
           }
-
         }
-
         override fun failed(errorCode: ErrorCode) {
           Log.d("TEST ERROR CODE", errorCode.toString())
         }

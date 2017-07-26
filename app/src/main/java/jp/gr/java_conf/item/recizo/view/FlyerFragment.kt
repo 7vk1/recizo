@@ -13,15 +13,13 @@ import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
 import jp.gr.java_conf.item.recizo.model.ErrorCode
-import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
 import jp.gr.java_conf.item.recizo.model.entity.ShufooFlyer
 import jp.gr.java_conf.item.recizo.module.ShufooScraper
 import jp.gr.java_conf.item.recizo.presenter.FlyerListAdapter
-import jp.gr.java_conf.item.recizo.presenter.RecipeListAdapter
-import jp.gr.java_conf.item.recizo.presenter.ScrapingAdapter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import jp.gr.java_conf.item.recizo.module.ShufooScraper.Flyer.*
+
 
 
 class FlyerFragment : Fragment(){
@@ -46,6 +44,7 @@ class FlyerFragment : Fragment(){
     searched_recyclerView.addItemDecoration(dividerItemDecoration)
     searched_recyclerView.adapter = flyerListAdapter
 
+
     val test = ShufooScraper("1690074")
     test.pageToNext()
 
@@ -60,13 +59,17 @@ class FlyerFragment : Fragment(){
     }, object : CookpadCallBack {
       override fun succeed(html: Document?) {
         val es = test.requestGetShufooItem(html)
-        for (i in es[0].indices) {
-          flyerListAdapter.addFlyer(ShufooFlyer(es[0][i], es[1][i], es[2][i]))
+        for (i in es[STORE.num].indices) {
+          flyerListAdapter.addFlyer(ShufooFlyer(es[STORE.num][i], es[DESCRIPTION.num][i], es[URL.num][i]))
         }
       }
       override fun failed(errorCode: ErrorCode) {
         Log.d("TEST ERROR CODE", errorCode.toString())
       }
     })
+
+
+
+
   }
 }
