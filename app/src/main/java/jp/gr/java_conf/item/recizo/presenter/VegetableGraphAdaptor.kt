@@ -13,7 +13,7 @@ import jp.gr.java_conf.item.recizo.module.RecizoApi
 
 class VegetableGraphAdaptor(private val chart: LineChart) {
   var dataSet: LineDataSet? = null
-  var isOtherFinish = false
+  var isTheOtherFinished = false
   val colors = HashMap<RecizoApi.Vegetables, Int>()
   init {
     colors.put(RecizoApi.Vegetables.burokkori, Color.rgb(255,0,0))
@@ -66,13 +66,13 @@ class VegetableGraphAdaptor(private val chart: LineChart) {
     dataSet.color = color
     dataSet.valueTextColor = color
     dataSet.setDrawCircles(false)
-    if(isOtherFinish) {
+    if(isTheOtherFinished) {
       chart.data = LineData(dataSet, this.dataSet)
       chart.xAxis.valueFormatter = XAxisValueFormatter(date.toTypedArray())
       chart.invalidate()
     } else {
       this.dataSet = dataSet
-      this.isOtherFinish = true
+      this.isTheOtherFinished = true
     }
   }
   private fun handleError(code: Http.ErrorCode) {//TODO IMPL
@@ -83,7 +83,7 @@ class VegetableGraphAdaptor(private val chart: LineChart) {
     chart.data.setDrawValues(false)
     chart.invalidate()
     dataSet = null
-    isOtherFinish = false
+    isTheOtherFinished = false
 
     if(vegetable == RecizoApi.Vegetables.all) {
       RecizoApi().recent().all().get(object : RecizoApi.Callback {
@@ -103,6 +103,7 @@ class VegetableGraphAdaptor(private val chart: LineChart) {
   }
   private class XAxisValueFormatter(private val mValues: Array<String>) : IAxisValueFormatter {
     override fun getFormattedValue(value: Float, axis: AxisBase): String {
+      if(mValues.size -1 < value.toInt()) return ""
       return mValues[value.toInt()]
     }
   }
