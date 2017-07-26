@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     when (id) {
       R.id.nav_iceboxList -> changeFragment(IceboxFragment())
       R.id.nav_recipeSearch -> changeFragment(SearchedRecipeFragment())
-      R.id.nav_season -> {} //TODO
+      R.id.nav_season -> changeFragment(FavoriteRecipeFragment())
       R.id.nav_flyer -> changeFragment(FlyerFragment() )
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
     }

@@ -45,10 +45,9 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
             CookpadRecipe(title = holder.title.text.toString(),
                 author = holder.author.text.toString(),
                 description = holder.description.text.toString(),
-                imgUrl = holder.imageUrl.toString(),
+                imgUrl = recipeList[position].imgUrl,
                 cookpadLink = recipeList[position].cookpadLink)
         )
-
       } else {
         FavoriteRecipeDao.remove(holder.title.text.toString() )
       }
