@@ -3,7 +3,6 @@ package jp.gr.java_conf.item.recizo.presenter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import jp.gr.java_conf.item.recizo.R
@@ -25,7 +24,6 @@ class FavoriteRecipeAdapter: RecyclerView.Adapter<FavoriteRecipeViewHolder>() {
     holder!!.title.text = favoriteRecipeList[position].title
     holder.author.text = favoriteRecipeList[position].author
     holder.description.text = favoriteRecipeList[position].description
-    Log.d("TEST IMAGE URL", favoriteRecipeList[position].imgUrl)
     launch(UI) {
       val image = getImageStream(favoriteRecipeList[position].imgUrl).await()
       holder.imageUrl.setImageBitmap(image)
@@ -40,7 +38,6 @@ class FavoriteRecipeAdapter: RecyclerView.Adapter<FavoriteRecipeViewHolder>() {
   fun viewFavoriteList() {
     FavoriteRecipeDao.access()
     FavoriteRecipeDao.getAll()!!.forEach {
-      Log.d("TEST FAV DB RECIPE", it.title)
       favoriteRecipeList.add(
           CookpadRecipe(title = it.title,
               cookpadLink = it.cookpadLink,
@@ -54,14 +51,12 @@ class FavoriteRecipeAdapter: RecyclerView.Adapter<FavoriteRecipeViewHolder>() {
   }
 
   private fun getImageStream(imageUrl: String) = async(CommonPool) {
-    Log.d("TESt IMAGE URL", imageUrl)
     val url = URL(imageUrl)
     // image scale
     val scale = 3
     val bitmapImage = BitmapFactory.decodeStream(url.openConnection().getInputStream())
     val width = bitmapImage.width * scale
     val height = bitmapImage.height * scale
-    // TODO 画像取得失敗時のエラーハンドリング
     return@async Bitmap.createScaledBitmap(bitmapImage, width, height, false)
   }
 }
