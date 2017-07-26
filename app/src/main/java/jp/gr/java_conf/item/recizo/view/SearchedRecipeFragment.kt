@@ -4,20 +4,20 @@ import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
-import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
-import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
 import jp.gr.java_conf.item.recizo.model.ErrorCode
+import jp.gr.java_conf.item.recizo.model.viewholder.RecipeViewHolder
 import jp.gr.java_conf.item.recizo.module.CookpadScraper
 import jp.gr.java_conf.item.recizo.presenter.RecipeListAdapter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
 import org.jsoup.nodes.Document
-import jp.gr.java_conf.item.recizo.module.CookpadScraper.Recipe.*
 
 
 class SearchedRecipeFragment : Fragment() {
@@ -44,33 +44,39 @@ class SearchedRecipeFragment : Fragment() {
     searched_recyclerView.addItemDecoration(dividerItemDecoration)
     searched_recyclerView.adapter = recipeListAdapter
 
-    val test = CookpadScraper(listOf("りんご") )
+    val scraper = CookpadScraper(listOf("鹿","トマト"))
 
-    test.pageToNext()
-    for(i in 0..2) {
+    addRecipeListToAdaptor(scraper, recipeListAdapter)
 
-      test.scraping(object: ProgressBarCallBack {
-        override fun progressBarStart() {
+    searched_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+      override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+        if (dy == 0 || scraper.isLoading || scraper.idFinished()) return
+        val layoutManager = recyclerView!!.layoutManager as LinearLayoutManager
+        val totalItemCount = layoutManager.itemCount
+        val lastVisibleItem = layoutManager.findLastVisibleItemPosition() + 1
+        if (totalItemCount < lastVisibleItem + 5) {
+          scraper.isLoading = true
           searched_recipe_progressBar.visibility = View.VISIBLE
+          addRecipeListToAdaptor(scraper, recipeListAdapter)
         }
+      }
+    })
+  }
 
-        override fun progressBarStop() {
-          searched_recipe_progressBar.visibility = View.GONE
+  private fun addRecipeListToAdaptor(scraper: CookpadScraper, recipeListAdapter: RecipeListAdapter){
+    scraper.scraping(object : CookpadCallBack {
+      override fun succeed(html: Document?) {
+        val recipes = scraper.requestGetRecipeItem(html)
+        recipes.forEach {
+          recipeListAdapter.addRecipe(it)
         }
-      }, object : CookpadCallBack {
-        override fun succeed(html: Document?) {
-          val recipes = test.requestGetRecipeItem(html)
-
-          Log.d("TEST5",recipes.size.toString())
-          recipes.forEach {
-            recipeListAdapter.addRecipe(it)
-          }
-
-        }
-        override fun failed(errorCode: ErrorCode) {
-          Log.d("TEST ERROR CODE", errorCode.toString())
-        }
-      })
-    }
+        searched_recipe_progressBar.visibility = View.GONE
+      }
+      override fun failed(errorCode: ErrorCode) {
+        Log.d("TEST ERROR CODE", errorCode.toString())
+        searched_recipe_progressBar.visibility = View.GONE
+      }
+    })
   }
 }

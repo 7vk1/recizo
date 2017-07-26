@@ -18,37 +18,28 @@ import kotlin.properties.Delegates
 abstract class Scraper {
   var queryString = ""
   var numberOfItem = -1
-  var totalNumberOfPages = 0
-  var nowPage = 0
+  var totalNumberOfPages = -1
+  var nowPage = 1
+  var isLoading = true
 
-  protected fun scrapingHTML(progressCallback: ProgressBarCallBack, callback: CookpadCallBack) = launch(UI) {
-    progressCallback.progressBarStart()
-    sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
-//    try{
-//      sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
-//    }catch (e: IOException){
-//      callback.failed(ErrorCode.IO_ERROR)
-//    }catch (e: Exception){
-//      Log.d("TEST",e.message)
-//
-//      callback.failed(ErrorCode.GENERIC_ERROR)
-//    }
-    progressCallback.progressBarStop()
+  protected fun scrapingHTML(callback: CookpadCallBack) = launch(UI) {
+    try{
+      sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
+      isLoading = false
+      next()
+    }catch (e: IOException){ callback.failed(ErrorCode.IO_ERROR) }catch (e: Exception){ callback.failed(ErrorCode.GENERIC_ERROR) }
   }
 
-  fun pageToNext():Boolean {
-    if(nowPage > totalNumberOfPages) return false
+  fun next():Boolean {
+    if(nowPage > totalNumberOfPages) return true
     else {
       nowPage++
-      return true
+      return false
     }
   }
-  fun pageToPrev(): Boolean {
-    if(nowPage < 1) return false
-    else {
-      nowPage--
-      return true
-    }
+
+  fun idFinished() :Boolean{
+    return nowPage > totalNumberOfPages
   }
 
   private fun getHTML(url: String, pageNum: Int = 1) = async(CommonPool) {
@@ -58,11 +49,11 @@ abstract class Scraper {
   }
 
   private fun sendHtmlToCallBack(html: Document, callback: CookpadCallBack){
-      if(totalNumberOfPages == -1){
-        numberOfItem = parseNumberOfItem(html)
-        totalNumberOfPages = Math.ceil((numberOfItem.toDouble() / 10)).toInt()
-      }
-      callback.succeed(html)
+    if(totalNumberOfPages == -1){
+      numberOfItem = parseNumberOfItem(html)
+      totalNumberOfPages = Math.ceil((numberOfItem.toDouble() / 10)).toInt()
+    }
+    callback.succeed(html)
   }
 
   abstract protected fun parseNumberOfItem(html: Document): Int
