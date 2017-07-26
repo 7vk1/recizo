@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
-    tools:context="jp.gr.java_conf.item.recizo.view.VegetableGraphFragment">
+    tools:context="com.recizo.view.VegetableGraphFragment">
 
   <Spinner
       android:background="#88ffffff"
