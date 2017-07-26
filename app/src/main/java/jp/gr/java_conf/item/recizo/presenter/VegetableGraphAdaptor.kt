@@ -1,7 +1,6 @@
 package jp.gr.java_conf.item.recizo.presenter
 
 import android.graphics.Color
-import android.util.Log
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.data.Entry
@@ -12,6 +11,14 @@ import jp.gr.java_conf.item.recizo.module.Http
 import jp.gr.java_conf.item.recizo.module.RecizoApi
 
 class VegetableGraphAdaptor(private val chart: LineChart) {
+  init {
+    chart.description.text = "野菜の卸売価格"
+    chart.isHorizontalScrollBarEnabled = false
+    chart.axisRight.setDrawLabels(false)
+    chart.xAxis.axisMinimum = 0f
+    chart.xAxis.axisMaximum = 366f
+    chart.xAxis.labelCount = 12
+  }
   var dataSet: LineDataSet? = null
   var isTheOtherFinished = false
   val colors = HashMap<RecizoApi.Vegetables, Int>()
@@ -34,7 +41,6 @@ class VegetableGraphAdaptor(private val chart: LineChart) {
   }
   private fun onResponseAll(response: Map<String, List<RecizoApi.DairyData>>){
     val lists: List<LineDataSet> = response.keys.map {
-      Log.d("DD", response[it]!![0].toString())
       val data = mutableListOf<Entry>()
       for(i in 0..response[it]!!.size -1) {
         if(response[it]!![i].price != -1) data.add(Entry(i.toFloat(),response[it]!![i].price.toFloat()))

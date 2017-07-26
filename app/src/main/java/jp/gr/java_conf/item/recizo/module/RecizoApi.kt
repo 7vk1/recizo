@@ -67,21 +67,21 @@ class RecizoApi {
     val tomato: Array<DairyData>? = null
   }
   enum class Vegetables(val name_jp: String) {
-    all("All"),
-    burokkori("ブロッコリー"),
-    daikon("大根"),
-    hakusai("白菜"),
-    hourensou("ほうれん草"),
-    jagaimo("ジャガイモ"),
     kyabetsu("キャベツ"),
     kyuri("きゅうり"),
-    nasu("ナス"),
-    negi("ネギ"),
-    ninjin("にんじん"),
-    piman("ピーマン"),
-    retasu("レタス"),
     satoimo("里芋"),
+    jagaimo("ジャガイモ"),
     tamanegi("玉ねぎ"),
+    daikon("大根"),
     tomato("トマト"),
+    nasu("ナス"),
+    ninjin("にんじん"),
+    negi("ネギ"),
+    hakusai("白菜"),
+    piman("ピーマン"),
+    burokkori("ブロッコリー"),
+    hourensou("ほうれん草"),
+    retasu("レタス"),
+    all("全て"),
   }
 }
