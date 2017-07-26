@@ -2,7 +2,7 @@ package jp.gr.java_conf.item.recizo.module
 
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
-import jp.gr.java_conf.item.recizo.model.ErrorCode
+import jp.gr.java_conf.item.recizo.model.entity.ShufooFlyer
 import org.jsoup.nodes.Document
 
 class ShufooScraper(val postCode: String): Scraper(){
@@ -25,34 +25,22 @@ class ShufooScraper(val postCode: String): Scraper(){
     return BASE_URL
   }
 
-  fun requestGetShufooItem(html: Document?): List<List<String>> {
-    val elements = html!!.select(".chirashi_list_box")
-    val storeName = elements.select(".chirashi_list_item_name_str").map { v -> v.text() }
-    val description = elements.select(".chirashi_list_item_title").map { v -> v.text() }
-    val shufooLinkUrl = elements.select(".hover_opacity").map { v -> v.attr("href") }
-    return listOf<List<String>>(storeName,description,shufooLinkUrl)
+  fun requestGetShufooItem(html: Document?): List<ShufooFlyer> {
+
+    val flyers = html!!.select(".chirashi_list_item")
+
+    return flyers.map {
+      ShufooFlyer(
+              storeName = it.select(".chirashi_list_item_name_str")[0].text(),
+              description = it.select(".chirashi_list_item_title")[0].text(),
+              shufooLink = CookpadScraper.BASE_URL + it.select(".hover_opacity")[0].attr("href")
+      )
+    }
   }
 
 
   fun scraping(progressCallback: ProgressBarCallBack, cookpadCallback: CookpadCallBack){
-    this.scrapingHTML(object: ProgressBarCallBack {
-      override fun progressBarStart() {
-        progressCallback.progressBarStart()
-      }
-
-      override fun progressBarStop() {
-        progressCallback.progressBarStop()
-      }
-
-    }, object: CookpadCallBack {
-      override fun succeed(html: Document?) {
-        cookpadCallback.succeed(html)
-      }
-
-      override fun failed(errorCode: ErrorCode) {
-        cookpadCallback.failed(errorCode)
-      }
-    })
+    this.scrapingHTML(cookpadCallback)
   }
 
   enum class Flyer(val num: Int) {

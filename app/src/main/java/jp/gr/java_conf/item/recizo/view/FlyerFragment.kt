@@ -46,7 +46,6 @@ class FlyerFragment : Fragment(){
 
 
     val test = ShufooScraper("1690074")
-    test.pageToNext()
 
     test.scraping(object: ProgressBarCallBack {
       override fun progressBarStart() {
@@ -58,18 +57,14 @@ class FlyerFragment : Fragment(){
       }
     }, object : CookpadCallBack {
       override fun succeed(html: Document?) {
-        val es = test.requestGetShufooItem(html)
-        for (i in es[STORE.num].indices) {
-          flyerListAdapter.addFlyer(ShufooFlyer(es[STORE.num][i], es[DESCRIPTION.num][i], es[URL.num][i]))
+        val flyers = test.requestGetShufooItem(html)
+        flyers.forEach {
+          flyerListAdapter.addFlyer(it)
         }
       }
       override fun failed(errorCode: ErrorCode) {
         Log.d("TEST ERROR CODE", errorCode.toString())
       }
     })
-
-
-
-
   }
 }
