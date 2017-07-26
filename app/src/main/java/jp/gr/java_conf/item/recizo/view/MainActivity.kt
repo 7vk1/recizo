@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import jp.gr.java_conf.item.recizo.R
+import jp.gr.java_conf.item.recizo.presenter.FavoriteRecipeDao
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
     drawer.addDrawerListener(toggle)
     toggle.syncState()
+
+    FavoriteRecipeDao.context = applicationContext
 
     val transaction = fragmentManager.beginTransaction()
     transaction.add(R.id.fragment_frame, IceboxFragment() )
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     when (id) {
       R.id.nav_iceboxList -> changeFragment(IceboxFragment())
       R.id.nav_recipeSearch -> changeFragment(SearchedRecipeFragment())
-      R.id.nav_season -> {} //TODO
+      R.id.nav_season -> changeFragment(FavoriteRecipeFragment())
       R.id.nav_flyer -> changeFragment(FlyerFragment() )
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
     }

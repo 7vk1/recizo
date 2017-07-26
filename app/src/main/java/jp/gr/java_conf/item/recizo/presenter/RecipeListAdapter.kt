@@ -3,6 +3,7 @@ package jp.gr.java_conf.item.recizo.presenter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import jp.gr.java_conf.item.recizo.R
@@ -29,6 +30,30 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
       val image = getImageStream(recipeList[position].imgUrl).await()
       holder.imageUrl.setImageBitmap(image)
     }
+
+    FavoriteRecipeDao.access()
+    holder.starButton.isChecked = false
+    if(FavoriteRecipeDao.getRecipe(holder.title.text.toString() ) != null ) {
+      holder.starButton.isChecked = true
+    }
+    FavoriteRecipeDao.close()
+
+    holder.starButton.setOnClickListener {
+      FavoriteRecipeDao.access()
+      if(holder.starButton.isChecked) {
+        FavoriteRecipeDao.add(
+            CookpadRecipe(title = holder.title.text.toString(),
+                author = holder.author.text.toString(),
+                description = holder.description.text.toString(),
+                imgUrl = recipeList[position].imgUrl,
+                cookpadLink = recipeList[position].cookpadLink)
+        )
+      } else {
+        FavoriteRecipeDao.remove(holder.title.text.toString() )
+      }
+      FavoriteRecipeDao.close()
+    }
+
   }
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecipeViewHolder {
