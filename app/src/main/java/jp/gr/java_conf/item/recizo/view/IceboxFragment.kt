@@ -1,7 +1,9 @@
 package jp.gr.java_conf.item.recizo.view
 
 import android.app.Fragment
+import android.content.ClipData
 import android.content.Intent
+import android.graphics.Canvas
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -18,6 +20,8 @@ import jp.gr.java_conf.item.recizo.model.Vegetable
 import jp.gr.java_conf.item.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
 import kotlinx.android.synthetic.main.icebox_item.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 
 class IceboxFragment() : Fragment() {
   var searchTargetList = mutableListOf<String>()
@@ -39,17 +43,27 @@ class IceboxFragment() : Fragment() {
       searchTargetList.clear()
       undo.visibility = View.GONE
       add.setImageResource(R.drawable.ic_plus)
-      IceboxAdapter.notifyDataSetChanged()
     }
     IceboxAdapter.setContext(activity)
     setUpViews()
-    swiped()
+    isSwiped()
   }
 
   fun setUpViews() {
     recyclerView.layoutManager = LinearLayoutManager(activity)
     recyclerView.adapter = IceboxAdapter
     IceboxAdapter.initItem()
+  }
+
+  fun isSwiped(){
+      searchTargetList = IceboxAdapter.getTargetList()
+      if(searchTargetList.size > 0) {
+        undo.visibility = View.VISIBLE
+        add.setImageResource(R.drawable.ic_recipe_search)
+      }
+      else {
+        undo.visibility = View.GONE
+      }
   }
 
   fun swiped() {
@@ -67,12 +81,8 @@ class IceboxFragment() : Fragment() {
         return true
       }
 
-      //要素
-      override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-        super.onSelectedChanged(viewHolder, actionState)
-        if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
-          Log.d("とりあえず","来た来た"+actionState.toString())
-        }
+      override fun onChildDrawOver(c: Canvas?, recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+        super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
       }
 
       // スワイプされた場合
@@ -80,13 +90,12 @@ class IceboxFragment() : Fragment() {
         // 項目を消去
         // TODO 左右スワイプで処理分けする時はここのdirection使ってやるっぽい。左は4、右は8。
         if(direction == 4){
-
           searchTargetList.add(IceboxAdapter.getOneItem(viewHolder.adapterPosition))
           //addIfNeedChange()
           Log.d("左右確認 : "," 左来たよ")
         }else if(direction == 8) {
           IceboxAdapter.removeItem(viewHolder.adapterPosition)
-          Log.d("左右確認 ; "," 右来たよ")
+          Log.d("左右確認 : "," 右来たよ")
         }
       }
     })
