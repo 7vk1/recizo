@@ -55,14 +55,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     when (id) {
       R.id.nav_iceboxList -> changeFragment(IceboxFragment())
       R.id.nav_recipeSearch -> changeFragment(SearchedRecipeFragment())
-      R.id.nav_season -> {
-      } //TODO
-      R.id.nav_flyer -> {
-        changeFragment(FlyerFragment())
-      } //TODO
-      R.id.nav_market_price -> {
-        changeFragment(VegetableGraphFragment())
-      } //TODO
+      R.id.nav_season -> {} //TODO
+      R.id.nav_flyer -> changeFragment(FlyerFragment() )
+      R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
     }
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
     drawer.closeDrawer(GravityCompat.START)
