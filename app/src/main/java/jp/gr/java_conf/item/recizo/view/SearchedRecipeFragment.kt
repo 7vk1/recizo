@@ -9,11 +9,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import jp.gr.java_conf.item.recizo.R
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.model.ErrorCode
-import jp.gr.java_conf.item.recizo.model.viewholder.RecipeViewHolder
 import jp.gr.java_conf.item.recizo.module.CookpadScraper
 import jp.gr.java_conf.item.recizo.presenter.RecipeListAdapter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
@@ -65,7 +63,7 @@ class SearchedRecipeFragment : Fragment() {
   }
 
   private fun addRecipeListToAdaptor(scraper: CookpadScraper, recipeListAdapter: RecipeListAdapter){
-    scraper.scraping(object : CookpadCallBack {
+    scraper.scrapingHTML(object : CookpadCallBack {
       override fun succeed(html: Document?) {
         val recipes = scraper.requestGetRecipeItem(html)
         recipes.forEach {
@@ -79,4 +77,5 @@ class SearchedRecipeFragment : Fragment() {
       }
     })
   }
+
 }
