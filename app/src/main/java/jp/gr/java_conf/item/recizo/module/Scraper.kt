@@ -1,5 +1,6 @@
 package jp.gr.java_conf.item.recizo.module
 
+import android.util.Log
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
 import jp.gr.java_conf.item.recizo.model.ErrorCode
@@ -22,13 +23,16 @@ abstract class Scraper {
 
   protected fun scrapingHTML(progressCallback: ProgressBarCallBack, callback: CookpadCallBack) = launch(UI) {
     progressCallback.progressBarStart()
-    try{
-      sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
-    }catch (e: IOException){
-      callback.failed(ErrorCode.IO_ERROR)
-    }catch (e: Exception){
-      callback.failed(ErrorCode.GENERIC_ERROR)
-    }
+    sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
+//    try{
+//      sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
+//    }catch (e: IOException){
+//      callback.failed(ErrorCode.IO_ERROR)
+//    }catch (e: Exception){
+//      Log.d("TEST",e.message)
+//
+//      callback.failed(ErrorCode.GENERIC_ERROR)
+//    }
     progressCallback.progressBarStop()
   }
 
