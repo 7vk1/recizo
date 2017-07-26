@@ -1,9 +1,11 @@
 package jp.gr.java_conf.item.recizo.module
 
+import android.util.Log
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
 import jp.gr.java_conf.item.recizo.model.ErrorCode
 import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
@@ -13,26 +15,25 @@ import java.io.IOException
 import java.lang.Exception
 import kotlin.properties.Delegates
 
-abstract class Search {
-  var urlBase = ""
+abstract class Scraper {
   var queryString = ""
-  var numberOfItem: Int by Delegates.notNull()
+  var numberOfItem = -1
   var totalNumberOfPages = 0
   var nowPage = 0
 
-  fun scrapingHTML(progressCallback: ProgressBarCallBack, callback: CookpadCallBack) = launch(UI) {
+  protected fun scrapingHTML(progressCallback: ProgressBarCallBack, callback: CookpadCallBack) = launch(UI) {
     progressCallback.progressBarStart()
-    val html = getHTML(getSearchUrl(), nowPage).await()
+    sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
+//    try{
+//      sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
+//    }catch (e: IOException){
+//      callback.failed(ErrorCode.IO_ERROR)
+//    }catch (e: Exception){
+//      Log.d("TEST",e.message)
+//
+//      callback.failed(ErrorCode.GENERIC_ERROR)
+//    }
     progressCallback.progressBarStop()
-    when(html) {
-      "IoError" -> callback.failed(ErrorCode.IO_ERROR)
-      "OtherError" -> callback.failed(ErrorCode.GENERIC_ERROR)
-      else -> {
-        numberOfItem = parseNumberOfItem(html as Document)
-        totalNumberOfPages = Math.ceil((numberOfItem.toDouble() / 10)).toInt()
-        callback.succeed(html)
-      }
-    }
   }
 
   fun pageToNext():Boolean {
@@ -52,8 +53,16 @@ abstract class Search {
 
   private fun getHTML(url: String, pageNum: Int = 1) = async(CommonPool) {
     // TODO ProgressSpinnerの追加
-    val result = try {Jsoup.connect(url + queryString + pageNum).get()} catch (e: IOException) {"IoError"} catch (e:Exception){"OtherError"}
+    val result = try {Jsoup.connect(url + queryString + pageNum).get()} catch (e: IOException) {throw e} catch (e:Exception){throw e}
     return@async result
+  }
+
+  private fun sendHtmlToCallBack(html: Document, callback: CookpadCallBack){
+      if(totalNumberOfPages == -1){
+        numberOfItem = parseNumberOfItem(html)
+        totalNumberOfPages = Math.ceil((numberOfItem.toDouble() / 10)).toInt()
+      }
+      callback.succeed(html)
   }
 
   abstract protected fun parseNumberOfItem(html: Document): Int
