@@ -39,9 +39,7 @@ class FlyerFragment : Fragment(), FlyerPresenter.IFlyerFragment{
             LinearLayoutManager(activity).orientation)
     )
     searched_recyclerView.adapter = flyerListAdapter
-  }
-  override fun onStart() {
-    super.onStart()
+
     val flyerPresenter = FlyerPresenter(ShufooScraper("1690074"))
     flyerPresenter.setView(this)
     flyerPresenter.startFlyerListCreate()
@@ -49,9 +47,12 @@ class FlyerFragment : Fragment(), FlyerPresenter.IFlyerFragment{
     searched_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-        flyerPresenter.addFlyerList(recyclerView, dx)
+        flyerPresenter.addFlyerList(recyclerView, dy)
       }
     })
+  }
+  override fun onStart() {
+    super.onStart()
   }
 
   override fun showProgress() {
