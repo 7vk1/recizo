@@ -29,9 +29,12 @@ class VegetableGraphFragment : Fragment() {
 
     private fun createDataSet(arr: Array<RecizoApi.DairyData>, vData: VegetableData): LineDataSet {
       val data = mutableListOf<Entry>()
+      val dateList = mutableListOf<String>()
       for(i in 0..arr.size - 1) {
-        if(arr[i].price != -1) data.add(Entry(i.toFloat(), arr[i].price.toFloat()))
+        if(arr[i].price != -1) data.add(Entry(i.toFloat(), arr[i].price!!.toFloat()))
       }
+
+      this.xAxisValue = dateList.toTypedArray()
 //      val data = arr.filter {(it.price != -1)}.mapIndexed { index, ( date, price) ->
 //        dateList.add(date)
 //        Entry(index.toFloat(), price.toFloat())}
@@ -65,9 +68,6 @@ class VegetableGraphFragment : Fragment() {
       dataSet.setDrawCircles(false)
       val lineData = LineData(mutableListOf(dataSet) as MutableList<ILineDataSet>)
       lineData.setDrawValues(false)
-      val dateList = mutableListOf<String>()
-
-      this.xAxisValue = dateList.toTypedArray()
       chart.xAxis.valueFormatter = XAxisValueFormatter(xAxisValue)
       chart.data = lineData
       chart.invalidate()
