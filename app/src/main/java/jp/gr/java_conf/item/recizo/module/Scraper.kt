@@ -2,10 +2,8 @@ package jp.gr.java_conf.item.recizo.module
 
 import android.util.Log
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
-import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
 import jp.gr.java_conf.item.recizo.model.ErrorCode
 import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
@@ -13,7 +11,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
 import java.lang.Exception
-import kotlin.properties.Delegates
 
 abstract class Scraper {
   var queryString = ""
@@ -22,13 +19,17 @@ abstract class Scraper {
   var nowPage = 1
   var isLoading = true
 
-  protected fun scrapingHTML(callback: CookpadCallBack) = launch(UI) {
+  fun scrapingHTML(callback: CookpadCallBack) = launch(UI) {
     try{
       sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
       isLoading = false
       next()
-    }catch (e: IOException){ callback.failed(ErrorCode.IO_ERROR) }catch (e: Exception){ callback.failed(ErrorCode.GENERIC_ERROR) }
+    }catch (e: IOException){ callback.failed(ErrorCode.IO_ERROR) }catch (e: Exception){
+      e.printStackTrace()
+      callback.failed(ErrorCode.GENERIC_ERROR)
+    }
   }
+
 
   fun next():Boolean {
     if(nowPage > totalNumberOfPages) return true
@@ -51,11 +52,12 @@ abstract class Scraper {
   private fun sendHtmlToCallBack(html: Document, callback: CookpadCallBack){
     if(totalNumberOfPages == -1){
       numberOfItem = parseNumberOfItem(html)
-      totalNumberOfPages = Math.ceil((numberOfItem.toDouble() / 10)).toInt()
+      totalNumberOfPages = getTotalPage()
     }
     callback.succeed(html)
   }
 
   abstract protected fun parseNumberOfItem(html: Document): Int
   abstract protected fun getSearchUrl(): String
+  abstract protected fun getTotalPage(): Int
 }
