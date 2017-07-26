@@ -34,9 +34,8 @@ object FavoriteRecipeDao {
   }
 
   fun getRecipe(recipeTitle: String): CookpadRecipe? {
-    var recipe: CookpadRecipe? = null
     try {
-      recipe = favoriteRecipeDatabaseHelper?.getRecipe(recipeTitle)
+      val recipe = favoriteRecipeDatabaseHelper?.getRecipe(recipeTitle)
       return recipe
     }catch (e: Exception) {
       return null
