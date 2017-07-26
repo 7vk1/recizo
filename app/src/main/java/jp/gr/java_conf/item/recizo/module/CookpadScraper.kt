@@ -1,8 +1,10 @@
 package jp.gr.java_conf.item.recizo.module
 
+import android.util.Log
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.contract.ProgressBarCallBack
 import jp.gr.java_conf.item.recizo.model.ErrorCode
+import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -31,14 +33,20 @@ class CookpadScraper(val searchKeyWords: List<String>): Scraper() {
   }
 
 
-  fun requestGetRecipeItem(html: Document?): List<List<String>> {
+  fun requestGetRecipeItem(html: Document?): List<CookpadRecipe> {
 
-    val imgUrl = html!!.select(".recipe-image img").map { v -> v.attr("src") }
-    val title = html.select(".recipe-title").map { v -> v.text() }
-    val description = html.select(".recipe_description").map { v -> v.text() }
-    val cookpadLinkUrl = html.select(".recipe-title").map { v -> CookpadScraper.BASE_URL + v.attr("href") }
-    val author = html.select(".recipe_author_name a").map { v -> v.text() }
-    return listOf<List<String>>(title, description, imgUrl, cookpadLinkUrl, author)
+    val recipes = html!!.select(".recipe-preview").filter{ !it.parent().hasClass("recommended_pro_recipe")}
+
+
+    return recipes.map {
+      CookpadRecipe(
+              title = it.select(".recipe-title")[0].text(),
+              description = it.select(".recipe_description")[0].text(),
+              cookpadLink = CookpadScraper.BASE_URL + it.select(".recipe-image a")[0].attr("href"),
+              author = it.select(".recipe_author_name a")[0].text(),
+              imgUrl = it.select(".recipe-image img")[0].attr("src")
+      )
+    }
   }
 
   fun scraping(progressCallback: ProgressBarCallBack, cookpadCallback: CookpadCallBack){

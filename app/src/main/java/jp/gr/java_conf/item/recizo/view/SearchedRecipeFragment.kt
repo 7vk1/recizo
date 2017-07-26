@@ -46,8 +46,8 @@ class SearchedRecipeFragment : Fragment() {
 
     val test = CookpadScraper(listOf("りんご") )
 
+    test.pageToNext()
     for(i in 0..2) {
-      test.pageToNext()
 
       test.scraping(object: ProgressBarCallBack {
         override fun progressBarStart() {
@@ -59,11 +59,13 @@ class SearchedRecipeFragment : Fragment() {
         }
       }, object : CookpadCallBack {
         override fun succeed(html: Document?) {
-          val es = test.requestGetRecipeItem(html)
-          for (j in es[TITLE.num].indices) {
-            recipeListAdapter.addRecipe(CookpadRecipe(es[TITLE.num][i],es[DESCRIPTION.num][i],
-                    es[IMG_URL.num][j],es[LINK_URL.num][j],es[AUTHOR.num][j]))
+          val recipes = test.requestGetRecipeItem(html)
+
+          Log.d("TEST5",recipes.size.toString())
+          recipes.forEach {
+            recipeListAdapter.addRecipe(it)
           }
+
         }
         override fun failed(errorCode: ErrorCode) {
           Log.d("TEST ERROR CODE", errorCode.toString())
