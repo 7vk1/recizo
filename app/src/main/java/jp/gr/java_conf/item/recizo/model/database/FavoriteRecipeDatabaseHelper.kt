@@ -41,7 +41,6 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
     this.writableOpen()
     val query = "DELETE FROM $TABLE_NAME WHERE title=?"
     db.execSQL(query, arrayOf(recipeTitle) )
-    //val result = db.delete(TABLE_NAME, "title=$recipeTitle", null)
     db.close()
   }
 
@@ -52,6 +51,8 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
     values.put("author", recipe.author)
     values.put("imgurl", recipe.imgUrl)
     values.put("link", recipe.cookpadLink)
+
+    Log.d("TEST DB HELPER", "IN DB HELPER")
 
     this.writableOpen()
     db.insertOrThrow(TABLE_NAME, null, values)

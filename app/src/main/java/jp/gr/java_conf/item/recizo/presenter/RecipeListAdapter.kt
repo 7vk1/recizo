@@ -31,24 +31,30 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
       holder.imageUrl.setImageBitmap(image)
     }
 
-    Log.d("TEST RECIPE TITLE", holder.title.text.toString() )
-
+    FavoriteRecipeDao.access()
     holder.starButton.isChecked = false
     if(FavoriteRecipeDao.getRecipe(holder.title.text.toString() ) != null ) {
-      Log.d("TEST", "FAV DB HIT")
       holder.starButton.isChecked = true
     }
+    FavoriteRecipeDao.close()
 
     holder.starButton.setOnClickListener {
-      Log.d("TEST STAR BUTTON", "CLICK")
-      FavoriteRecipeDao.add(
-          CookpadRecipe(title = holder.title.text.toString(),
-              author = holder.author.text.toString(),
-              description = holder.description.text.toString(),
-              imgUrl = holder.imageUrl.toString(),
-              cookpadLink = recipeList[position].cookpadLink)
-      )
+      FavoriteRecipeDao.access()
+      if(holder.starButton.isChecked) {
+        FavoriteRecipeDao.add(
+            CookpadRecipe(title = holder.title.text.toString(),
+                author = holder.author.text.toString(),
+                description = holder.description.text.toString(),
+                imgUrl = holder.imageUrl.toString(),
+                cookpadLink = recipeList[position].cookpadLink)
+        )
+
+      } else {
+        FavoriteRecipeDao.remove(holder.title.text.toString() )
+      }
+      FavoriteRecipeDao.close()
     }
+
   }
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecipeViewHolder {

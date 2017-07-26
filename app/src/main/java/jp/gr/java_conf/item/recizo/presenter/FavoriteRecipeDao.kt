@@ -22,11 +22,11 @@ object FavoriteRecipeDao {
   }
 
   fun add(recipe: CookpadRecipe) {
-    favoriteRecipeDatabaseHelper?.addRecipe(recipe)
+    favoriteRecipeDatabaseHelper!!.addRecipe(recipe)
   }
 
   fun remove(recipeTitle: String) {
-    favoriteRecipeDatabaseHelper?.removeRecipe(recipeTitle)
+    favoriteRecipeDatabaseHelper!!.removeRecipe(recipeTitle)
   }
 
   fun getAll(): List<CookpadRecipe>? {
