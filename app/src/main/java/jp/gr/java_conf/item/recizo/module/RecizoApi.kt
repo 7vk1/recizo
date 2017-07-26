@@ -1,7 +1,7 @@
 package jp.gr.java_conf.item.recizo.module
 
-import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 class RecizoApi {
@@ -31,8 +31,11 @@ class RecizoApi {
     val url = "$BASE_URL${if(this.isRecent) "recent" else "past"}/${if(this.vegetable == Vegetables.all) "" else this.vegetable.name}"
     val http = Http(url)
     val cb = object : Http.Callback {
-      override fun onSuccess(body: String) {  Log.d("sc", body); callback.onSuccess(Gson().fromJson(body, Response::class.java)) }
-      override fun onError(code: Http.ErrorCode) {  Log.d("aaaa", code.name); callback.onError(code) }
+      override fun onSuccess(body: String) {
+        val typeToken = object : TypeToken<Map<String, Collection<DairyData>>>() {}
+        val res: Map<String, ArrayList<DairyData>> = Gson().fromJson(body, typeToken.type)
+        callback.onSuccess(res) }
+      override fun onError(code: Http.ErrorCode) { callback.onError(code) }
     }
     http.setCallback(cb)
     http.execute()
@@ -42,7 +45,7 @@ class RecizoApi {
     val BASE_URL = "http://recizo.com/api/"
   }
   interface Callback {
-    fun onSuccess(v: Response)
+    fun onSuccess(response: Map<String, List<DairyData>>)
     fun onError(errCode: Http.ErrorCode)
   }
   data class DairyData(val date: String, val price: Int)
@@ -63,22 +66,22 @@ class RecizoApi {
     val tamanegi: Array<DairyData>? = null
     val tomato: Array<DairyData>? = null
   }
-  enum class Vegetables {
-    all,
-    burokkori,
-    daikon,
-    hakusai,
-    hourensou,
-    jagaimo,
-    kyabetsu,
-    kyuri,
-    nasu,
-    negi,
-    ninjin,
-    piman,
-    retasu,
-    satoimo,
-    tamanegi,
-    tomato,
+  enum class Vegetables(val name_jp: String) {
+    all("All"),
+    burokkori("ブロッコリー"),
+    daikon("大根"),
+    hakusai("白菜"),
+    hourensou("ほうれん草"),
+    jagaimo("ジャガイモ"),
+    kyabetsu("キャベツ"),
+    kyuri("きゅうり"),
+    nasu("ナス"),
+    negi("ネギ"),
+    ninjin("にんじん"),
+    piman("ピーマン"),
+    retasu("レタス"),
+    satoimo("里芋"),
+    tamanegi("玉ねぎ"),
+    tomato("トマト"),
   }
 }
