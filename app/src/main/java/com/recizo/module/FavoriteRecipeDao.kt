@@ -1,4 +1,4 @@
-package com.recizo.presenter
+package com.recizo.module
 
 import android.content.Context
 import com.recizo.model.database.FavoriteRecipeDatabaseHelper

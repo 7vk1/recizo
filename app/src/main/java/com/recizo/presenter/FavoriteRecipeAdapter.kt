@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.model.entity.CookpadRecipe
 import com.recizo.model.viewholder.FavoriteRecipeViewHolder
+import com.recizo.module.FavoriteRecipeDao
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
