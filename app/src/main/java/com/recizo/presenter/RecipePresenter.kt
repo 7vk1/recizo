@@ -1,54 +1,52 @@
 package com.recizo.presenter
 
+import android.support.v7.widget.RecyclerView
 import com.recizo.model.ErrorCode
-import com.recizo.model.entity.CookpadRecipe
 import com.recizo.module.CookpadScraper
 import com.recizo.module.Scraper
 
+class RecipePresenter (val recipeListView: RecyclerView, keywords: List<String>){
+  private val scraper = CookpadScraper(keywords)
+  private val recipeListAdapter = RecipeListAdapter()
+  private var progressBarCallback: IProgressBar? = null
 
-class RecipePresenter (val scraper: CookpadScraper){
-  interface IRecipeFragment{
-    fun showProgress()
-    fun dismissProgress()
-    fun setResultToList(recipe: CookpadRecipe)
+  init {
+    recipeListView.adapter = recipeListAdapter
   }
 
-  private var recipeView: RecipePresenter.IRecipeFragment? = null
-
-  fun setView(view: RecipePresenter.IRecipeFragment){
-    recipeView = view
+  fun setProgressBar(progressBar: IProgressBar) {
+    progressBarCallback = progressBar
   }
 
-  fun startFlyerListCreate(){
-    recipeView!!.showProgress()
-    addFlyerListToAdaptor()
+  fun startRecipeListCreate(){
+    progressBarCallback?.showProgressBar()
+    scraper.scrapingHTML(object : Scraper.ScraperCallBack {
+      override fun succeed(html: org.jsoup.nodes.Document?) {
+        val recipes = scraper.requestGetRecipeItem(html)
+        recipes.forEach {recipeListAdapter.addRecipe(it)}
+        progressBarCallback?.hideProgressBar()
+      }
+      override fun failed(errorCode: ErrorCode) {
+        android.util.Log.d("TEST ERROR CODE", errorCode.toString())
+        progressBarCallback?.hideProgressBar()
+      }
+    })
   }
 
-  fun addFlyerList(recyclerView: android.support.v7.widget.RecyclerView?, dy: Int){
+  fun addRecipeList(recyclerView: android.support.v7.widget.RecyclerView?, dy: Int){
     if (dy == 0 || scraper.isLoading || scraper.idFinished()) return
     val layoutManager = recyclerView!!.layoutManager as android.support.v7.widget.LinearLayoutManager
     val totalItemCount = layoutManager.itemCount
     val lastVisibleItem = layoutManager.findLastVisibleItemPosition() + 1
     if (totalItemCount < lastVisibleItem + 5) {
       scraper.isLoading = true
-      startFlyerListCreate()
+      startRecipeListCreate()
     }
   }
 
-  private fun addFlyerListToAdaptor(){
-    scraper.scrapingHTML(object : Scraper.ScraperCallBack {
-      override fun succeed(html: org.jsoup.nodes.Document?) {
-        val recipes = scraper.requestGetRecipeItem(html)
-        recipes.forEach {
-          recipeView!!.setResultToList(it)
-        }
-        recipeView!!.dismissProgress()
-      }
-      override fun failed(errorCode: ErrorCode) {
-        android.util.Log.d("TEST ERROR CODE", errorCode.toString())
-        recipeView!!.dismissProgress()
-      }
-    })
+  interface IProgressBar{
+    fun showProgressBar()
+    fun hideProgressBar()
   }
 }
 
