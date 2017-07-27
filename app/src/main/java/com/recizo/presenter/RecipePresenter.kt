@@ -31,6 +31,11 @@ class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
         progressBarCallback?.hideProgressBar()
       }
     })
+    recipeListAdapter.setOnItemClickListener{
+
+    }
+
+
   }
 
   fun addRecipeList(recyclerView: android.support.v7.widget.RecyclerView?, dy: Int){
