@@ -20,12 +20,13 @@
 
       <!-- Navigation Viewより上に配置してください -->
       <!-- Navigation Drawerがスワイプで閉じなくなります -->
-      <LinearLayout android:id="@+id/fragment_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
+      <LinearLayout
+          android:id="@+id/fragment_frame"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center_horizontal"
+          android:layout_gravity="center_horizontal"
+          android:orientation="vertical">
       </LinearLayout>
 
 
