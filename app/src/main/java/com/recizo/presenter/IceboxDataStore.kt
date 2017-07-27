@@ -9,14 +9,23 @@ object IceboxDataStore {
 
   fun addItem(item: IceboxItem) {
     itemList.add(item)
-
-
+    iceboxAdapter?.onItemAdded()
   }
-  fun removeItems() {
-
+  fun removeItem(itemId: Int) {
+    itemList = itemList.filterIndexed { index, iceboxItem ->
+      if(iceboxItem.id == itemId) {
+        iceboxAdapter?.onItemremoved(index)
+        false
+      } else true
+    }.toMutableList()
   }
-  fun changeItem() {
-
+  fun updateItem(item: IceboxItem) {
+    itemList = itemList.mapIndexed { index, iceboxItem ->
+      if(iceboxItem.id == item.id) {
+        iceboxAdapter?.onItemUpdated(index)
+        item
+      } else iceboxItem
+    }.toMutableList()
   }
 
 }
