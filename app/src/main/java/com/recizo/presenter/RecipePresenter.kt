@@ -1,9 +1,9 @@
 package com.recizo.presenter
 
-import com.recizo.contract.CookpadCallBack
 import com.recizo.model.ErrorCode
 import com.recizo.model.entity.CookpadRecipe
 import com.recizo.module.CookpadScraper
+import com.recizo.module.Scraper
 
 
 class RecipePresenter (val scraper: CookpadScraper){
@@ -36,7 +36,7 @@ class RecipePresenter (val scraper: CookpadScraper){
   }
 
   private fun addFlyerListToAdaptor(){
-    scraper.scrapingHTML(object : CookpadCallBack {
+    scraper.scrapingHTML(object : Scraper.ScraperCallBack {
       override fun succeed(html: org.jsoup.nodes.Document?) {
         val recipes = scraper.requestGetRecipeItem(html)
         recipes.forEach {

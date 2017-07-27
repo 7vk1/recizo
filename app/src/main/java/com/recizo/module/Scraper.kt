@@ -1,9 +1,5 @@
 package com.recizo.module
 
-import android.util.Log
-
-import com.recizo.contract.CookpadCallBack
-import com.recizo.contract.ProgressBarCallBack
 import com.recizo.model.ErrorCode
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
@@ -21,7 +17,7 @@ abstract class Scraper {
   var nowPage = 1
   var isLoading = true
 
-  fun scrapingHTML(callback: CookpadCallBack) = launch(UI) {
+  fun scrapingHTML(callback: ScraperCallBack) = launch(UI) {
     try{
       sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
       isLoading = false
@@ -51,7 +47,7 @@ abstract class Scraper {
     return@async result
   }
 
-  private fun sendHtmlToCallBack(html: Document, callback: CookpadCallBack){
+  private fun sendHtmlToCallBack(html: Document, callback: ScraperCallBack){
     if(totalNumberOfPages == -1){
       numberOfItem = parseNumberOfItem(html)
       totalNumberOfPages = getTotalPage()
@@ -62,4 +58,9 @@ abstract class Scraper {
   abstract protected fun parseNumberOfItem(html: Document): Int
   abstract protected fun getSearchUrl(): String
   abstract protected fun getTotalPage(): Int
+
+  interface ScraperCallBack {
+    fun succeed(html: Document?)
+    fun failed(errorCode: ErrorCode)
+  }
 }

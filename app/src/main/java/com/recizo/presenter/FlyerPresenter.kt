@@ -3,9 +3,9 @@ package com.recizo.presenter
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import com.recizo.contract.CookpadCallBack
 import com.recizo.model.ErrorCode
 import com.recizo.model.entity.ShufooFlyer
+import com.recizo.module.Scraper
 import com.recizo.module.ShufooScraper
 import org.jsoup.nodes.Document
 
@@ -40,7 +40,7 @@ class FlyerPresenter (val scraper: ShufooScraper){
   }
 
   private fun addFlyerListToAdaptor(){
-    scraper.scrapingHTML(object : CookpadCallBack {
+    scraper.scrapingHTML(object : Scraper.ScraperCallBack {
       override fun succeed(html: Document?) {
         val flyers = scraper.requestGetShufooItem(html)
         flyers.forEach {

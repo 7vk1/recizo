@@ -1,7 +1,6 @@
 package com.recizo.module
 
 
-import com.recizo.contract.CookpadCallBack
 import com.recizo.model.entity.CookpadRecipe
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
