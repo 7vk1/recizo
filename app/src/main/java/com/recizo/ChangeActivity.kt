@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.DatePicker
 import android.widget.EditText
+import com.recizo.model.database.IceboxDatabaseHelper
 
 import com.recizo.model.entity.Vegetable
 import com.recizo.presenter.IceboxAdapter
@@ -35,6 +36,15 @@ class ChangeActivity: AppCompatActivity() {
       if(!TextUtils.isEmpty(name) ) {
         val vegetable = Vegetable(takeIntent().id, name, memo, year, month, day)
         IceboxAdapter.updateItem(vegetable, intent.getIntExtra("position", 0))
+        val idh = IceboxDatabaseHelper(this)
+        idh.updateVegetable(vegetable)
+        // vegetableListの更新
+        for(i in vegetableList.indices) {
+          if(vegetable.id == vegetableList[i].id) {
+            vegetableList[i] = vegetable
+            break
+          }
+        }
         finish()
       } else {
         AlertDialog.Builder(this).

@@ -17,12 +17,11 @@ import com.daimajia.swipe.*
 import com.recizo.RegisterActivity
 
 
-object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
+class IceboxAdapter(val context: Context) : RecyclerView.Adapter<IceboxViewHolder>() {
   var vegetableList = mutableListOf<Vegetable>()
   var searchList = mutableSetOf<String>()
   var garbageList = mutableSetOf<Int>()
   var targetView: View? = null
-  lateinit var useContext: Context
 
   override fun getItemCount(): Int {
     return vegetableList.size
@@ -43,7 +42,7 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     val testDelete = targetView?.findViewById<View>(R.id.delete)
 
     testAdd?.setOnClickListener {
-      useContext.startActivity(Intent(useContext as Activity , RegisterActivity::class.java))
+      context.startActivity(Intent(context, RegisterActivity::class.java))
     }
 
     testDelete?.setOnClickListener {
@@ -168,7 +167,7 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
       }
     })
 
-    val intent = Intent(useContext as Activity , ChangeActivity::class.java)
+    val intent = Intent(context , ChangeActivity::class.java)
     holder.cardView.setOnClickListener {
       if(position == vegetableList.size){
         intent.putExtra("vegetable", vegetableList[position - 1])
@@ -178,17 +177,15 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
       intent.putExtra("position", position)
       }
 
-      (useContext as Activity).startActivity(intent)
+      context.startActivity(intent)
     }
   }
 
-  fun setContext(context: Context) {
-    this.useContext = context
-  }
+
 
   fun updateItem(vegetable: Vegetable, position: Int) {
-    val idh = IceboxDatabaseHelper(this.useContext)
-    idh.writebleOpen()
+    val idh = IceboxDatabaseHelper(context)
+    idh.writableOpen()
     idh.updateVegetable(vegetable)
     // vegetableListの更新
     for(i in vegetableList.indices) {
@@ -201,8 +198,8 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
   }
 
   fun addItem(vegetable: Vegetable) {
-    val idh = IceboxDatabaseHelper(this.useContext)
-    idh.writebleOpen()
+    val idh = IceboxDatabaseHelper(context)
+    idh.writableOpen()
     idh.addVegetable(vegetable)
     vegetableList.add(idh.getVegetableLast() )
     notifyItemInserted(vegetableList.size)
@@ -210,8 +207,8 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
 
   fun removeItem(position: Int) {
     if(position < vegetableList.size) {
-      val idh = IceboxDatabaseHelper(this.useContext)
-      idh.writebleOpen()
+      val idh = IceboxDatabaseHelper(context)
+      idh.writableOpen()
       idh.deleteVegetable(vegetableList[position].id)
       vegetableList.removeAt(position)
       notifyItemRemoved(position)
@@ -225,7 +222,7 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
 
 
   fun getItem(): MutableList<Vegetable> {
-    val idh = IceboxDatabaseHelper(this.useContext)
+    val idh = IceboxDatabaseHelper(context)
     idh.readableOpen()
     this.vegetableList = idh.getVegetableAll()
 

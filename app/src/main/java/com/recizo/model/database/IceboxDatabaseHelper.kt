@@ -16,15 +16,16 @@ class IceboxDatabaseHelper(context: Context) {
     dbHelper = DatabaseHelper(context)
   }
 
-  fun writebleOpen() {
+  private fun writableOpen() {
     db = dbHelper.writableDatabase
   }
 
-  fun readableOpen() {
+  private fun readableOpen() {
     db = dbHelper.readableDatabase
   }
 
   fun updateVegetable(vegetable: Vegetable) {
+    writableOpen()
     val values = ContentValues()
     values.put("name", vegetable.name)
     values.put("memo", vegetable.memo)
@@ -34,9 +35,11 @@ class IceboxDatabaseHelper(context: Context) {
     values.put("day", dates[2])
     val id = vegetable.id
     db.update(TABLE_NAME, values, "_id=$id", null)
+    db.close()
   }
 
   fun getVegetableAll(): MutableList<Vegetable> {
+    readableOpen()
     val query = "SELECT _id, name, memo, year, month, day FROM ${TABLE_NAME}"
     var list = mutableListOf<Vegetable>()
     db.rawQuery(query, null).use {
@@ -55,14 +58,16 @@ class IceboxDatabaseHelper(context: Context) {
         }
       }.toMutableList()
     }
+    db.close()
     return list
   }
 
   fun getVegetableLast(): Vegetable {
+    readableOpen()
     val query = "SELECT _id, name, memo ,year, month, day FROM ${TABLE_NAME}"
     db.rawQuery(query, null).use {
       it.moveToLast()
-      return Vegetable(
+      val ret = Vegetable(
           it.getInt(it.getColumnIndex("_id")),
           it.getString(it.getColumnIndex("name")),
           it.getString(it.getColumnIndex("memo")),
@@ -70,10 +75,13 @@ class IceboxDatabaseHelper(context: Context) {
           it.getString(it.getColumnIndex("month")),
           it.getString(it.getColumnIndex("day"))
       )
+      db.close()
+      return ret
     }
   }
 
   fun addVegetable(vegetable: Vegetable) {
+    writableOpen()
     val values: ContentValues = ContentValues()
     values.put("name", vegetable.name)
     values.put("memo", vegetable.memo)
@@ -83,17 +91,22 @@ class IceboxDatabaseHelper(context: Context) {
     values.put("month", date[1])
     values.put("day", date[2])
     db.insertOrThrow(TABLE_NAME, null, values)
+    db.close()
   }
 
   fun deleteVegetable(vegetableId: Int) {
+    writableOpen()
     Log.d("TEST DELETE ID", vegetableId.toString() )
     val result = db.delete(TABLE_NAME, "_id=$vegetableId", null)
     Log.d("TEST DELETE RESULT", result.toString() )
+    db.close()
   }
 
   fun deleteVegetable(vegetable: Vegetable) {
+    writableOpen()
     val id = vegetable.id
     db.delete(TABLE_NAME, "_id=$id", null)
+    db.close()
   }
 
   companion object {

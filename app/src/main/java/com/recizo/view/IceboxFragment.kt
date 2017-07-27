@@ -23,17 +23,17 @@ class IceboxFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    IceboxAdapter.setContext(activity)
-    IceboxAdapter.setView(view)
-    setUpViews()
-  }
-
-
-  fun setUpViews() {
+    val iceboxAdapter = IceboxAdapter(activity)
+    iceboxAdapter.setView(view)
     recyclerView.layoutManager = LinearLayoutManager(activity)
-    recyclerView.adapter = IceboxAdapter
-    IceboxAdapter.initItem()
-  }
+    recyclerView.adapter = iceboxAdapter
+    iceboxAdapter.initItem()
 
+    add
+    delete
+    recipe_search
+    undo
+
+  }
 
 }
