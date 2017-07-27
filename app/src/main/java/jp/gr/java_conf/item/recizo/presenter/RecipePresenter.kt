@@ -5,26 +5,28 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import jp.gr.java_conf.item.recizo.contract.CookpadCallBack
 import jp.gr.java_conf.item.recizo.model.ErrorCode
+import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
 import jp.gr.java_conf.item.recizo.model.entity.ShufooFlyer
+import jp.gr.java_conf.item.recizo.module.CookpadScraper
 import jp.gr.java_conf.item.recizo.module.ShufooScraper
 import org.jsoup.nodes.Document
 
 
-class FlyerPresenter (val scraper: ShufooScraper){
-  interface IFlyerFragment{
+class RecipePresenter (val scraper: CookpadScraper){
+  interface IRecipeFragment{
     fun showProgress()
     fun dismissProgress()
-    fun setResultToList(flyer: ShufooFlyer)
+    fun setResultToList(recipe: CookpadRecipe)
   }
 
-  private var flyerView:IFlyerFragment? = null
+  private var recipeView:IRecipeFragment? = null
 
-  fun setView(view: IFlyerFragment){
-    flyerView = view
+  fun setView(view: IRecipeFragment){
+    recipeView = view
   }
 
   fun startFlyerListCreate(){
-    flyerView!!.showProgress()
+    recipeView!!.showProgress()
     addFlyerListToAdaptor()
   }
 
@@ -42,15 +44,15 @@ class FlyerPresenter (val scraper: ShufooScraper){
   private fun addFlyerListToAdaptor(){
     scraper.scrapingHTML(object : CookpadCallBack {
       override fun succeed(html: Document?) {
-        val flyers = scraper.requestGetShufooItem(html)
-        flyers.forEach {
-          flyerView!!.setResultToList(it)
+        val recipes = scraper.requestGetRecipeItem(html)
+        recipes.forEach {
+          recipeView!!.setResultToList(it)
         }
-        flyerView!!.dismissProgress()
+        recipeView!!.dismissProgress()
       }
       override fun failed(errorCode: ErrorCode) {
         Log.d("TEST ERROR CODE", errorCode.toString())
-        flyerView!!.dismissProgress()
+        recipeView!!.dismissProgress()
       }
     })
   }

@@ -26,7 +26,7 @@
         </activity>
         <activity android:name=".view.ChangeActivity">
         </activity>
-        <activity android:name=".view.SearchedRecipeFragment">
+        <activity android:name=".view.RecipeFragment">
         </activity>
     </application>
 

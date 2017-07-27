@@ -1,6 +1,5 @@
 package jp.gr.java_conf.item.recizo.view
 
-
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -10,16 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.gr.java_conf.item.recizo.R
-import jp.gr.java_conf.item.recizo.model.entity.ShufooFlyer
-import jp.gr.java_conf.item.recizo.module.ShufooScraper
-import jp.gr.java_conf.item.recizo.presenter.FlyerListAdapter
-import jp.gr.java_conf.item.recizo.presenter.FlyerPresenter
+import jp.gr.java_conf.item.recizo.model.entity.CookpadRecipe
+import jp.gr.java_conf.item.recizo.module.CookpadScraper
+import jp.gr.java_conf.item.recizo.presenter.RecipeListAdapter
+import jp.gr.java_conf.item.recizo.presenter.RecipePresenter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
 
 
-class FlyerFragment : Fragment(), FlyerPresenter.IFlyerFragment{
 
-  val flyerListAdapter = FlyerListAdapter()
+class RecipeFragment : Fragment(), RecipePresenter.IRecipeFragment{
+
+  val recipeListAdapter = RecipeListAdapter()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -37,19 +37,20 @@ class FlyerFragment : Fragment(), FlyerPresenter.IFlyerFragment{
             searched_recyclerView.context,
             LinearLayoutManager(activity).orientation)
     )
-    searched_recyclerView.adapter = flyerListAdapter
+    searched_recyclerView.adapter = recipeListAdapter
 
-    val flyerPresenter = FlyerPresenter(ShufooScraper("1690074"))
-    flyerPresenter.setView(this)
-    flyerPresenter.startFlyerListCreate()
+    val recipePresenter = RecipePresenter(CookpadScraper(listOf("鹿","トマト")))
+    recipePresenter.setView(this)
+    recipePresenter.startFlyerListCreate()
 
     searched_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-        flyerPresenter.addFlyerList(recyclerView, dy)
+        recipePresenter.addFlyerList(recyclerView, dy)
       }
     })
   }
+
   override fun onStart() {
     super.onStart()
   }
@@ -62,7 +63,8 @@ class FlyerFragment : Fragment(), FlyerPresenter.IFlyerFragment{
     searched_recipe_progressBar.visibility = View.GONE
   }
 
-  override fun setResultToList(flyer: ShufooFlyer) {
-    flyerListAdapter.addFlyer(flyer)
+  override fun setResultToList(recipe: CookpadRecipe) {
+    recipeListAdapter.addRecipe(recipe)
   }
+
 }
