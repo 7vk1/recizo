@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import com.recizo.R
-import com.recizo.presenter.FavoriteRecipeDao
+import com.recizo.module.FavoriteRecipeDao
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
   override fun onCreate(savedInstanceState: Bundle?) {

@@ -3,12 +3,12 @@ package com.recizo.presenter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.model.entity.CookpadRecipe
 import com.recizo.model.viewholder.RecipeViewHolder
+import com.recizo.module.FavoriteRecipeDao
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
