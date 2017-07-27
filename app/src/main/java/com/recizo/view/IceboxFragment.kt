@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.recizo.ChangeActivity
 import com.recizo.R
 import com.recizo.RegisterActivity
+import com.recizo.model.entity.IceboxItem
 import com.recizo.model.entity.Vegetable
 import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
@@ -22,9 +23,9 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     recipe_search_btn.visibility = if(delete) View.VISIBLE else View.INVISIBLE
   }
 
-  override fun toChangeActivity(vegetable: Vegetable, position: Int) {
+  override fun toChangeActivity(item: IceboxItem, position: Int) {
     val intent = Intent(activity, ChangeActivity::class.java)
-    intent.putExtra("vegetable", vegetable)
+    intent.putExtra("item", item)
     intent.putExtra("position", position)
     activity.startActivity(intent)
   }
@@ -53,10 +54,8 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val iceboxAdapter = IceboxAdapter(this, recyclerView)
-    iceboxAdapter.setView(view)
     recyclerView.layoutManager = LinearLayoutManager(activity)
     recyclerView.adapter = iceboxAdapter
-    iceboxAdapter.initItem()
 
     add_btn.setOnClickListener {
       activity.startActivity(Intent(activity, RegisterActivity::class.java))

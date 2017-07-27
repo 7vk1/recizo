@@ -8,23 +8,20 @@ import android.util.Log
 import android.widget.DatePicker
 import android.widget.EditText
 import com.recizo.model.database.IceboxDatabaseHelper
+import com.recizo.model.entity.IceboxItem
+import com.recizo.presenter.IceboxDataStore
 
-import com.recizo.model.entity.Vegetable
-import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox_change.*
 
 class ChangeActivity: AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.fragment_icebox_change)
-
-    Log.d("TEST CHANGE ACT", "Send ChangeActivity")
-
     setFormValue(fragment_icebox_change_name, fragment_icebox_change_memo, fragment_icebox_change_date)
-
     fragment_icebox_change_cancel_btn.setOnClickListener {
       finish()
     }
+    val item = intent.getSerializableExtra("item") as IceboxItem
 
     fragment_icebox_change_register_btn.setOnClickListener {
       val name: String = fragment_icebox_change_name.text.toString()
@@ -32,11 +29,8 @@ class ChangeActivity: AppCompatActivity() {
       val year: String = fragment_icebox_change_date.year.toString()
       val month: String = (fragment_icebox_change_date.month + 1).toString()
       val day: String = fragment_icebox_change_date.dayOfMonth.toString()
-
       if(!TextUtils.isEmpty(name) ) {
-        val vegetable = Vegetable(takeIntent().id, name, memo, year, month, day)
-        val idh = IceboxDatabaseHelper(this)
-        idh.updateVegetable(vegetable)
+        IceboxDataStore.updateItem(IceboxItem(item.id, name, memo, year, month, day))
         finish()
       } else {
         AlertDialog.Builder(this).
@@ -45,20 +39,13 @@ class ChangeActivity: AppCompatActivity() {
             setPositiveButton("OK", null).
             show()
       }
-      finish()
     }
   }
-
-  fun takeIntent(): Vegetable {
-    return intent.getSerializableExtra("vegetable") as Vegetable
-  }
-
   fun setFormValue(name: EditText, memo: EditText,date: DatePicker) {
-    val vegetable = takeIntent()
-    name.setText(vegetable.name)
-    memo.setText(vegetable.memo)
-    val dates = vegetable.date.split("/".toRegex() )
-
+    val item = intent.getSerializableExtra("item") as IceboxItem
+    name.setText(item.name)
+    memo.setText(item.memo)
+    val dates = item.date.split("/".toRegex() )
     val year = dates[0].toInt()
     val month = dates[1].toInt()
     val day = dates[2].toInt()
