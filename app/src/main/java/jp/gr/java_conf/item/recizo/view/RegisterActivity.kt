@@ -1,14 +1,12 @@
 package jp.gr.java_conf.item.recizo.view
 
-import android.app.Dialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
-import android.widget.Toast
 
 import jp.gr.java_conf.item.recizo.R
-import jp.gr.java_conf.item.recizo.model.Vegetable
+import jp.gr.java_conf.item.recizo.model.entity.Vegetable
 import jp.gr.java_conf.item.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox_register.*
 
@@ -21,7 +19,6 @@ class RegisterActivity : AppCompatActivity() {
     fragment_icebox_register_cancel_btn.setOnClickListener {
       finish()
     }
-
     fragment_icebox_register_register_btn.setOnClickListener {
       val name: String = fragment_icebox_register_name.text.toString()
       val memo: String = fragment_icebox_register_memo.text.toString()
@@ -35,11 +32,11 @@ class RegisterActivity : AppCompatActivity() {
         IceboxAdapter.addItem(vegetable)
         finish()
       } else {
-        AlertDialog.Builder(this).
-            setTitle("エラー").
-            setMessage("野菜の名前が入力されていません!").
-            setPositiveButton("OK", null).
-            show()
+        AlertDialog.Builder(this)
+            .setTitle("エラー")
+            .setMessage("野菜の名前が入力されていません!")
+            .setPositiveButton("OK", null)
+            .show()
       }
     }
   }

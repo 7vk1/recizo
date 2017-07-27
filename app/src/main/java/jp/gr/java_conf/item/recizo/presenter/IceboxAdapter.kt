@@ -3,6 +3,7 @@ package jp.gr.java_conf.item.recizo.presenter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Path
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,14 +12,15 @@ import android.view.ViewGroup
 import com.daimajia.swipe.SimpleSwipeListener
 import com.daimajia.swipe.SwipeLayout
 import jp.gr.java_conf.item.recizo.R
-import jp.gr.java_conf.item.recizo.model.IceboxDatabaseHelper
-import jp.gr.java_conf.item.recizo.model.IceboxViewHolder
-import jp.gr.java_conf.item.recizo.model.Vegetable
+import jp.gr.java_conf.item.recizo.model.database.IceboxDatabaseHelper
+import jp.gr.java_conf.item.recizo.model.viewholder.IceboxViewHolder
+import jp.gr.java_conf.item.recizo.model.entity.Vegetable
 import jp.gr.java_conf.item.recizo.view.ChangeActivity
 
 object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
   var vegetableList = mutableListOf<Vegetable>()
-  var searchList = mutableListOf<String>()
+  var searchList = mutableSetOf<String>()
+  var garbageList = mutableSetOf<Vegetable>()
   lateinit var useContext: Context
 
   override fun getItemCount(): Int {
@@ -37,28 +39,60 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     holder.swipeLayout.showMode = SwipeLayout.ShowMode.PullOut
     holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right,holder.swipeLayout.findViewById(R.id.icebox_item_search))
     holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Left,holder.swipeLayout.findViewById(R.id.icebox_item_del))
+    var search = false
+    var garbage = false
     holder.swipeLayout.addSwipeListener(object: SimpleSwipeListener(){
       override fun onHandRelease(layout: SwipeLayout?, xvel: Float, yvel: Float) {
-        if(xvel < 0){
-          //左スワイプ時
-          var test = holder.swipeLayout.openStatus
-          searchList.add(vegetableList[position].name)
-          Log.d("来てはいる","左" + test.toString())
-          Log.d("リストのサイズ", searchList.size.toString() +"  "+test.toString())
+        //こいつでどっち側のViewを引っ張ってるか検知出来る
+        //ただ実際に俺らが見ている動きとは逆方向なので注意
+        var direction =  holder.swipeLayout.dragEdge
+        var openStatus = holder.swipeLayout.openStatus
+        if(direction == SwipeLayout.DragEdge.Right){
+          //検索ビュー展開時に検索ワード追加
+          if(openStatus == SwipeLayout.Status.Open || openStatus == SwipeLayout.Status.Middle && !search){
+            searchList.add(vegetableList[position].name)
+            Log.d("取ったやつ : 空いたで", searchList.toString())
+            Log.d("なんかよくわかんないの",search.toString())
+          }
+          //検索ビュー縮小時に検索ワード削除
+          else if(openStatus == SwipeLayout.Status.Close || openStatus == SwipeLayout.Status.Middle && search){
+            searchList.remove(vegetableList[position].name)
+            Log.d("検索リストのサイズ : 閉じたで", searchList.size.toString())
+            Log.d("なんかよくわかんないの",search.toString())
+          }
         }
-        else if(xvel >= 0.toFloat()){
-          var test = holder.swipeLayout.openStatus
-          searchList.remove(vegetableList[position].name)
-          Log.d("来てはいる","右")
-          Log.d("リストのサイズ", searchList.size.toString() +"  "+test.toString())
+        else if(direction == SwipeLayout.DragEdge.Left){
+          //削除ビュー展開時に削除候補追加
+          if(openStatus == SwipeLayout.Status.Open || openStatus == SwipeLayout.Status.Middle && !garbage){
+            garbageList.add(getOneItem(position))
+            Log.d("ゴミ箱行きリストのサイズ", garbageList.size.toString())
+          }
+          else if(openStatus == SwipeLayout.Status.Close || openStatus == SwipeLayout.Status.Middle && garbage){
+            garbageList.remove(getOneItem(position))
+            Log.d("ゴミ箱行きリストのサイズ", garbageList.size.toString())
+          }
         }
       }
 
-    //verride fun onUpdate(layout: SwipeLayout?, leftOffset: Int, topOffset: Int) {
-      //  super.onUpdate(layout, leftOffset, topOffset)
-      //  Log.d("Update左",leftOffset.toString())
-      //  Log.d("Update上",topOffset.toString())
-      //}
+      override fun onOpen(layout: SwipeLayout?) {
+        var direction =  holder.swipeLayout.dragEdge
+        if(direction == SwipeLayout.DragEdge.Right){
+          search = true
+        }
+        else if(direction == SwipeLayout.DragEdge.Left){
+          garbage = false
+        }
+      }
+
+      override fun onClose(layout: SwipeLayout?) {
+        var direction =  holder.swipeLayout.dragEdge
+        if(direction == SwipeLayout.DragEdge.Left){
+          search = false
+        }
+        else if(direction == SwipeLayout.DragEdge.Left){
+          garbage = true
+        }
+      }
     })
     val intent = Intent(useContext as Activity , ChangeActivity::class.java)
     holder.cardView.setOnClickListener {
@@ -110,9 +144,8 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     }
   }
 
-  fun getOneItem(position: Int): String{
-    val target: String = vegetableList[position].name
-    return target
+  fun getOneItem(position: Int): Vegetable{
+    return vegetableList[position]
   }
 
   fun getItem(): MutableList<Vegetable> {
@@ -123,7 +156,7 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     return vegetableList
   }
 
-  fun getTargetList(): MutableList<String>{
+  fun getTargetList(): Set<String>{
     return searchList
   }
 

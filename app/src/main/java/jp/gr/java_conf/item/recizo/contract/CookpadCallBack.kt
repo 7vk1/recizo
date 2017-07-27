@@ -4,6 +4,6 @@ import jp.gr.java_conf.item.recizo.model.ErrorCode
 import org.jsoup.nodes.Document
 
 interface CookpadCallBack {
-  fun succeed(html: Document?){}
-  fun failed(errorCode: ErrorCode){}
+  fun succeed(html: Document?)
+  fun failed(errorCode: ErrorCode)
 }

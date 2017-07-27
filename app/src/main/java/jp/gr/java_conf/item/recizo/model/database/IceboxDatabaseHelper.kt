@@ -1,10 +1,11 @@
-package jp.gr.java_conf.item.recizo.model
+package jp.gr.java_conf.item.recizo.model.database
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import jp.gr.java_conf.item.recizo.model.entity.Vegetable
 import kotlin.coroutines.experimental.buildSequence
 
 class IceboxDatabaseHelper(context: Context) {
@@ -36,7 +37,7 @@ class IceboxDatabaseHelper(context: Context) {
   }
 
   fun getVegetableAll(): MutableList<Vegetable> {
-    val query = "SELECT _id, name, memo, year, month, day FROM $TABLE_NAME"
+    val query = "SELECT _id, name, memo, year, month, day FROM ${TABLE_NAME}"
     var list = mutableListOf<Vegetable>()
     db.rawQuery(query, null).use {
       list = buildSequence {
@@ -58,7 +59,7 @@ class IceboxDatabaseHelper(context: Context) {
   }
 
   fun getVegetableLast(): Vegetable {
-    val query = "SELECT _id, name, memo ,year, month, day FROM $TABLE_NAME"
+    val query = "SELECT _id, name, memo ,year, month, day FROM ${TABLE_NAME}"
     db.rawQuery(query, null).use {
       it.moveToLast()
       return Vegetable(

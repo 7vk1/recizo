@@ -1,9 +1,7 @@
 package jp.gr.java_conf.item.recizo.view
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.util.Log
@@ -11,7 +9,7 @@ import android.widget.DatePicker
 import android.widget.EditText
 
 import jp.gr.java_conf.item.recizo.R
-import jp.gr.java_conf.item.recizo.model.Vegetable
+import jp.gr.java_conf.item.recizo.model.entity.Vegetable
 import jp.gr.java_conf.item.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox_change.*
 
