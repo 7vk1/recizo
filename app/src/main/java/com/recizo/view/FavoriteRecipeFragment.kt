@@ -9,11 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.presenter.FavoriteRecipeAdapter
+import com.recizo.presenter.FavoriteRecipePresenter
 import kotlinx.android.synthetic.main.fragment_favorite_recipe.*
 
 class FavoriteRecipeFragment: Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
-    Log.d("TEST CREATE FRAG", "FAVORITE RECIPE")
     super.onCreate(savedInstanceState)
   }
 
@@ -24,13 +24,7 @@ class FavoriteRecipeFragment: Fragment() {
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-  }
-
-  override fun onStart() {
-    super.onStart()
     fragment_favorite_recipe_frame.layoutManager = LinearLayoutManager(activity)
-    val favoriteRecipeAdapter = FavoriteRecipeAdapter()
-    fragment_favorite_recipe_frame.adapter = favoriteRecipeAdapter
-    favoriteRecipeAdapter.viewFavoriteList()
+    FavoriteRecipePresenter(fragment_favorite_recipe_frame)
   }
 }
