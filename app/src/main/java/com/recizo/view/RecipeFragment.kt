@@ -27,17 +27,16 @@ class RecipeFragment : Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     searched_recyclerView.layoutManager = LinearLayoutManager(activity)
-    searched_recyclerView.addItemDecoration(DividerItemDecoration(
-            searched_recyclerView.context,
-            LinearLayoutManager(activity).orientation)
-    )
+    searched_recyclerView.addItemDecoration(
+        DividerItemDecoration(searched_recyclerView.context
+        , LinearLayoutManager(activity).orientation))
 
     val recipePresenter = RecipePresenter(searched_recyclerView, listOf("鹿","トマト"))
-    recipePresenter.setProgressBar(object:RecipePresenter.IProgressBar{
-      override fun showProgressBar() {
+    recipePresenter.setLoadEventListener(object : RecipePresenter.LoadEventListener {
+      override fun onLoadStart() {
         searched_recipe_progressBar.visibility = View.VISIBLE
       }
-      override fun hideProgressBar() {
+      override fun onLoadEnd() {
         searched_recipe_progressBar.visibility = View.GONE
       }
     })

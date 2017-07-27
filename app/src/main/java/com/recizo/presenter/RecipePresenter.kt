@@ -9,8 +9,7 @@ import com.recizo.module.Scraper
 class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
   private val scraper = CookpadScraper(keywords)
   private val recipeListAdapter = RecipeListAdapter(recipeListView)
-  private var progressBarCallback: IProgressBar? = null
-
+  private var loadEventListener: LoadEventListener? = null
   init {
     recipeListView.adapter = recipeListAdapter
     recipeListAdapter.setOnItemClickListener(object: RecipeListAdapter.OnItemClickListener {
@@ -20,25 +19,22 @@ class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
     })
   }
 
-  fun setProgressBar(progressBar: IProgressBar) {
-    progressBarCallback = progressBar
-  }
+  fun setLoadEventListener(listener: LoadEventListener) { loadEventListener = listener }
 
   fun startRecipeListCreate(){
-    progressBarCallback?.showProgressBar()
+    loadEventListener?.onLoadStart()
     scraper.scrapingHTML(object : Scraper.ScraperCallBack {
       override fun succeed(html: org.jsoup.nodes.Document?) {
         val recipes = scraper.requestGetRecipeItem(html)
         recipes.forEach {recipeListAdapter.addRecipe(it)}
-        progressBarCallback?.hideProgressBar()
+        loadEventListener?.onLoadEnd()
       }
       override fun failed(errorCode: ErrorCode) {
         //todo impl
-        android.util.Log.d("TEST ERROR CODE", errorCode.toString())
-        progressBarCallback?.hideProgressBar()
+        android.util.Log.d("ERROR CODE", errorCode.toString())
+        loadEventListener?.onLoadEnd()
       }
     })
-
   }
 
   fun addRecipeList(recyclerView: android.support.v7.widget.RecyclerView?, dy: Int){
@@ -52,9 +48,9 @@ class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
     }
   }
 
-  interface IProgressBar{
-    fun showProgressBar()
-    fun hideProgressBar()
+  interface LoadEventListener{
+    fun onLoadStart()
+    fun onLoadEnd()
   }
 }
 
