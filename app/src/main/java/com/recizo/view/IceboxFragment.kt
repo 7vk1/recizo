@@ -40,6 +40,11 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     return inflater!!.inflate(R.layout.fragment_icebox, container, false)
   }
 
+  override fun onResume() {
+    super.onResume()
+    println("resume!!!\n\n\n")
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val iceboxAdapter = IceboxAdapter(this, recyclerView)
