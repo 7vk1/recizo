@@ -14,6 +14,7 @@ import com.recizo.model.viewholder.IceboxViewHolder
 import com.recizo.model.entity.Vegetable
 import com.recizo.ChangeActivity
 import com.daimajia.swipe.*
+import com.recizo.module.IceboxDao
 
 
 class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxViewHolder>() {
@@ -118,9 +119,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
 
 
   fun updateItem(vegetable: Vegetable, position: Int) {
-    val idh = IceboxDatabaseHelper(context)
-    idh.updateVegetable(vegetable)
-    // vegetableListの更新
+    IceboxDao.update(vegetable)
     for(i in vegetableList.indices) {
       if(vegetable.id == vegetableList[i].id) {
         vegetableList[i] = vegetable
@@ -131,16 +130,14 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
   }
 
   fun addItem(vegetable: Vegetable) {
-    val idh = IceboxDatabaseHelper(context)
-    idh.addVegetable(vegetable)
-    vegetableList.add(idh.getVegetableLast() )
+    IceboxDao.add(vegetable)
+    vegetableList.add(vegetable)
     notifyItemInserted(vegetableList.size)
   }
 
   fun removeItem(position: Int) {
     if(position < vegetableList.size) {
-      val idh = IceboxDatabaseHelper(context)
-      idh.deleteVegetable(vegetableList[position].id)
+      IceboxDao.delete(vegetableList[position].id)
       vegetableList.removeAt(position)
       notifyItemRemoved(position)
     }
@@ -153,9 +150,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
 
 
   fun getItem(): MutableList<Vegetable> {
-    val idh = IceboxDatabaseHelper(context)
-    this.vegetableList = idh.getVegetableAll()
-
+    this.vegetableList = IceboxDao.getAll().toMutableList()
     return vegetableList
   }
 
