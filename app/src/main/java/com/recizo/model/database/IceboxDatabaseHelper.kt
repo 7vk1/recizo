@@ -102,12 +102,12 @@ class IceboxDatabaseHelper(context: Context) {
     db.close()
   }
 
-  fun deleteVegetable(vegetable: Vegetable) {
-    writableOpen()
-    val id = vegetable.id
-    db.delete(TABLE_NAME, "_id=$id", null)
-    db.close()
-  }
+//  fun deleteVegetable(vegetable: Vegetable) {
+//    writableOpen()
+//    val id = vegetable.id
+//    db.delete(TABLE_NAME, "_id=$id", null)
+//    db.close()
+//  }
 
   companion object {
     val TABLE_NAME = "icebox_table"
