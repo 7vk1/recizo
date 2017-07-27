@@ -3,24 +3,26 @@ package com.recizo.presenter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Path
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.recizo.R
 import com.recizo.model.database.IceboxDatabaseHelper
 import com.recizo.model.viewholder.IceboxViewHolder
 import com.recizo.model.entity.Vegetable
 import com.recizo.view.ChangeActivity
 import com.daimajia.swipe.*
+import com.recizo.view.RegisterActivity
 
 
 object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
   var vegetableList = mutableListOf<Vegetable>()
   var searchList = mutableSetOf<String>()
-  var garbageList = mutableSetOf<Vegetable>()
+  var garbageList = mutableSetOf<Int>()
+  var targetView: View? = null
   lateinit var useContext: Context
 
   override fun getItemCount(): Int {
@@ -36,39 +38,85 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     holder!!.title.text = vegetableList[position].name
     holder.memo.text = vegetableList[position].memo
     holder.date.text = vegetableList[position].date
+    val testUndo = targetView?.findViewById<View>(R.id.undo)
+    val testAdd = targetView?.findViewById<View>(R.id.add)
+    val testSearch = targetView?.findViewById<View>(R.id.recipe_search)
+    val testDelete = targetView?.findViewById<View>(R.id.delete)
+
+    testAdd?.setOnClickListener {
+      useContext.startActivity(Intent(useContext as Activity , RegisterActivity::class.java))
+    }
+
+    testDelete?.setOnClickListener {
+      for(item in garbageList.sorted()) {
+        removeItem(item)
+      }
+      garbageList.clear()
+      testDelete.visibility = View.INVISIBLE
+      testUndo?.visibility = View.INVISIBLE
+      testAdd?.visibility = View.VISIBLE
+    }
+
+    testSearch?.setOnClickListener {
+      //TODO Throw search list
+    }
+
+    testUndo?.setOnClickListener {
+      garbageList.clear()
+      searchList.clear()
+      holder.swipeLayout.close()
+      Log.d("来てる？","わかんね")
+      testUndo.visibility = View.INVISIBLE
+      if(testSearch?.visibility == View.VISIBLE){
+        testSearch.visibility = View.INVISIBLE
+        testAdd?.visibility = View.VISIBLE
+      }
+      else if(testDelete?.visibility == View.VISIBLE){
+        testDelete.visibility = View.INVISIBLE
+        testAdd?.visibility = View.VISIBLE
+      }
+    }
+
     holder.swipeLayout.showMode = SwipeLayout.ShowMode.PullOut
-    holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right,holder.swipeLayout.findViewById(R.id.icebox_item_search))
-    holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Left,holder.swipeLayout.findViewById(R.id.icebox_item_del))
+    holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right,holder.swipeLayout.findViewById(R.id.icebox_item_del))
+    holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Left,holder.swipeLayout.findViewById(R.id.icebox_item_search))
     var search = false
     var garbage = false
-    holder.swipeLayout.addSwipeListener(object: SimpleSwipeListener(){
+    holder.swipeLayout.addSwipeListener(object: SimpleSwipeListener() {
       override fun onHandRelease(layout: SwipeLayout?, xvel: Float, yvel: Float) {
         //こいつでどっち側のViewを引っ張ってるか検知出来る
         //ただ実際に俺らが見ている動きとは逆方向なので注意
         var direction =  holder.swipeLayout.dragEdge
         var openStatus = holder.swipeLayout.openStatus
-        if(direction == SwipeLayout.DragEdge.Right){
+        if(direction == SwipeLayout.DragEdge.Left){
           //検索ビュー展開時に検索ワード追加
           if(openStatus == SwipeLayout.Status.Open || openStatus == SwipeLayout.Status.Middle && !search){
             searchList.add(vegetableList[position].name)
+            setSearchVisibility(true)
             Log.d("取ったやつ : 空いたで", searchList.toString())
-            Log.d("なんかよくわかんないの",search.toString())
           }
           //検索ビュー縮小時に検索ワード削除
           else if(openStatus == SwipeLayout.Status.Close || openStatus == SwipeLayout.Status.Middle && search){
             searchList.remove(vegetableList[position].name)
+            if(searchList.size == 0) {
+              setSearchVisibility(false)
+            }
             Log.d("検索リストのサイズ : 閉じたで", searchList.size.toString())
-            Log.d("なんかよくわかんないの",search.toString())
           }
         }
-        else if(direction == SwipeLayout.DragEdge.Left){
+        else if(direction == SwipeLayout.DragEdge.Right){
           //削除ビュー展開時に削除候補追加
           if(openStatus == SwipeLayout.Status.Open || openStatus == SwipeLayout.Status.Middle && !garbage){
-            garbageList.add(getOneItem(position))
+            Log.d("ポジション",getOneItemId(position).toString())
+            garbageList.add(getOneItemId(position))
+            setDeleteVisibility(true)
             Log.d("ゴミ箱行きリストのサイズ", garbageList.size.toString())
           }
           else if(openStatus == SwipeLayout.Status.Close || openStatus == SwipeLayout.Status.Middle && garbage){
-            garbageList.remove(getOneItem(position))
+            garbageList.remove(getOneItemId(position))
+            if(garbageList.size == 0) {
+              setDeleteVisibility(false)
+            }
             Log.d("ゴミ箱行きリストのサイズ", garbageList.size.toString())
           }
         }
@@ -76,11 +124,11 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
 
       override fun onOpen(layout: SwipeLayout?) {
         var direction =  holder.swipeLayout.dragEdge
-        if(direction == SwipeLayout.DragEdge.Right){
-          search = true
-        }
-        else if(direction == SwipeLayout.DragEdge.Left){
+        if(direction == SwipeLayout.DragEdge.Left){
           garbage = false
+        }
+        else if(direction == SwipeLayout.DragEdge.Right) {
+          search = true
         }
       }
 
@@ -93,7 +141,34 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
           garbage = true
         }
       }
+
+      fun setSearchVisibility(check: Boolean){
+        if(check){
+          testSearch?.visibility = View.VISIBLE
+          testUndo?.visibility = View.VISIBLE
+          testAdd?.visibility = View.INVISIBLE
+        }
+        else{
+          testSearch?.visibility = View.INVISIBLE
+          testUndo?.visibility = View.INVISIBLE
+          testAdd?.visibility = View.VISIBLE
+        }
+      }
+
+      fun setDeleteVisibility(check: Boolean){
+        if(check){
+          testDelete?.visibility = View.VISIBLE
+          testUndo?.visibility = View.VISIBLE
+          testAdd?.visibility = View.INVISIBLE
+        }
+        else{
+          testDelete?.visibility = View.INVISIBLE
+          testUndo?.visibility = View.INVISIBLE
+          testAdd?.visibility = View.VISIBLE
+        }
+      }
     })
+
     val intent = Intent(useContext as Activity , ChangeActivity::class.java)
     holder.cardView.setOnClickListener {
       if(position == vegetableList.size){
@@ -144,9 +219,11 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     }
   }
 
-  fun getOneItem(position: Int): Vegetable{
-    return vegetableList[position]
+  fun getOneItemId(position: Int): Int{
+    return vegetableList[position].id
   }
+
+
 
   fun getItem(): MutableList<Vegetable> {
     val idh = IceboxDatabaseHelper(this.useContext)
@@ -156,13 +233,14 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
     return vegetableList
   }
 
-  fun getTargetList(): Set<String>{
-    return searchList
-  }
-
   fun initItem() {
     // TODO RecyclerViewのItemが移動(Move)されていた場合反映されない問題
     val list = getItem()
     notifyItemRangeInserted(0, list.size)
   }
+
+  fun setView(view: View?){
+    targetView = view
+  }
+
 }
