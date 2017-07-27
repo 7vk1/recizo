@@ -33,6 +33,10 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
     holder!!.title.text = recipeList[position].title
     holder.author.text = recipeList[position].author
     holder.description.text = recipeList[position].description
+    holder.linkUrl = recipeList[position].cookpadLink
+
+    holder.title.setOnClickListener { this.onItemClickListener }
+
     launch(UI) {
       val image = getImageStream(recipeList[position].imgUrl).await()
       holder.imageUrl.setImageBitmap(image)
