@@ -35,16 +35,8 @@ class ChangeActivity: AppCompatActivity() {
 
       if(!TextUtils.isEmpty(name) ) {
         val vegetable = Vegetable(takeIntent().id, name, memo, year, month, day)
-        IceboxAdapter.updateItem(vegetable, intent.getIntExtra("position", 0))
         val idh = IceboxDatabaseHelper(this)
         idh.updateVegetable(vegetable)
-        // vegetableListの更新
-        for(i in vegetableList.indices) {
-          if(vegetable.id == vegetableList[i].id) {
-            vegetableList[i] = vegetable
-            break
-          }
-        }
         finish()
       } else {
         AlertDialog.Builder(this).
