@@ -30,6 +30,9 @@ class CookpadScraper(val searchKeyWords: List<String>): Scraper() {
     return url
   }
 
+  override fun getTotalPage(): Int{
+    return Math.ceil((numberOfItem.toDouble() / 10)).toInt()
+  }
 
   fun requestGetRecipeItem(html: Document?): List<CookpadRecipe> {
     val recipes = html!!.select(".recipe-preview").filter{ !it.parent().hasClass("recommended_pro_recipe")}
@@ -42,17 +45,5 @@ class CookpadScraper(val searchKeyWords: List<String>): Scraper() {
               imgUrl = it.select(".recipe-image img")[0].attr("src")
       )
     }
-  }
-
-  fun scraping(cookpadCallback: CookpadCallBack){
-    this.scrapingHTML(cookpadCallback)
-  }
-
-  enum class Recipe(val num: Int) {
-    TITLE(0),
-    DESCRIPTION(1),
-    IMG_URL(2),
-    LINK_URL(3),
-    AUTHOR(4)
   }
 }

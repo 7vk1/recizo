@@ -1,28 +1,29 @@
 package com.recizo.module
 
-import com.recizo.contract.CookpadCallBack
-import com.recizo.contract.ProgressBarCallBack
+
 import com.recizo.model.entity.ShufooFlyer
 import org.jsoup.nodes.Document
 
-class ShufooScraper(val postCode: String): Scraper(){
+class ShufooScraper(postCode: String): Scraper(){
 
   companion object {
-    val BASE_URL = "http://www.shufoo.net/pntweb/chirashiList.php/"
+    val BASE_URL = "http://www.shufoo.net/pntweb/chirashiList.php"
   }
 
   init{
-    this.queryString = "?keyword=$postCode&sort=&categoryId=101&page="
+    this.queryString = "?keyword=$postCode&sort=distance&categoryId=101&page="
   }
 
   override fun parseNumberOfItem(html: Document): Int {
-    val numberOfItemHtml = html.getElementsByClass("result_count").text()
-    //return numberOfItemHtml.removeSuffix("品").replace(",".toRegex(), "").toInt()
-    return 1
+    return html.select(".result_count")[0].text().replace("枚","").replace(""".+/""".toRegex(), "").toInt()
   }
 
   override fun getSearchUrl(): String {
-    return BASE_URL
+    return BASE_URL + this.queryString + nowPage
+  }
+
+  override fun getTotalPage(): Int{
+    return Math.ceil((numberOfItem.toDouble() / 32)).toInt()
   }
 
   fun requestGetShufooItem(html: Document?): List<ShufooFlyer> {
@@ -37,16 +38,4 @@ class ShufooScraper(val postCode: String): Scraper(){
       )
     }
   }
-
-
-  fun scraping(progressCallback: ProgressBarCallBack, cookpadCallback: CookpadCallBack){
-    this.scrapingHTML(cookpadCallback)
-  }
-
-  enum class Flyer(val num: Int) {
-    STORE(0),
-    DESCRIPTION(1),
-    URL(2)
-  }
-
 }
