@@ -42,7 +42,7 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val iceboxAdapter = IceboxAdapter(this)
+    val iceboxAdapter = IceboxAdapter(this, recyclerView)
     iceboxAdapter.setView(view)
     recyclerView.layoutManager = LinearLayoutManager(activity)
     recyclerView.adapter = iceboxAdapter

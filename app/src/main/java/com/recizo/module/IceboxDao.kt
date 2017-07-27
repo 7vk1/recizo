@@ -27,7 +27,9 @@ object IceboxDao {
   }
 
   fun getAll(): List<Vegetable> {
-    return iceboxDatabaseHelper?.getVegetableAll()!!.toList()
+    val ret = iceboxDatabaseHelper?.getVegetableAll()
+    println(ret?.size)
+    return if(ret != null)ret else listOf<Vegetable>()
   }
 
   fun getLast(): Vegetable? {

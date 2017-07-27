@@ -17,7 +17,7 @@ import com.daimajia.swipe.*
 import com.recizo.module.IceboxDao
 
 
-class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxViewHolder>() {
+class IceboxAdapter(val fragment: IceboxButtons, val recyclerView: RecyclerView) : RecyclerView.Adapter<IceboxViewHolder>() {
   var vegetableList = mutableListOf<Vegetable>()
   var searchList = mutableSetOf<String>()
   var garbageList = mutableSetOf<Int>()
@@ -173,7 +173,8 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
   fun onUndoClicked() {
     garbageList.clear()
     searchList.clear()
-    holder.swipeLayout.close()
+    this.garbageList.map { recyclerView.findViewHolderForAdapterPosition(it) as IceboxViewHolder }
+        .map { it.swipeLayout.close() }
     Log.d("来てる？","わかんね")
 //    fragment.changeBtnVisibility() todo
   }
@@ -185,8 +186,6 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
   fun setDeleteVisibility(check: Boolean){
     if(check)fragment.changeBtnVisibility(delete = true, undo = true, add = false, search = true)
     else fragment.changeBtnVisibility(delete = false, undo = false, add = true, search = true)
-    }
   }
-
 
 }
