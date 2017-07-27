@@ -5,7 +5,7 @@ import com.recizo.model.ErrorCode
 import com.recizo.module.CookpadScraper
 import com.recizo.module.Scraper
 
-class RecipePresenter (val recipeListView: RecyclerView, keywords: List<String>){
+class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
   private val scraper = CookpadScraper(keywords)
   private val recipeListAdapter = RecipeListAdapter()
   private var progressBarCallback: IProgressBar? = null

@@ -10,22 +10,32 @@ import com.recizo.module.ShufooScraper
 import org.jsoup.nodes.Document
 
 
-class FlyerPresenter (val scraper: ShufooScraper){
-  interface IFlyerFragment{
-    fun showProgress()
-    fun dismissProgress()
-    fun setResultToList(flyer: ShufooFlyer)
+class FlyerPresenter (flyerView: RecyclerView, keywords: String){
+  private val scraper: ShufooScraper = ShufooScraper(keywords)
+  private var flyerListAdapter = FlyerListAdapter()
+  private var progressBarCallback: IProgressBar? = null
+
+  init {
+    flyerView.adapter = flyerListAdapter
   }
 
-  private var flyerView: IFlyerFragment? = null
-
-  fun setView(view: IFlyerFragment){
-    flyerView = view
+  fun setProgressBar(progressBar: IProgressBar) {
+    progressBarCallback = progressBar
   }
 
   fun startFlyerListCreate(){
-    flyerView!!.showProgress()
-    addFlyerListToAdaptor()
+    progressBarCallback?.showProgressBar()
+    scraper.scrapingHTML(object : Scraper.ScraperCallBack {
+      override fun succeed(html: Document?) {
+        val flyers = scraper.requestGetShufooItem(html)
+        flyers.forEach {flyerListAdapter.addFlyer(it)}
+        progressBarCallback?.hideProgressBar()
+      }
+      override fun failed(errorCode: ErrorCode) {
+        Log.d("TEST ERROR CODE", errorCode.toString())
+        progressBarCallback?.hideProgressBar()
+      }
+    })
   }
 
   fun addFlyerList(recyclerView: RecyclerView?, dy: Int){
@@ -39,20 +49,9 @@ class FlyerPresenter (val scraper: ShufooScraper){
     }
   }
 
-  private fun addFlyerListToAdaptor(){
-    scraper.scrapingHTML(object : Scraper.ScraperCallBack {
-      override fun succeed(html: Document?) {
-        val flyers = scraper.requestGetShufooItem(html)
-        flyers.forEach {
-          flyerView!!.setResultToList(it)
-        }
-        flyerView!!.dismissProgress()
-      }
-      override fun failed(errorCode: ErrorCode) {
-        Log.d("TEST ERROR CODE", errorCode.toString())
-        flyerView!!.dismissProgress()
-      }
-    })
+  interface IProgressBar{
+    fun showProgressBar()
+    fun hideProgressBar()
   }
 }
 

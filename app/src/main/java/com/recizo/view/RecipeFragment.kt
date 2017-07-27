@@ -9,14 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
-import com.recizo.module.CookpadScraper
 import com.recizo.presenter.RecipePresenter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
 
-
-
 class RecipeFragment : Fragment() {
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
   }
@@ -33,7 +29,6 @@ class RecipeFragment : Fragment() {
             searched_recyclerView.context,
             LinearLayoutManager(activity).orientation)
     )
-
 
     val recipePresenter = RecipePresenter(searched_recyclerView, listOf("鹿","トマト"))
     recipePresenter.setProgressBar(object:RecipePresenter.IProgressBar{

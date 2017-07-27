@@ -1,6 +1,5 @@
 package com.recizo.view
 
-
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -16,11 +15,7 @@ import com.recizo.presenter.FlyerPresenter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
 import com.recizo.R
 
-
-class FlyerFragment : Fragment(), FlyerPresenter.IFlyerFragment{
-
-  val flyerListAdapter = FlyerListAdapter()
-
+class FlyerFragment : Fragment(){
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
   }
@@ -37,10 +32,16 @@ class FlyerFragment : Fragment(), FlyerPresenter.IFlyerFragment{
             searched_recyclerView.context,
             LinearLayoutManager(activity).orientation)
     )
-    searched_recyclerView.adapter = flyerListAdapter
 
-    val flyerPresenter = FlyerPresenter(ShufooScraper("1690074"))
-    flyerPresenter.setView(this)
+    val flyerPresenter = FlyerPresenter(searched_recyclerView, "1690074")
+    flyerPresenter.setProgressBar(object:FlyerPresenter.IProgressBar{
+      override fun showProgressBar() {
+        searched_recipe_progressBar.visibility = View.VISIBLE
+      }
+      override fun hideProgressBar() {
+        searched_recipe_progressBar.visibility = View.GONE
+      }
+    })
     flyerPresenter.startFlyerListCreate()
 
     searched_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -50,19 +51,8 @@ class FlyerFragment : Fragment(), FlyerPresenter.IFlyerFragment{
       }
     })
   }
+
   override fun onStart() {
     super.onStart()
-  }
-
-  override fun showProgress() {
-    searched_recipe_progressBar.visibility = View.VISIBLE
-  }
-
-  override fun dismissProgress() {
-    searched_recipe_progressBar.visibility = View.GONE
-  }
-
-  override fun setResultToList(flyer: ShufooFlyer) {
-    flyerListAdapter.addFlyer(flyer)
   }
 }
