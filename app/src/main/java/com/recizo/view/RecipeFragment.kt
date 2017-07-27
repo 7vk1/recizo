@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.presenter.RecipePresenter
+import kotlinx.android.synthetic.main.searched_list_item.*
 import kotlinx.android.synthetic.main.searched_recipe_list.*
 
 class RecipeFragment : Fragment() {
@@ -25,17 +27,16 @@ class RecipeFragment : Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     searched_recyclerView.layoutManager = LinearLayoutManager(activity)
-    searched_recyclerView.addItemDecoration(DividerItemDecoration(
-            searched_recyclerView.context,
-            LinearLayoutManager(activity).orientation)
-    )
+    searched_recyclerView.addItemDecoration(
+        DividerItemDecoration(searched_recyclerView.context
+        , LinearLayoutManager(activity).orientation))
 
     val recipePresenter = RecipePresenter(searched_recyclerView, listOf("鹿","トマト"))
-    recipePresenter.setProgressBar(object:RecipePresenter.IProgressBar{
-      override fun showProgressBar() {
+    recipePresenter.setLoadEventListener(object : RecipePresenter.LoadEventListener {
+      override fun onLoadStart() {
         searched_recipe_progressBar.visibility = View.VISIBLE
       }
-      override fun hideProgressBar() {
+      override fun onLoadEnd() {
         searched_recipe_progressBar.visibility = View.GONE
       }
     })

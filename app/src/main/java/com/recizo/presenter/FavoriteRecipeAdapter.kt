@@ -37,7 +37,6 @@ class FavoriteRecipeAdapter: RecyclerView.Adapter<FavoriteRecipeViewHolder>() {
   }
 
   fun viewFavoriteList() {
-    FavoriteRecipeDao.access()
     FavoriteRecipeDao.getAll()!!.forEach {
       favoriteRecipeList.add(
           CookpadRecipe(title = it.title,
@@ -48,7 +47,6 @@ class FavoriteRecipeAdapter: RecyclerView.Adapter<FavoriteRecipeViewHolder>() {
       )
       notifyItemInserted(favoriteRecipeList.size)
     }
-    FavoriteRecipeDao.close()
   }
 
   private fun getImageStream(imageUrl: String) = async(CommonPool) {
