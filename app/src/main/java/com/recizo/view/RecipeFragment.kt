@@ -9,18 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
-import com.recizo.model.entity.CookpadRecipe
-import com.recizo.module.CookpadScraper
-import com.recizo.presenter.RecipeListAdapter
 import com.recizo.presenter.RecipePresenter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
 
-
-
-class RecipeFragment : Fragment(), RecipePresenter.IRecipeFragment {
-
-  val recipeListAdapter = RecipeListAdapter()
-
+class RecipeFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
   }
@@ -37,34 +29,28 @@ class RecipeFragment : Fragment(), RecipePresenter.IRecipeFragment {
             searched_recyclerView.context,
             LinearLayoutManager(activity).orientation)
     )
-    searched_recyclerView.adapter = recipeListAdapter
 
-    val recipePresenter = RecipePresenter(CookpadScraper(listOf("鹿","トマト")))
-    recipePresenter.setView(this)
-    recipePresenter.startFlyerListCreate()
+    val recipePresenter = RecipePresenter(searched_recyclerView, listOf("鹿","トマト"))
+    recipePresenter.setProgressBar(object:RecipePresenter.IProgressBar{
+      override fun showProgressBar() {
+        searched_recipe_progressBar.visibility = View.VISIBLE
+      }
+      override fun hideProgressBar() {
+        searched_recipe_progressBar.visibility = View.GONE
+      }
+    })
+    recipePresenter.startRecipeListCreate()
 
     searched_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-        recipePresenter.addFlyerList(recyclerView, dy)
+        recipePresenter.addRecipeList(recyclerView, dy)
       }
     })
   }
 
   override fun onStart() {
     super.onStart()
-  }
-
-  override fun showProgress() {
-    searched_recipe_progressBar.visibility = View.VISIBLE
-  }
-
-  override fun dismissProgress() {
-    searched_recipe_progressBar.visibility = View.GONE
-  }
-
-  override fun setResultToList(recipe: CookpadRecipe) {
-    recipeListAdapter.addRecipe(recipe)
   }
 
 }
