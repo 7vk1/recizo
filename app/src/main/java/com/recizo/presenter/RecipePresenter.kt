@@ -1,23 +1,22 @@
 package com.recizo.presenter
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import android.view.View
 import com.recizo.model.ErrorCode
-import com.recizo.model.viewholder.RecipeViewHolder
+import com.recizo.model.entity.CookpadRecipe
 import com.recizo.module.CookpadScraper
 import com.recizo.module.Scraper
 
 class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
   private val scraper = CookpadScraper(keywords)
-  private val recipeListAdapter = RecipeListAdapter()
+  private val recipeListAdapter = RecipeListAdapter(recipeListView)
   private var progressBarCallback: IProgressBar? = null
 
   init {
     recipeListView.adapter = recipeListAdapter
-    recipeListAdapter.setOnItemClickListener(View.OnClickListener {
-      Log.d("hoeghoge",(it as RecipeViewHolder).linkUrl)
-      println("aaaaaa")
+    recipeListAdapter.setOnItemClickListener(object: RecipeListAdapter.OnItemClickListener {
+      override fun onItemClick(recipe: CookpadRecipe) {
+        println(recipe.cookpadLink)//todo impl
+      }
     })
   }
 
@@ -26,7 +25,6 @@ class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
   }
 
   fun startRecipeListCreate(){
-
     progressBarCallback?.showProgressBar()
     scraper.scrapingHTML(object : Scraper.ScraperCallBack {
       override fun succeed(html: org.jsoup.nodes.Document?) {
@@ -35,6 +33,7 @@ class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
         progressBarCallback?.hideProgressBar()
       }
       override fun failed(errorCode: ErrorCode) {
+        //todo impl
         android.util.Log.d("TEST ERROR CODE", errorCode.toString())
         progressBarCallback?.hideProgressBar()
       }

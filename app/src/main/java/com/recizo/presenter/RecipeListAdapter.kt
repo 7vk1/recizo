@@ -16,18 +16,20 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
-class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
+class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Adapter<RecipeViewHolder>(), View.OnClickListener {
   val recipeList = mutableListOf<CookpadRecipe>()
-  private var onItemClickListener: View.OnClickListener? = null
+  interface OnItemClickListener {
+    fun onItemClick(recipe: CookpadRecipe)
+  }
+  private var onItemClickListener: OnItemClickListener? = null
 
   override fun getItemCount(): Int {
     return recipeList.size
   }
 
-  fun setOnItemClickListener(listener: View.OnClickListener){
+  fun setOnItemClickListener(listener: OnItemClickListener){
     onItemClickListener = listener
   }
-
 
   override fun onBindViewHolder(holder: RecipeViewHolder?, position: Int) {
     holder!!.title.text = recipeList[position].title
@@ -69,7 +71,7 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecipeViewHolder {
     val v = LayoutInflater.from(parent!!.context).inflate(R.layout.searched_list_item, parent, false)
-    v.setOnClickListener(this.onItemClickListener)
+    v.setOnClickListener(this)
     return RecipeViewHolder(v)
   }
 
@@ -88,5 +90,11 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
     // TODO 画像取得失敗時のエラーハンドリング
     return@async Bitmap.createScaledBitmap(bitmapImage, width, height, false)
   }
+
+  override fun onClick(view: View?) {
+    val position = recyclerView.getChildAdapterPosition(view)
+    onItemClickListener?.onItemClick(this.recipeList[position])
+  }
+
 
 }
