@@ -45,6 +45,11 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     println("resume!!!\n\n\n")
   }
 
+  override fun onStop() {
+    super.onStop()
+    println("STOP!!!!!!!\n\n\n")
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val iceboxAdapter = IceboxAdapter(this, recyclerView)
