@@ -3,7 +3,6 @@ package com.recizo.presenter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Path
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +12,7 @@ import com.recizo.R
 import com.recizo.model.database.IceboxDatabaseHelper
 import com.recizo.model.viewholder.IceboxViewHolder
 import com.recizo.model.entity.Vegetable
-import com.recizo.view.ChangeActivity
+import com.recizo.ChangeActivity
 import com.daimajia.swipe.*
 
 

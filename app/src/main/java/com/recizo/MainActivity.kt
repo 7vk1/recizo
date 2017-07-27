@@ -1,4 +1,4 @@
-package com.recizo.view
+package com.recizo
 
 import android.app.Fragment
 import android.os.Bundle
@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import com.recizo.R
 import com.recizo.module.FavoriteRecipeDao
+import com.recizo.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     FavoriteRecipeDao.context = applicationContext
 
     val transaction = fragmentManager.beginTransaction()
-    transaction.add(R.id.fragment_frame, IceboxFragment() )
+    transaction.add(R.id.fragment_frame, IceboxFragment())
     transaction.commit()
 
     val navigationView = findViewById(R.id.nav_view) as NavigationView
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       R.id.nav_icebox_list -> changeFragment(IceboxFragment())
       R.id.nav_recipe_search -> changeFragment(RecipeFragment())
       R.id.nav_season -> {} // TODO
-      R.id.nav_flyer -> changeFragment(FlyerFragment() )
+      R.id.nav_flyer -> changeFragment(FlyerFragment())
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
       R.id.nav_settings -> {}//TODO
       R.id.nav_favorite_recipe -> changeFragment(FavoriteRecipeFragment())

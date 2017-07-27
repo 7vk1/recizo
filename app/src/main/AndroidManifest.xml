@@ -10,7 +10,7 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
     <activity
-        android:name=".view.MainActivity"
+        android:name=".MainActivity"
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar"
         android:screenOrientation="portrait">
@@ -19,9 +19,9 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".view.RegisterActivity"
+    <activity android:name=".RegisterActivity"
               android:screenOrientation="portrait"/>
-    <activity android:name=".view.ChangeActivity"
+    <activity android:name=".ChangeActivity"
               android:screenOrientation="portrait"/>
     </application>
 
