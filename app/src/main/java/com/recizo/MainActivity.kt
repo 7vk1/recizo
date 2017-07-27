@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import com.recizo.module.FavoriteRecipeDao
+import com.recizo.module.IceboxDao
 import com.recizo.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     toggle.syncState()
 
     FavoriteRecipeDao.context = applicationContext
+    IceboxDao.context = applicationContext
 
     val transaction = fragmentManager.beginTransaction()
     transaction.add(R.id.fragment_frame, IceboxFragment())
