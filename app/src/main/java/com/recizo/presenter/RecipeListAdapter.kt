@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.model.entity.CookpadRecipe
@@ -17,10 +18,16 @@ import java.net.URL
 
 class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
   val recipeList = mutableListOf<CookpadRecipe>()
+  private var onItemClickListener: View.OnClickListener? = null
 
   override fun getItemCount(): Int {
     return recipeList.size
   }
+
+  fun setOnItemClickListener(listener: View.OnClickListener){
+    onItemClickListener = listener
+  }
+
 
   override fun onBindViewHolder(holder: RecipeViewHolder?, position: Int) {
     holder!!.title.text = recipeList[position].title
@@ -58,6 +65,7 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeViewHolder>() {
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecipeViewHolder {
     val v = LayoutInflater.from(parent!!.context).inflate(R.layout.searched_list_item, parent, false)
+    v.setOnClickListener(this.onItemClickListener)
     return RecipeViewHolder(v)
   }
 
