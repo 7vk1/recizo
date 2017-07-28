@@ -14,7 +14,7 @@ import com.recizo.presenter.RecipePresenter
 import kotlinx.android.synthetic.main.searched_list_item.*
 import kotlinx.android.synthetic.main.searched_recipe_list.*
 
-class RecipeFragment : Fragment() {
+class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
   }

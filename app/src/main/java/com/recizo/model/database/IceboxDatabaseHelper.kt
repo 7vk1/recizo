@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.recizo.model.entity.IceboxItem
 import com.recizo.model.entity.Vegetable
 import kotlin.coroutines.experimental.buildSequence
 
@@ -16,34 +17,37 @@ class IceboxDatabaseHelper(context: Context) {
     dbHelper = DatabaseHelper(context)
   }
 
-  fun writebleOpen() {
+  private fun writableOpen() {
     db = dbHelper.writableDatabase
   }
 
-  fun readableOpen() {
+  private fun readableOpen() {
     db = dbHelper.readableDatabase
   }
 
-  fun updateVegetable(vegetable: Vegetable) {
+  fun updateItem(item: IceboxItem) {
+    writableOpen()
     val values = ContentValues()
-    values.put("name", vegetable.name)
-    values.put("memo", vegetable.memo)
-    val dates = vegetable.date.split("/".toRegex() )
+    values.put("name", item.name)
+    values.put("memo", item.memo)
+    val dates = item.date.split("/".toRegex() )
     values.put("year", dates[0])
     values.put("month", dates[1])
     values.put("day", dates[2])
-    val id = vegetable.id
+    val id = item.id
     db.update(TABLE_NAME, values, "_id=$id", null)
+    db.close()
   }
 
-  fun getVegetableAll(): MutableList<Vegetable> {
-    val query = "SELECT _id, name, memo, year, month, day FROM ${TABLE_NAME}"
-    var list = mutableListOf<Vegetable>()
+  fun getAllItem(): MutableList<IceboxItem> {
+    readableOpen()
+    val query = "SELECT _id, name, memo, year, month, day FROM $TABLE_NAME"
+    var list = mutableListOf<IceboxItem>()
     db.rawQuery(query, null).use {
       list = buildSequence {
         while(it.moveToNext()) {
           yield(
-              Vegetable(
+              IceboxItem(
                   it.getInt(it.getColumnIndex("_id")),
                   it.getString(it.getColumnIndex("name")),
                   it.getString(it.getColumnIndex("memo")),
@@ -55,14 +59,16 @@ class IceboxDatabaseHelper(context: Context) {
         }
       }.toMutableList()
     }
+    db.close()
     return list
   }
 
-  fun getVegetableLast(): Vegetable {
-    val query = "SELECT _id, name, memo ,year, month, day FROM ${TABLE_NAME}"
+  fun getLastItem(): IceboxItem {
+    readableOpen()
+    val query = "SELECT _id, name, memo ,year, month, day FROM $TABLE_NAME"
     db.rawQuery(query, null).use {
       it.moveToLast()
-      return Vegetable(
+      val ret = IceboxItem(
           it.getInt(it.getColumnIndex("_id")),
           it.getString(it.getColumnIndex("name")),
           it.getString(it.getColumnIndex("memo")),
@@ -70,31 +76,39 @@ class IceboxDatabaseHelper(context: Context) {
           it.getString(it.getColumnIndex("month")),
           it.getString(it.getColumnIndex("day"))
       )
+      db.close()
+      return ret
     }
   }
 
-  fun addVegetable(vegetable: Vegetable) {
+  fun addItem(item: IceboxItem) {
+    writableOpen()
     val values: ContentValues = ContentValues()
-    values.put("name", vegetable.name)
-    values.put("memo", vegetable.memo)
+    values.put("name", item.name)
+    values.put("memo", item.memo)
 
-    val date = vegetable.date.split("/".toRegex())
+    val date = item.date.split("/".toRegex())
     values.put("year", date[0])
     values.put("month", date[1])
     values.put("day", date[2])
     db.insertOrThrow(TABLE_NAME, null, values)
+    db.close()
   }
 
-  fun deleteVegetable(vegetableId: Int) {
-    Log.d("TEST DELETE ID", vegetableId.toString() )
-    val result = db.delete(TABLE_NAME, "_id=$vegetableId", null)
+  fun deleteItem(itemId: Int) {
+    writableOpen()
+    Log.d("TEST DELETE ID", itemId.toString() )
+    val result = db.delete(TABLE_NAME, "_id=$itemId", null)
     Log.d("TEST DELETE RESULT", result.toString() )
+    db.close()
   }
 
-  fun deleteVegetable(vegetable: Vegetable) {
-    val id = vegetable.id
-    db.delete(TABLE_NAME, "_id=$id", null)
-  }
+//  fun deleteVegetable(vegetable: Vegetable) {
+//    writableOpen()
+//    val id = vegetable.id
+//    db.delete(TABLE_NAME, "_id=$id", null)
+//    db.close()
+//  }
 
   companion object {
     val TABLE_NAME = "icebox_table"

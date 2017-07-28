@@ -12,9 +12,10 @@ import android.view.Menu
 import android.view.MenuItem
 import com.recizo.module.AppContextHolder
 import com.recizo.module.FavoriteRecipeDao
+import com.recizo.module.IceboxDao
 import com.recizo.view.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.ChangeToSearchFragment {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -74,5 +75,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val transaction = fragmentManager.beginTransaction()
     transaction.replace(R.id.fragment_frame, fragment)
     transaction.commit()
+  }
+
+  override fun changeSearchFragment(items: Set<String>) {
+    changeFragment(RecipeFragment(items))
   }
 }
