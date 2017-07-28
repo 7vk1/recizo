@@ -4,12 +4,11 @@ import android.app.Fragment
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentActivity
-import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
-import com.recizo.presenter.SeasonsAdapter
+import com.recizo.presenter.TabAdapter
 import kotlinx.android.synthetic.main.fragment_seasons.*
 
 class SeasonsFragment : Fragment(){
@@ -26,7 +25,7 @@ class SeasonsFragment : Fragment(){
     super.onViewCreated(view, savedInstanceState)
     val fa = activity as FragmentActivity
     _tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
-    seasons_viewpager.adapter = SeasonsAdapter(fa.supportFragmentManager)
+    seasons_viewpager.adapter = TabAdapter(fa.supportFragmentManager)
     _tabLayout.setupWithViewPager(seasons_viewpager)
   }
 

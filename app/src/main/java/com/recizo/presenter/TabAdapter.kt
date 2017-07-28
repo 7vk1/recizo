@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.recizo.view.SeasonsItemFragment
 
-class SeasonsAdapter(fm: FragmentManager): FragmentPagerAdapter(fm) {
+class TabAdapter(fm: FragmentManager): FragmentPagerAdapter(fm) {
   override fun getCount(): Int {
     return 12
   }
