@@ -14,4 +14,12 @@ class IceboxViewHolder(v: View): RecyclerView.ViewHolder(v) {
   val date: TextView = v.findViewById(R.id._icebox_item_date)
   val cardView: CardView = v.findViewById(R.id.icebox_item)
   val swipeLayout: SwipeLayout = v.findViewById(R.id.swipe_target)
+  fun bindView(name: String, memo: String, date: String) {
+    this.title.text = name
+    this.memo.text = memo
+    this.date.text = date
+    swipeLayout.showMode = SwipeLayout.ShowMode.PullOut
+    swipeLayout.addDrag(SwipeLayout.DragEdge.Right,swipeLayout.findViewById(R.id.icebox_item_del))
+    swipeLayout.addDrag(SwipeLayout.DragEdge.Left,swipeLayout.findViewById(R.id.icebox_item_search))
+  }
 }
