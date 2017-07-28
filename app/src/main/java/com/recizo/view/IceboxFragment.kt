@@ -1,6 +1,8 @@
 package com.recizo.view
 
+import android.app.AlertDialog
 import android.app.Fragment
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -30,31 +32,14 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     activity.startActivity(intent)
   }
 
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-  }
-
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     super.onCreateView(inflater, container, savedInstanceState)
-    println("createVIEW!!\n\n")
     return inflater!!.inflate(R.layout.fragment_icebox, container, false)
   }
 
   override fun onResume() {
     super.onResume()
     iceboxAdapter?.updateDataSet()
-    println("resume!!!\n\n\n")
-  }
-
-  override fun onStop() {
-    super.onStop()
-    println("STOP!!!!!!!\n\n\n")
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    println("destroy!!!!\n\n\n")
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +52,13 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
       activity.startActivity(Intent(activity, RegisterActivity::class.java))
     }
     delete_btn.setOnClickListener {
-      iceboxAdapter?.onDeleteClicked()
+      android.support.v7.app.AlertDialog.Builder(activity)
+          .setMessage("削除しておk？")//todo
+          .setPositiveButton("OK", { _, _ ->
+            iceboxAdapter?.onDeleteClicked()
+          })
+          .setNegativeButton("CANCEL", null)
+          .show()
     }
     recipe_search_btn.setOnClickListener {
       //todo impl

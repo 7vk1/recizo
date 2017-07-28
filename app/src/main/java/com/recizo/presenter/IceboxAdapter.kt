@@ -68,7 +68,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
           //削除ビュー展開時に削除候補追加
           if(openStatus == SwipeLayout.Status.Open || openStatus == SwipeLayout.Status.Middle && !garbage){
             Log.d("ポジション",getIceboxItemId(position).toString())
-            garbageList.add(getIceboxItemId(position))
+            garbageList.add(itemList[position].id)
             fragment.changeBtnVisibility(delete = true, undo = true)
             Log.d("ゴミ箱行きリストのサイズ", garbageList.size.toString())
           }
@@ -130,8 +130,10 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
     notifyItemInserted(itemList.size)
   }
 
-  fun onItemRemoved(position: Int) {
-    notifyItemRemoved(position)
+  fun removeItem(id: Int) {
+    IceboxDao.delete(id)
+    itemList = itemList.filter { it.id != id }.toMutableList()
+    notifyDataSetChanged()
   }
 
   private fun getIceboxItemId(position: Int): Int{
@@ -158,12 +160,13 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
 
 
   fun onDeleteClicked() {
-    for(item in garbageList.sorted()) {
-//      removeItem(item)
+    garbageList.sorted().reversed().map {
+      removeItem(it)
     }
     garbageList.clear()
     fragment.changeBtnVisibility(add = true)
   }
+
   fun onUndoClicked() {
     garbageList.clear()
     searchList.clear()
