@@ -189,7 +189,7 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
 
   fun updateItem(vegetable: Vegetable, position: Int) {
     val idh = IceboxDatabaseHelper(this.useContext)
-    idh.writebleOpen()
+    idh.writeableOpen()
     idh.updateVegetable(vegetable)
     // vegetableListの更新
     for(i in vegetableList.indices) {
@@ -203,7 +203,7 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
 
   fun addItem(vegetable: Vegetable) {
     val idh = IceboxDatabaseHelper(this.useContext)
-    idh.writebleOpen()
+    idh.writeableOpen()
     idh.addVegetable(vegetable)
     vegetableList.add(idh.getVegetableLast() )
     notifyItemInserted(vegetableList.size)
@@ -212,7 +212,7 @@ object IceboxAdapter: RecyclerView.Adapter<IceboxViewHolder>() {
   fun removeItem(position: Int) {
     if(position < vegetableList.size) {
       val idh = IceboxDatabaseHelper(this.useContext)
-      idh.writebleOpen()
+      idh.writeableOpen()
       idh.deleteVegetable(vegetableList[position].id)
       vegetableList.removeAt(position)
       notifyItemRemoved(position)

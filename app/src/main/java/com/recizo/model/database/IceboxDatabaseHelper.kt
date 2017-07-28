@@ -16,7 +16,7 @@ class IceboxDatabaseHelper(context: Context) {
     dbHelper = DatabaseHelper(context)
   }
 
-  fun writebleOpen() {
+  fun writeableOpen() {
     db = dbHelper.writableDatabase
   }
 
@@ -25,6 +25,7 @@ class IceboxDatabaseHelper(context: Context) {
   }
 
   fun updateVegetable(vegetable: Vegetable) {
+    writeableOpen()
     val values = ContentValues()
     values.put("name", vegetable.name)
     values.put("memo", vegetable.memo)
@@ -34,6 +35,7 @@ class IceboxDatabaseHelper(context: Context) {
     values.put("day", dates[2])
     val id = vegetable.id
     db.update(TABLE_NAME, values, "_id=$id", null)
+    db.close()
   }
 
   fun getVegetableAll(): MutableList<Vegetable> {
