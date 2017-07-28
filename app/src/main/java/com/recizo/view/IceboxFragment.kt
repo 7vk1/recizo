@@ -24,10 +24,9 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     recipe_search_btn.visibility = if(search) View.VISIBLE else View.INVISIBLE
   }
 
-  override fun toChangeActivity(item: IceboxItem, position: Int) {
+  override fun toChangeActivity(item: IceboxItem) {
     val intent = Intent(activity, ChangeActivity::class.java)
     intent.putExtra("item", item)
-    intent.putExtra("position", position)
     activity.startActivity(intent)
   }
 
