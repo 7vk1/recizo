@@ -166,6 +166,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
     garbageList.clear()
     fragment.changeBtnVisibility(add = true)
   }
+  fun getSearchItemList(): Set<String> { return searchList }
 
   fun onUndoClicked() {
     garbageList.clear()

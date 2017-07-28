@@ -2,7 +2,6 @@ package com.recizo.view
 
 import android.app.AlertDialog
 import android.app.Fragment
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -52,7 +51,7 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
       activity.startActivity(Intent(activity, RegisterActivity::class.java))
     }
     delete_btn.setOnClickListener {
-      android.support.v7.app.AlertDialog.Builder(activity)
+      AlertDialog.Builder(activity)
           .setMessage("削除しておk？")//todo
           .setPositiveButton("OK", { _, _ ->
             iceboxAdapter?.onDeleteClicked()
@@ -61,10 +60,16 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
           .show()
     }
     recipe_search_btn.setOnClickListener {
+      (activity as ChangeToSearchFragment).changeSearchFragment(iceboxAdapter!!.getSearchItemList())
+    }
+    undo_btn.setOnClickListener {
       //todo impl
     }
-    undo_btn
 
+  }
+
+  interface ChangeToSearchFragment {
+    fun changeSearchFragment(items: Set<String>)
   }
 
 }
