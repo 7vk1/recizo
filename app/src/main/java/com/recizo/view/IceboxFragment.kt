@@ -1,5 +1,6 @@
 package com.recizo.view
 
+import android.app.AlertDialog
 import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
@@ -19,42 +20,24 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
   override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {
     add_btn.visibility = if(add) View.VISIBLE else View.INVISIBLE
     undo_btn.visibility = if(undo) View.VISIBLE else View.INVISIBLE
-    delete_btn.visibility = if(search) View.VISIBLE else View.INVISIBLE
-    recipe_search_btn.visibility = if(delete) View.VISIBLE else View.INVISIBLE
+    delete_btn.visibility = if(delete) View.VISIBLE else View.INVISIBLE
+    recipe_search_btn.visibility = if(search) View.VISIBLE else View.INVISIBLE
   }
 
-  override fun toChangeActivity(item: IceboxItem, position: Int) {
+  override fun toChangeActivity(item: IceboxItem) {
     val intent = Intent(activity, ChangeActivity::class.java)
     intent.putExtra("item", item)
-    intent.putExtra("position", position)
     activity.startActivity(intent)
-  }
-
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
   }
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     super.onCreateView(inflater, container, savedInstanceState)
-    println("createVIEW!!\n\n")
     return inflater!!.inflate(R.layout.fragment_icebox, container, false)
   }
 
   override fun onResume() {
     super.onResume()
     iceboxAdapter?.updateDataSet()
-    println("resume!!!\n\n\n")
-  }
-
-  override fun onStop() {
-    super.onStop()
-    println("STOP!!!!!!!\n\n\n")
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    println("destroy!!!!\n\n\n")
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,13 +50,25 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
       activity.startActivity(Intent(activity, RegisterActivity::class.java))
     }
     delete_btn.setOnClickListener {
-      iceboxAdapter?.onDeleteClicked()
+      AlertDialog.Builder(activity)
+          .setMessage("削除しておk？")//todo
+          .setPositiveButton("OK", { _, _ ->
+            iceboxAdapter?.onDeleteClicked()
+          })
+          .setNegativeButton("CANCEL", null)
+          .show()
     }
     recipe_search_btn.setOnClickListener {
-      //todo impl
+      (activity as ChangeToSearchFragment).changeSearchFragment(iceboxAdapter!!.getSearchItemList())
     }
-    undo_btn
+    undo_btn.setOnClickListener {
+      iceboxAdapter?.onUndoClicked()
+    }
 
+  }
+
+  interface ChangeToSearchFragment {
+    fun changeSearchFragment(items: Set<String>)
   }
 
 }
