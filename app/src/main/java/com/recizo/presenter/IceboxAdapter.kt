@@ -7,24 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.model.viewholder.IceboxViewHolder
-import com.recizo.model.entity.Vegetable
 import com.daimajia.swipe.*
 import com.recizo.model.entity.IceboxItem
 import com.recizo.module.IceboxDao
 
 
-class IceboxAdapter(val fragment: IceboxButtons, val recyclerView: RecyclerView) : RecyclerView.Adapter<IceboxViewHolder>() {
-  var itemList = IceboxDataStore.itemList
+class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxViewHolder>() {
+  var itemList = IceboxDao.getAll().toMutableList()
   var searchList = mutableSetOf<String>()
   var garbageList = mutableSetOf<Int>()
-  var targetView: View? = null
+  var recyclerView: RecyclerView? = null
 
   override fun getItemCount(): Int {
     return itemList.size
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): IceboxViewHolder {
-    val v: View = LayoutInflater.from(parent!!.context).inflate(R.layout.icebox_item, parent, false)
+
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IceboxViewHolder {
+    val v: View = LayoutInflater.from(parent.context).inflate(R.layout.icebox_item, parent, false)
     return IceboxViewHolder(v)
   }
 
@@ -111,8 +111,19 @@ class IceboxAdapter(val fragment: IceboxButtons, val recyclerView: RecyclerView)
       }
     }
   }
+  override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
+    super.onAttachedToRecyclerView(recyclerView)
+    this.recyclerView = recyclerView
+  }
+
+  override fun onDetachedFromRecyclerView(recyclerView: RecyclerView?) {
+    super.onDetachedFromRecyclerView(recyclerView)
+    this.recyclerView = null
+  }
+
 
   fun onItemUpdated(position: Int) {
+    println(position)
     notifyItemChanged(position)
   }
 
@@ -141,6 +152,11 @@ class IceboxAdapter(val fragment: IceboxButtons, val recyclerView: RecyclerView)
 //    notifyItemRangeInserted(0, list.size)
 //  }
 
+  fun updateDataSet() {
+    itemList = IceboxDao.getAll().toMutableList()
+    this.notifyDataSetChanged()
+  }
+
 
   fun onDeleteClicked() {
     for(item in garbageList.sorted()) {
@@ -152,7 +168,7 @@ class IceboxAdapter(val fragment: IceboxButtons, val recyclerView: RecyclerView)
   fun onUndoClicked() {
     garbageList.clear()
     searchList.clear()
-    this.garbageList.map { recyclerView.findViewHolderForAdapterPosition(it) as IceboxViewHolder }
+    this.garbageList.map { recyclerView?.findViewHolderForAdapterPosition(it) as IceboxViewHolder }
         .map { it.swipeLayout.close() }
     Log.d("来てる？","わかんね")
 //    fragment.changeBtnVisibility() todo

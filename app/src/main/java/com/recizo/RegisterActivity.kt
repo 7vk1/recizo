@@ -7,8 +7,10 @@ import android.text.TextUtils
 
 import com.recizo.R
 import com.recizo.model.database.IceboxDatabaseHelper
+import com.recizo.model.entity.IceboxItem
 import com.recizo.model.entity.Vegetable
 import com.recizo.presenter.IceboxAdapter
+import com.recizo.presenter.IceboxDataStore
 import kotlinx.android.synthetic.main.fragment_icebox_register.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -29,9 +31,7 @@ class RegisterActivity : AppCompatActivity() {
 
       if(!TextUtils.isEmpty(name) ) {
         // TODO TODO 第一引数はidだけど内部的にはSQLiteのAutoIncrementを使っているので意味は無い。Nullを許容するように変更する
-        val vegetable = Vegetable(0, name, memo, year, month, day)
-        val idh = IceboxDatabaseHelper(this)
-        idh.addVegetable(vegetable)
+        IceboxDataStore.addItem(IceboxItem(0, name, memo, year, month, day))
         finish()
       } else {
         AlertDialog.Builder(this)

@@ -11,11 +11,11 @@ import com.recizo.ChangeActivity
 import com.recizo.R
 import com.recizo.RegisterActivity
 import com.recizo.model.entity.IceboxItem
-import com.recizo.model.entity.Vegetable
 import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
 
 class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
+  var iceboxAdapter: IceboxAdapter? = null
   override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {
     add_btn.visibility = if(add) View.VISIBLE else View.INVISIBLE
     undo_btn.visibility = if(undo) View.VISIBLE else View.INVISIBLE
@@ -31,18 +31,19 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
   }
 
 
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
   }
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     super.onCreateView(inflater, container, savedInstanceState)
+    println("createVIEW!!\n\n")
     return inflater!!.inflate(R.layout.fragment_icebox, container, false)
   }
 
   override fun onResume() {
     super.onResume()
+    iceboxAdapter?.updateDataSet()
     println("resume!!!\n\n\n")
   }
 
@@ -51,9 +52,14 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     println("STOP!!!!!!!\n\n\n")
   }
 
+  override fun onDestroy() {
+    super.onDestroy()
+    println("destroy!!!!\n\n\n")
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val iceboxAdapter = IceboxAdapter(this, recyclerView)
+    iceboxAdapter = IceboxAdapter(this)
     recyclerView.layoutManager = LinearLayoutManager(activity)
     recyclerView.adapter = iceboxAdapter
 
@@ -61,7 +67,7 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
       activity.startActivity(Intent(activity, RegisterActivity::class.java))
     }
     delete_btn.setOnClickListener {
-      iceboxAdapter.onDeleteClicked()
+      iceboxAdapter?.onDeleteClicked()
     }
     recipe_search_btn.setOnClickListener {
       //todo impl

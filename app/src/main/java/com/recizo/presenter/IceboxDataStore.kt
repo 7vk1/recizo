@@ -8,10 +8,12 @@ object IceboxDataStore {
   var itemList = IceboxDao.getAll().toMutableList()
 
   fun addItem(item: IceboxItem) {
+    IceboxDao.add(item)
     itemList.add(item)
     iceboxAdapter?.onItemAdded()
   }
   fun removeItem(itemId: Int) {
+    IceboxDao.delete(itemId)
     itemList = itemList.filterIndexed { index, iceboxItem ->
       if(iceboxItem.id == itemId) {
         iceboxAdapter?.onItemremoved(index)
@@ -20,8 +22,12 @@ object IceboxDataStore {
     }.toMutableList()
   }
   fun updateItem(item: IceboxItem) {
+    println("update!")
+    println(iceboxAdapter)
+    IceboxDao.update(item)
     itemList = itemList.mapIndexed { index, iceboxItem ->
       if(iceboxItem.id == item.id) {
+        println("C!!")
         iceboxAdapter?.onItemUpdated(index)
         item
       } else iceboxItem
