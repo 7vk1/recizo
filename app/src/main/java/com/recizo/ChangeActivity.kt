@@ -8,6 +8,7 @@ import android.widget.DatePicker
 import android.widget.EditText
 import com.recizo.model.entity.IceboxItem
 import com.recizo.module.IceboxDao
+import com.recizo.presenter.ItemCategoryAdapter
 
 import kotlinx.android.synthetic.main.fragment_icebox_change.*
 
@@ -21,6 +22,7 @@ class ChangeActivity: AppCompatActivity() {
     }
     val item = intent.getSerializableExtra("item") as IceboxItem
 
+    spinner.adapter = ItemCategoryAdapter(this)
 
     fragment_icebox_change_register_btn.setOnClickListener {
       val name: String = fragment_icebox_change_name.text.toString()
@@ -28,9 +30,10 @@ class ChangeActivity: AppCompatActivity() {
       val year: String = fragment_icebox_change_date.year.toString()
       val month: String = (fragment_icebox_change_date.month + 1).toString()
       val day: String = fragment_icebox_change_date.dayOfMonth.toString()
+      val categoryId = spinner.selectedItem as IceboxItem.Category
 //      val category: IceboxItem.Category = spinner
       if(!TextUtils.isEmpty(name) ) {
-        IceboxDao.update(IceboxItem(item.id, name, memo, year, month, day))
+        IceboxDao.update(IceboxItem(item.id, name, memo, year, month, day, categoryId))
         finish()
       } else {
         AlertDialog.Builder(this).

@@ -7,27 +7,30 @@ import android.text.TextUtils
 
 import com.recizo.model.entity.IceboxItem
 import com.recizo.module.IceboxDao
-import kotlinx.android.synthetic.main.fragment_icebox_register.*
+import com.recizo.presenter.ItemCategoryAdapter
+import kotlinx.android.synthetic.main.fragment_icebox_change.*
 
 class RegisterActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.fragment_icebox_register)
+    setContentView(R.layout.fragment_icebox_change)
 
-    fragment_icebox_register_cancel_btn.setOnClickListener {
+    spinner.adapter = ItemCategoryAdapter(this)
+
+    fragment_icebox_change_cancel_btn.setOnClickListener {
       finish()
     }
-    fragment_icebox_register_register_btn.setOnClickListener {
-      val name: String = fragment_icebox_register_name.text.toString()
-      val memo: String = fragment_icebox_register_memo.text.toString()
-      val year: String = fragment_icebox_register_date.year.toString()
-      val month: String = (fragment_icebox_register_date.month + 1).toString()
-      val day: String = fragment_icebox_register_date.dayOfMonth.toString()
+    fragment_icebox_change_register_btn.setOnClickListener {
+      val name: String = fragment_icebox_change_name.text.toString()
+      val memo: String = fragment_icebox_change_memo.text.toString()
+      val year: String = fragment_icebox_change_date.year.toString()
+      val month: String = (fragment_icebox_change_date.month + 1).toString()
+      val day: String = fragment_icebox_change_date.dayOfMonth.toString()
+      val categoryId = spinner.selectedItem as IceboxItem.Category
 
       if(!TextUtils.isEmpty(name) ) {
-        // TODO TODO 第一引数はidだけど内部的にはSQLiteのAutoIncrementを使っているので意味は無い。Nullを許容するように変更する
-        IceboxDao.add(IceboxItem(0, name, memo, year, month, day))
+        IceboxDao.add(IceboxItem(0, name, memo, year, month, day, categoryId))
         finish()
       } else {
         AlertDialog.Builder(this)

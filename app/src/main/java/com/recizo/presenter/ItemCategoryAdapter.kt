@@ -13,15 +13,15 @@ class ItemCategoryAdapter(private val context: Context) : BaseAdapter() {
   private var dataList = IceboxItem.Category.values()
 
   override fun getCount(): Int { return dataList.size }
-  override fun getItem(position: Int): Any { return dataList[position] }
+  override fun getItem(position: Int): IceboxItem.Category { return dataList[position] }
   override fun getItemId(position: Int): Long { return dataList[position].ordinal.toLong() }
   override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-    val ret = convertView ?: LayoutInflater.from(context).inflate(R.layout.category_spiner_item, parent)
+    val ret = convertView ?: LayoutInflater.from(context).inflate(R.layout.category_spinner_item, null)
     ret.findViewById<TextView>(R.id.textView).text = dataList[position].name_jp
     return ret
   }
   override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-    val ret = convertView ?: LayoutInflater.from(context).inflate(R.layout.category_spiner_item, parent)
+    val ret = convertView ?: LayoutInflater.from(context).inflate(R.layout.category_spinner_item, null)
     ret.findViewById<TextView>(R.id.textView).text = dataList[position].name_jp
     return ret
   }

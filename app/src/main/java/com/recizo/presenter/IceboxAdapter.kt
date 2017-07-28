@@ -19,7 +19,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
   private var recyclerView: RecyclerView? = null
   init {
     setHasStableIds(true)
-    itemList.add(IceboxItem(id = -1, memo = "", name = "empty", date = ""))
+    itemList.add(IceboxItem(id = -1, memo = "", name = "empty", date = "", category = IceboxItem.Category.vegetable))
   }
 
   fun removeItem(id: Long) {
@@ -30,7 +30,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
 
   fun updateDataSet() {
     itemList = IceboxDao.getAll().toMutableList()
-    itemList.add(IceboxItem(-1, "empty", "", ""))
+    itemList.add(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
     this.notifyDataSetChanged()
     fragment.changeBtnVisibility(add = true)
   }
@@ -50,7 +50,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
       Sort.DATE -> itemList.sortBy { it.date }
 //      Sort.CATEGORY -> itemList.sortBy { it.categoryId } todo impl category
     }
-    itemList.add(IceboxItem(-1, "blank", "", ""))
+    itemList.add(IceboxItem(-1, "blank", "", "", IceboxItem.Category.vegetable))
     notifyDataSetChanged()
   }
 
