@@ -18,7 +18,6 @@ class FlyerPresenter (fragment: FlyerFragment, flyerView: RecyclerView, keywords
   private var flyerListAdapter = FlyerListAdapter(flyerView)
   private var progressBarCallback: IProgressBar? = null
 
-
   init {
     flyerView.adapter = flyerListAdapter
     flyerListAdapter.setOnItemClickListener(object: FlyerListAdapter.OnItemClickListener{

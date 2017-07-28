@@ -34,7 +34,8 @@ class ShufooScraper(postCode: String): Scraper(){
       ShufooFlyer(
               storeName = it.select(".chirashi_list_item_name_str")[0].text(),
               description = it.select(".chirashi_list_item_title")[0].text(),
-              shufooLink = it.select(".hover_opacity")[0].attr("href")
+              shufooLink = it.select(".hover_opacity")[0].attr("href"),
+              imgUrl = it.select(".chirashi_list_item_thumb img")[0].attr("src")
       )
     }
   }

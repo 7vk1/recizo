@@ -49,9 +49,4 @@ class RecipeFragment : Fragment() {
       }
     })
   }
-
-  override fun onStart() {
-    super.onStart()
-  }
-
 }
