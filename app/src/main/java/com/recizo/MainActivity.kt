@@ -11,8 +11,6 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import com.recizo.module.AppContextHolder
-import com.recizo.module.FavoriteRecipeDao
-import com.recizo.module.IceboxDao
 import com.recizo.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.ChangeToSearchFragment {
@@ -60,7 +58,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     when (id) {
       R.id.nav_icebox_list -> changeFragment(IceboxFragment())
       R.id.nav_recipe_search -> changeFragment(RecipeFragment())
-      R.id.nav_season -> {} // TODO
+      R.id.nav_season -> changeFragment(SeasonsFragment()) // TODO
       R.id.nav_flyer -> changeFragment(FlyerFragment())
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
       R.id.nav_settings -> {}//TODO
