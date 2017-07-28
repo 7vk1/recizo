@@ -16,7 +16,7 @@ object IceboxDao {
   private var iceboxDatabaseHelper: IceboxDatabaseHelper? = null
 
   private fun access() {
-    iceboxDatabaseHelper = IceboxDatabaseHelper(context!!)
+    iceboxDatabaseHelper = IceboxDatabaseHelper(AppContextHolder.context!!)
   }
 
   private fun close() {
