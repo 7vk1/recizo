@@ -3,7 +3,9 @@ package com.recizo.presenter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.model.entity.CookpadRecipe
@@ -15,8 +17,14 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
-class FavoriteRecipeAdapter: RecyclerView.Adapter<FavoriteRecipeViewHolder>() {
+class FavoriteRecipeAdapter(private val favoriteRecipeListView: RecyclerView): RecyclerView.Adapter<FavoriteRecipeViewHolder>(), View.OnClickListener {
   val favoriteRecipeList = mutableListOf<CookpadRecipe>()
+  private var onItemClickListener: FavoriteRecipeAdapter.OnItemClickListener? = null
+  fun setOnItemClickListener(listener: FavoriteRecipeAdapter.OnItemClickListener){
+    Log.d("_TEST", listener.toString())
+    onItemClickListener = listener
+  }
+
   override fun getItemCount(): Int {
     return favoriteRecipeList.size
   }
@@ -33,6 +41,8 @@ class FavoriteRecipeAdapter: RecyclerView.Adapter<FavoriteRecipeViewHolder>() {
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): FavoriteRecipeViewHolder {
     val v = LayoutInflater.from(parent!!.context).inflate(R.layout.favorite_recipe_item, parent, false)
+    v.setOnClickListener(this)
+    Log.d("_TEST", "VIEW HOLDER SET ON CLICK LISTENER")
     return FavoriteRecipeViewHolder(v)
   }
 
@@ -57,5 +67,15 @@ class FavoriteRecipeAdapter: RecyclerView.Adapter<FavoriteRecipeViewHolder>() {
     val width = bitmapImage.width * scale
     val height = bitmapImage.height * scale
     return@async Bitmap.createScaledBitmap(bitmapImage, width, height, false)
+  }
+
+  override fun onClick(view: View?) {
+    Log.d("_TEST", "ON CLICK")
+    val position = favoriteRecipeListView.getChildAdapterPosition(view)
+    onItemClickListener?.onItemClick(this.favoriteRecipeList[position])
+  }
+
+  interface OnItemClickListener {
+    fun onItemClick(recipe: CookpadRecipe)
   }
 }
