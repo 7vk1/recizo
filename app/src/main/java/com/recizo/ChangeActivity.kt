@@ -4,12 +4,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
-import android.util.Log
 import android.widget.DatePicker
 import android.widget.EditText
-import com.recizo.model.database.IceboxDatabaseHelper
 import com.recizo.model.entity.IceboxItem
-import com.recizo.presenter.IceboxDataStore
+import com.recizo.module.IceboxDao
 
 import kotlinx.android.synthetic.main.fragment_icebox_change.*
 
@@ -30,7 +28,7 @@ class ChangeActivity: AppCompatActivity() {
       val month: String = (fragment_icebox_change_date.month + 1).toString()
       val day: String = fragment_icebox_change_date.dayOfMonth.toString()
       if(!TextUtils.isEmpty(name) ) {
-        IceboxDataStore.updateItem(IceboxItem(item.id, name, memo, year, month, day))
+        IceboxDao.update(IceboxItem(item.id, name, memo, year, month, day))
         finish()
       } else {
         AlertDialog.Builder(this).
