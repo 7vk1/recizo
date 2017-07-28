@@ -2,6 +2,7 @@ package com.recizo.presenter
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,7 +22,7 @@ class FavoriteRecipeAdapter(private val favoriteRecipeListView: RecyclerView): R
   val favoriteRecipeList = mutableListOf<CookpadRecipe>()
   private var onItemClickListener: FavoriteRecipeAdapter.OnItemClickListener? = null
   fun setOnItemClickListener(listener: FavoriteRecipeAdapter.OnItemClickListener){
-    Log.d("_TEST", listener.toString())
+    Log.d("_TEST", "LISTENER SET")
     onItemClickListener = listener
   }
 
@@ -41,7 +42,9 @@ class FavoriteRecipeAdapter(private val favoriteRecipeListView: RecyclerView): R
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): FavoriteRecipeViewHolder {
     val v = LayoutInflater.from(parent!!.context).inflate(R.layout.favorite_recipe_item, parent, false)
-    v.setOnClickListener(this)
+    val test:CardView =  v.findViewById(R.id.favorite_recipe_surface_cardview)
+    test.setOnClickListener(this)
+    //v.setOnClickListener(this)
     Log.d("_TEST", "VIEW HOLDER SET ON CLICK LISTENER")
     return FavoriteRecipeViewHolder(v)
   }
