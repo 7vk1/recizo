@@ -2,6 +2,7 @@ package com.recizo.module
 
 import android.content.Context
 import com.recizo.model.database.IceboxDatabaseHelper
+import com.recizo.model.entity.IceboxItem
 import com.recizo.model.entity.Vegetable
 
 object IceboxDao {
@@ -22,37 +23,37 @@ object IceboxDao {
     iceboxDatabaseHelper = null
   }
 
-  fun update(vegetable: Vegetable) {
+  fun update(item: IceboxItem) {
     access()
-    iceboxDatabaseHelper?.addVegetable(vegetable)
+    iceboxDatabaseHelper?.updateItem(item)
     close()
   }
 
-  fun getAll(): List<Vegetable> {
+  fun getAll(): List<IceboxItem> {
     access()
-    val ret = iceboxDatabaseHelper?.getVegetableAll()
+    val ret = iceboxDatabaseHelper?.getAllItem()
     println(ret?.size)
     close()
     // nullで無い場合のみ左辺が帰り、nullなら右辺が帰る。右辺は左辺がnullの場合のみ評価される
-    return ret ?: listOf<Vegetable>()
+    return ret ?: listOf<IceboxItem>()
   }
 
-  fun getLast(): Vegetable? {
+  fun getLast(): IceboxItem? {
     access()
-    val ret = iceboxDatabaseHelper?.getVegetableLast()
+    val ret = iceboxDatabaseHelper?.getLastItem()
     close()
     return ret
   }
 
-  fun add(vegetable: Vegetable) {
+  fun add(item: IceboxItem) {
     access()
-    iceboxDatabaseHelper?.addVegetable(vegetable)
+    iceboxDatabaseHelper?.addItem(item)
     close()
   }
 
-  fun delete(vegetableId: Int) {
+  fun delete(itemId: Int) {
     access()
-    iceboxDatabaseHelper?.deleteVegetable(vegetableId)
+    iceboxDatabaseHelper?.deleteItem(itemId)
     close()
   }
 }

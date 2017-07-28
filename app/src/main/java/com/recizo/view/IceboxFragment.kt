@@ -10,11 +10,12 @@ import android.view.ViewGroup
 import com.recizo.ChangeActivity
 import com.recizo.R
 import com.recizo.RegisterActivity
-import com.recizo.model.entity.Vegetable
+import com.recizo.model.entity.IceboxItem
 import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
 
 class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
+  var iceboxAdapter: IceboxAdapter? = null
   override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {
     add_btn.visibility = if(add) View.VISIBLE else View.INVISIBLE
     undo_btn.visibility = if(undo) View.VISIBLE else View.INVISIBLE
@@ -22,13 +23,12 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     recipe_search_btn.visibility = if(delete) View.VISIBLE else View.INVISIBLE
   }
 
-  override fun toChangeActivity(vegetable: Vegetable, position: Int) {
+  override fun toChangeActivity(item: IceboxItem, position: Int) {
     val intent = Intent(activity, ChangeActivity::class.java)
-    intent.putExtra("vegetable", vegetable)
+    intent.putExtra("item", item)
     intent.putExtra("position", position)
     activity.startActivity(intent)
   }
-
 
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,27 +37,37 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     super.onCreateView(inflater, container, savedInstanceState)
+    println("createVIEW!!\n\n")
     return inflater!!.inflate(R.layout.fragment_icebox, container, false)
   }
 
   override fun onResume() {
     super.onResume()
+    iceboxAdapter?.updateDataSet()
     println("resume!!!\n\n\n")
+  }
+
+  override fun onStop() {
+    super.onStop()
+    println("STOP!!!!!!!\n\n\n")
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    println("destroy!!!!\n\n\n")
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val iceboxAdapter = IceboxAdapter(this, recyclerView)
-    iceboxAdapter.setView(view)
+    iceboxAdapter = IceboxAdapter(this)
     recyclerView.layoutManager = LinearLayoutManager(activity)
     recyclerView.adapter = iceboxAdapter
-    iceboxAdapter.initItem()
 
     add_btn.setOnClickListener {
       activity.startActivity(Intent(activity, RegisterActivity::class.java))
     }
     delete_btn.setOnClickListener {
-      iceboxAdapter.onDeleteClicked()
+      iceboxAdapter?.onDeleteClicked()
     }
     recipe_search_btn.setOnClickListener {
       //todo impl
