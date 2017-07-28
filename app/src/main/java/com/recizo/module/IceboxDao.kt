@@ -33,7 +33,8 @@ object IceboxDao {
     val ret = iceboxDatabaseHelper?.getVegetableAll()
     println(ret?.size)
     close()
-    return if(ret != null)ret else listOf<Vegetable>()
+    // nullで無い場合のみ左辺が帰り、nullなら右辺が帰る。右辺は左辺がnullの場合のみ評価される
+    return ret ?: listOf<Vegetable>()
   }
 
   fun getLast(): Vegetable? {
