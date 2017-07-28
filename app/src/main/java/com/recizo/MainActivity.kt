@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import com.recizo.module.AppContextHolder
 import com.recizo.module.FavoriteRecipeDao
 import com.recizo.module.IceboxDao
 import com.recizo.view.*
@@ -27,8 +28,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     drawer.addDrawerListener(toggle)
     toggle.syncState()
 
-    FavoriteRecipeDao.context = applicationContext
-    IceboxDao.context = applicationContext
+    AppContextHolder.context = applicationContext
 
     val transaction = fragmentManager.beginTransaction()
     transaction.add(R.id.fragment_frame, IceboxFragment())

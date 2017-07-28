@@ -49,9 +49,4 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
       }
     })
   }
-
-  override fun onStart() {
-    super.onStart()
-  }
-
 }

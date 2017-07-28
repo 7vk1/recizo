@@ -52,7 +52,6 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
     holder.author.text = recipeList[position].author
     holder.description.text = recipeList[position].description
     holder.linkUrl = recipeList[position].cookpadLink
-    holder.title.setOnClickListener { this.onItemClickListener }
     holder.starButton.isChecked = false
     if(FavoriteRecipeDao.getRecipe(holder.title.text.toString() ) != null ) holder.starButton.isChecked = true
     holder.starButton.setOnClickListener {
