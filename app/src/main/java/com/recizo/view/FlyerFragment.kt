@@ -51,8 +51,4 @@ class FlyerFragment : Fragment(){
       }
     })
   }
-
-  override fun onStart() {
-    super.onStart()
-  }
 }

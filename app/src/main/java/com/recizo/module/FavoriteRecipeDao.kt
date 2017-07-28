@@ -14,7 +14,7 @@ object FavoriteRecipeDao {
 
   private var favoriteRecipeDatabaseHelper: FavoriteRecipeDatabaseHelper? = null
 
-  private fun access() { favoriteRecipeDatabaseHelper = FavoriteRecipeDatabaseHelper(context!!) }
+  private fun access() { favoriteRecipeDatabaseHelper = FavoriteRecipeDatabaseHelper(AppContextHolder.context!!) }
   private fun close() { favoriteRecipeDatabaseHelper = null }
 
   fun add(recipe: CookpadRecipe) {

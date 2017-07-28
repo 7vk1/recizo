@@ -1,5 +1,6 @@
 package com.recizo.presenter
 
+import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -8,15 +9,22 @@ import com.recizo.model.entity.ShufooFlyer
 import com.recizo.module.Scraper
 import com.recizo.module.ShufooScraper
 import org.jsoup.nodes.Document
+import android.content.Intent
+import com.recizo.module.AppContextHolder
 
 
 class FlyerPresenter (flyerView: RecyclerView, keywords: String){
   private val scraper: ShufooScraper = ShufooScraper(keywords)
-  private var flyerListAdapter = FlyerListAdapter()
+  private var flyerListAdapter = FlyerListAdapter(flyerView)
   private var progressBarCallback: IProgressBar? = null
 
   init {
     flyerView.adapter = flyerListAdapter
+    flyerListAdapter.setOnItemClickListener(object: FlyerListAdapter.OnItemClickListener{
+      override fun onItemClick(flyer: ShufooFlyer) {
+        AppContextHolder.context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(flyer.shufooLink)))
+      }
+    })
   }
 
   fun setProgressBar(progressBar: IProgressBar) {
