@@ -10,10 +10,10 @@ import com.recizo.module.Scraper
 import com.recizo.module.ShufooScraper
 import org.jsoup.nodes.Document
 import android.content.Intent
-import com.recizo.view.FlyerFragment
+import com.recizo.module.AppContextHolder
 
 
-class FlyerPresenter (fragment: FlyerFragment, flyerView: RecyclerView, keywords: String){
+class FlyerPresenter (flyerView: RecyclerView, keywords: String){
   private val scraper: ShufooScraper = ShufooScraper(keywords)
   private var flyerListAdapter = FlyerListAdapter(flyerView)
   private var progressBarCallback: IProgressBar? = null
@@ -22,7 +22,7 @@ class FlyerPresenter (fragment: FlyerFragment, flyerView: RecyclerView, keywords
     flyerView.adapter = flyerListAdapter
     flyerListAdapter.setOnItemClickListener(object: FlyerListAdapter.OnItemClickListener{
       override fun onItemClick(flyer: ShufooFlyer) {
-        fragment.activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(flyer.shufooLink)))
+        AppContextHolder.context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(flyer.shufooLink)))
       }
     })
   }

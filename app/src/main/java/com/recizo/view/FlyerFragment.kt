@@ -33,7 +33,7 @@ class FlyerFragment : Fragment(){
             LinearLayoutManager(activity).orientation)
     )
 
-    val flyerPresenter = FlyerPresenter(this, searched_recyclerView, "1690074")
+    val flyerPresenter = FlyerPresenter(searched_recyclerView, "1690074")
     flyerPresenter.setProgressBar(object:FlyerPresenter.IProgressBar{
       override fun showProgressBar() {
         searched_recipe_progressBar.visibility = View.VISIBLE
