@@ -1,4 +1,4 @@
-package com.recizo.view
+package com.recizo
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.util.Log
 import android.widget.DatePicker
 import android.widget.EditText
 
-import com.recizo.R
 import com.recizo.model.entity.Vegetable
 import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox_change.*

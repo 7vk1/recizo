@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp">
+
+    <ImageView
+        android:id="@+id/flyer_image"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/recipe_image"
+        android:layout_marginTop="8dp"
+        android:layout_weight="5"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="11"
+        android:layout_margin="8dp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -20,19 +31,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="[ショップ名]"
-                android:textColor="#00F"/>
+                android:textColor="#00F"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/shufoo_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="[チラシ概要]" />
-
-            <TextView
-                android:id="@+id/shufoo_link"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="[URL]"/>
 
         </LinearLayout>
 

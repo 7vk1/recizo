@@ -1,4 +1,4 @@
-package com.recizo.view
+package com.recizo
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
