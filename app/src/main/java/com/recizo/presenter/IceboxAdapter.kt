@@ -43,6 +43,17 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
     fragment.changeBtnVisibility(add = true)
   }
 
+  fun sortItems(type: Sort) {
+    itemList.removeAt(itemList.size -1)
+    when(type) {
+      Sort.NAME -> itemList.sortBy { it.name }
+      Sort.DATE -> itemList.sortBy { it.date }
+//      Sort.CATEGORY -> itemList.sortBy { it.categoryId } todo impl category
+    }
+    itemList.add(IceboxItem(-1, "blank", "", ""))
+    notifyDataSetChanged()
+  }
+
   fun getSearchItemList(): Set<String> {
     return searchList.map { id -> itemList.first { it.id.toLong() == id }.name }.toSet()
   }
@@ -111,6 +122,10 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
   override fun onDetachedFromRecyclerView(recyclerView: RecyclerView?) {
     super.onDetachedFromRecyclerView(recyclerView)
     this.recyclerView = null
+  }
+
+  enum class Sort {
+    NAME, DATE, CATEGORY
   }
 
   interface IceboxButtons {

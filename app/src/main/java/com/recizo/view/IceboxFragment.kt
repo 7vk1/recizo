@@ -69,25 +69,36 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     undo_btn.setOnClickListener {
       iceboxAdapter?.onUndoClicked()
     }
-    sort_btn.setOnClickListener {
-      fun createAnimation(target: View, x: Float, y: Float, close: Boolean = false): ObjectAnimator {
-        val xHolder = if(!close) PropertyValuesHolder.ofFloat("translationX", 0f, x) else PropertyValuesHolder.ofFloat("translationX", x, 0f)
-        val yHolder = if(!close) PropertyValuesHolder.ofFloat("translationY", 0f, y) else PropertyValuesHolder.ofFloat("translationY", y, 0f)
-        val opacity = if(!close) PropertyValuesHolder.ofFloat("alpha", 0f, 1f ) else PropertyValuesHolder.ofFloat("alpha", 1f, 0f)
-        val animator = ObjectAnimator.ofPropertyValuesHolder(target, xHolder, yHolder, opacity)
-        animator.duration = 500
-        return animator
-      }
-      val set = AnimatorSet()
-      set.playTogether(listOf(
-          createAnimation(sort_by_name, -30f, -160f, isSortOpen),
-          createAnimation(sort_by_date, 120f, -120f, isSortOpen),
-          createAnimation(sort_by_category, 160f, 30f, isSortOpen)))
-      isSortOpen = !isSortOpen
-      set.start()
+    sort_btn.setOnClickListener { toggleSortBtn() }
+    sort_by_name.setOnClickListener { onSortMethodClicked(IceboxAdapter.Sort.NAME) }
+    sort_by_date.setOnClickListener { onSortMethodClicked(IceboxAdapter.Sort.DATE) }
+    sort_by_category.setOnClickListener { onSortMethodClicked(IceboxAdapter.Sort.CATEGORY) }
+    //todo sort by item id いるか　デフォルトソート考える
+  }
+
+  private fun onSortMethodClicked(type: IceboxAdapter.Sort) {
+    if(isSortOpen) {
+      iceboxAdapter?.sortItems(type)
+      toggleSortBtn()
     }
+  }
 
-
+  private fun toggleSortBtn() {
+    fun createAnimation(target: View, x: Float, y: Float, close: Boolean = false): ObjectAnimator {
+      val xHolder = if(!close) PropertyValuesHolder.ofFloat("translationX", 0f, x) else PropertyValuesHolder.ofFloat("translationX", x, 0f)
+      val yHolder = if(!close) PropertyValuesHolder.ofFloat("translationY", 0f, y) else PropertyValuesHolder.ofFloat("translationY", y, 0f)
+      val opacity = if(!close) PropertyValuesHolder.ofFloat("alpha", 0f, 1f ) else PropertyValuesHolder.ofFloat("alpha", 1f, 0f)
+      val animator = ObjectAnimator.ofPropertyValuesHolder(target, xHolder, yHolder, opacity)
+      animator.duration = 500
+      return animator
+    }
+    val set = AnimatorSet()
+    set.playTogether(listOf(
+        createAnimation(sort_by_name, -30f, -160f, isSortOpen),
+        createAnimation(sort_by_date, 120f, -120f, isSortOpen),
+        createAnimation(sort_by_category, 160f, 30f, isSortOpen)))
+    isSortOpen = !isSortOpen
+    set.start()
   }
 
   interface ChangeToSearchFragment {
