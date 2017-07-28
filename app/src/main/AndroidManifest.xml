@@ -8,19 +8,21 @@
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
-      android:theme="@style/AppTheme"
-      android:screenOrientation="portrait">
+      android:theme="@style/AppTheme">
     <activity
-        android:name=".view.MainActivity"
+        android:name=".MainActivity"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.NoActionBar"
+        >
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".view.RegisterActivity" />
-    <activity android:name=".view.ChangeActivity" />
+    <activity android:name=".RegisterActivity"
+              android:screenOrientation="portrait"/>
+    <activity android:name=".ChangeActivity"
+              android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

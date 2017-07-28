@@ -1,4 +1,4 @@
-package com.recizo.view
+package com.recizo
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.DatePicker
 import android.widget.EditText
+import com.recizo.model.database.IceboxDatabaseHelper
 
-import com.recizo.R
 import com.recizo.model.entity.Vegetable
 import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox_change.*
@@ -35,7 +35,8 @@ class ChangeActivity: AppCompatActivity() {
 
       if(!TextUtils.isEmpty(name) ) {
         val vegetable = Vegetable(takeIntent().id, name, memo, year, month, day)
-        IceboxAdapter.updateItem(vegetable, intent.getIntExtra("position", 0))
+        val idh = IceboxDatabaseHelper(this)
+        idh.updateVegetable(vegetable)
         finish()
       } else {
         AlertDialog.Builder(this).

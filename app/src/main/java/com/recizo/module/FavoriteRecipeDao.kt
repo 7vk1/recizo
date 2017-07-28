@@ -14,31 +14,32 @@ object FavoriteRecipeDao {
 
   private var favoriteRecipeDatabaseHelper: FavoriteRecipeDatabaseHelper? = null
 
-  fun access() {
-    favoriteRecipeDatabaseHelper = FavoriteRecipeDatabaseHelper(context!!)
-  }
-  fun close() {
-    favoriteRecipeDatabaseHelper = null
-  }
+  private fun access() { favoriteRecipeDatabaseHelper = FavoriteRecipeDatabaseHelper(context!!) }
+  private fun close() { favoriteRecipeDatabaseHelper = null }
 
   fun add(recipe: CookpadRecipe) {
+    this.access()
     favoriteRecipeDatabaseHelper!!.addRecipe(recipe)
+    this.close()
   }
 
   fun remove(recipeTitle: String) {
+    access()
     favoriteRecipeDatabaseHelper!!.removeRecipe(recipeTitle)
+    close()
   }
 
   fun getAll(): List<CookpadRecipe>? {
-    return favoriteRecipeDatabaseHelper?.getRecipeAll()
+    access()
+    val ret = favoriteRecipeDatabaseHelper?.getRecipeAll()
+    close()
+    return ret
   }
 
   fun getRecipe(recipeTitle: String): CookpadRecipe? {
-    try {
-      val recipe = favoriteRecipeDatabaseHelper?.getRecipe(recipeTitle)
-      return recipe
-    }catch (e: Exception) {
-      return null
-    }
+    access()
+    try { return favoriteRecipeDatabaseHelper?.getRecipe(recipeTitle) }
+    catch (e: Exception) { return null }
+    finally { close() }
   }
 }
