@@ -1,5 +1,6 @@
 package com.recizo.view
 
+import android.animation.AnimatorSet
 import android.app.AlertDialog
 import android.app.Fragment
 import android.content.Intent
@@ -14,6 +15,11 @@ import com.recizo.RegisterActivity
 import com.recizo.model.entity.IceboxItem
 import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+
 
 class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
   var iceboxAdapter: IceboxAdapter? = null
@@ -64,6 +70,22 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     undo_btn.setOnClickListener {
       iceboxAdapter?.onUndoClicked()
     }
+    sort_btn.setOnClickListener {
+      fun createAnimation(target: View, x: Float, y: Float): ObjectAnimator {
+        val xHolder = PropertyValuesHolder.ofFloat("translationX", 0f, x)
+        val yHolder = PropertyValuesHolder.ofFloat("translationY", 0f, y)
+        val animator = ObjectAnimator.ofPropertyValuesHolder(target, xHolder, yHolder)
+        animator.duration = 500
+        return animator
+      }
+      val set = AnimatorSet()
+      set.playTogether(listOf(
+          createAnimation(sort_by_name, -20f, -150f),
+          createAnimation(sort_by_date, 110f, -110f),
+          createAnimation(sort_by_category, 150f, 20f)))
+      set.start()
+    }
+
 
   }
 

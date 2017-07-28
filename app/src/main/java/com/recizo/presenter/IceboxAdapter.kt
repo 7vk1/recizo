@@ -32,6 +32,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
     itemList = IceboxDao.getAll().toMutableList()
     itemList.add(IceboxItem(-1, "empty", "", ""))
     this.notifyDataSetChanged()
+    fragment.changeBtnVisibility(add = true)
   }
 
   fun onDeleteClicked() {
