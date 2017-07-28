@@ -34,7 +34,7 @@ class ShufooScraper(postCode: String): Scraper(){
       ShufooFlyer(
               storeName = it.select(".chirashi_list_item_name_str")[0].text(),
               description = it.select(".chirashi_list_item_title")[0].text(),
-              shufooLink = CookpadScraper.BASE_URL + it.select(".hover_opacity")[0].attr("href")
+              shufooLink = it.select(".hover_opacity")[0].attr("href")
       )
     }
   }
