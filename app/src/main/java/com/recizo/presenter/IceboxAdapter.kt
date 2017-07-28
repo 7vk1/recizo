@@ -29,7 +29,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
   }
 
   interface IceboxButtons {
-    fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean)
+    fun changeBtnVisibility(add: Boolean = false, undo: Boolean = false, search: Boolean = false, delete: Boolean = false)
     fun toChangeActivity(item: IceboxItem, position: Int)
   }
 
@@ -52,14 +52,14 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
           //検索ビュー展開時に検索ワード追加
           if(openStatus == SwipeLayout.Status.Open || openStatus == SwipeLayout.Status.Middle && !search){
             searchList.add(itemList[position].name)
-            setSearchVisibility(true)
+            fragment.changeBtnVisibility(search = true, undo = true)
             Log.d("取ったやつ : 空いたで", searchList.toString())
           }
           //検索ビュー縮小時に検索ワード削除
           else if(openStatus == SwipeLayout.Status.Close || openStatus == SwipeLayout.Status.Middle && search){
             searchList.remove(itemList[position].name)
             if(searchList.size == 0) {
-              setSearchVisibility(false)
+              fragment.changeBtnVisibility(add = true)
             }
             Log.d("検索リストのサイズ : 閉じたで", searchList.size.toString())
           }
@@ -69,13 +69,13 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
           if(openStatus == SwipeLayout.Status.Open || openStatus == SwipeLayout.Status.Middle && !garbage){
             Log.d("ポジション",getIceboxItemId(position).toString())
             garbageList.add(getIceboxItemId(position))
-            setDeleteVisibility(true)
+            fragment.changeBtnVisibility(delete = true, undo = true)
             Log.d("ゴミ箱行きリストのサイズ", garbageList.size.toString())
           }
           else if(openStatus == SwipeLayout.Status.Close || openStatus == SwipeLayout.Status.Middle && garbage){
             garbageList.remove(getIceboxItemId(position))
             if(garbageList.size == 0) {
-              setDeleteVisibility(false)
+              fragment.changeBtnVisibility(add = true)
             }
             Log.d("ゴミ箱行きリストのサイズ", garbageList.size.toString())
           }
@@ -123,7 +123,6 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
 
 
   fun onItemUpdated(position: Int) {
-    println(position)
     notifyItemChanged(position)
   }
 
@@ -131,11 +130,11 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
     notifyItemInserted(itemList.size)
   }
 
-  fun onItemremoved(position: Int) {
+  fun onItemRemoved(position: Int) {
     notifyItemRemoved(position)
   }
 
-  fun getIceboxItemId(position: Int): Int{
+  private fun getIceboxItemId(position: Int): Int{
     return itemList[position].id
   }
 
@@ -163,7 +162,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
 //      removeItem(item)
     }
     garbageList.clear()
-    fragment.changeBtnVisibility(add = true, delete = false, undo = false, search = false)
+    fragment.changeBtnVisibility(add = true)
   }
   fun onUndoClicked() {
     garbageList.clear()
@@ -172,15 +171,6 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
         .map { it.swipeLayout.close() }
     Log.d("来てる？","わかんね")
 //    fragment.changeBtnVisibility() todo
-  }
-  fun setSearchVisibility(check: Boolean){
-    if(check)fragment.changeBtnVisibility(add = false, delete = false, undo = true, search = true)
-    else fragment.changeBtnVisibility(search = false, undo = false, add = true, delete = false)
-  }
-
-  fun setDeleteVisibility(check: Boolean){
-    if(check)fragment.changeBtnVisibility(delete = true, undo = true, add = false, search = true)
-    else fragment.changeBtnVisibility(delete = false, undo = false, add = true, search = true)
   }
 
 }

@@ -19,8 +19,8 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
   override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {
     add_btn.visibility = if(add) View.VISIBLE else View.INVISIBLE
     undo_btn.visibility = if(undo) View.VISIBLE else View.INVISIBLE
-    delete_btn.visibility = if(search) View.VISIBLE else View.INVISIBLE
-    recipe_search_btn.visibility = if(delete) View.VISIBLE else View.INVISIBLE
+    delete_btn.visibility = if(delete) View.VISIBLE else View.INVISIBLE
+    recipe_search_btn.visibility = if(search) View.VISIBLE else View.INVISIBLE
   }
 
   override fun toChangeActivity(item: IceboxItem, position: Int) {
