@@ -1,0 +1,361 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<foods>
+  <season month="1">
+    <vegetable>
+      <food name="かぶ" />
+      <food name="カリフラワー" />
+      <food name="キャベツ" />
+      <food name="ごぼう" />
+      <food name="こまつな" />
+      <food name="しゅんぎく" />
+      <food name="せり" />
+      <food name="セロリ" />
+      <food name="だいこん" />
+      <food name="なのはな" />
+      <food name="ねぎ" />
+      <food name="のざわな" />
+      <food name="はくさい" />
+      <food name="ブロッコリー" />
+      <food name="ほうれんそう" />
+      <food name="レンコン" />
+    </vegetable>
+    <imo_mushroom>
+      <food name="ながいも" />
+      <food name="やまいも" />
+    </imo_mushroom>
+    <fruit_nut>
+      <food name="いちご" />
+      <food name="オレンジ" />
+      <food name="みかん" />
+      <food name="ゆず" />
+      <food name="レモン" />
+    </fruit_nut>
+  </season>
+
+  <season month="2">
+    <vegetable>
+      <food name="カリフラワー" />
+      <food name="キャベツ" />
+      <food name="ごぼう" />
+      <food name="こまつな" />
+      <food name="しゅんぎく" />
+      <food name="せり" />
+      <food name="セロリ" />
+      <food name="だいこん" />
+      <food name="なのはな" />
+      <food name="ねぎ" />
+      <food name="のざわな" />
+      <food name="はくさい" />
+      <food name="ブロッコリー" />
+      <food name="ほうれんそう" />
+      <food name="レンコン" />
+    </vegetable>
+    <imo_mushroom/>
+    <fruit_nut>
+      <food name="いちご" />
+      <food name="オレンジ" />
+    </fruit_nut>
+  </season>
+
+  <season month="3">
+    <vegetable>
+      <food name="キャベツ" />
+      <food name="クレソン" />
+      <food name="しゅんぎく" />
+      <food name="せり" />
+      <food name="なのはな" />
+      <food name="にら" />
+      <food name="パセリ" />
+      <food name="ブロッコリー" />
+      <food name="みつば" />
+    </vegetable>
+    <imo_mushroom>
+      <food name="しいたけ" />
+    </imo_mushroom>
+    <fruit_nut>
+      <food name="いちご" />
+      <food name="オレンジ" />
+    </fruit_nut>
+  </season>
+
+  <season month="4">
+    <vegetable>
+      <food name="アスパラガス" />
+      <food name="キャベツ" />
+      <food name="グリーンピース" />
+      <food name="クレソン" />
+      <food name="ごぼう" />
+      <food name="さやえんどう" />
+      <food name="せり" />
+      <food name="ぜんまい" />
+      <food name="たけのこ" />
+      <food name="たまねぎ" />
+      <food name="にら" />
+      <food name="パセリ" />
+      <food name="ふき" />
+      <food name="みつば" />
+    </vegetable>
+    <imo_mushroom>
+      <food name="ながいも" />
+      <food name="しいたけ" />
+    </imo_mushroom>
+    <fruit_nut>
+      <food name="いちご" />
+      <food name="グレープフルーツ" />
+    </fruit_nut>
+  </season>
+
+  <season month="5">
+    <vegetable>
+      <food name="アスパラガス" />
+      <food name="グリーンピース" />
+      <food name="クレソン" />
+      <food name="ごぼう" />
+      <food name="さやえんどう" />
+      <food name="ぜんまい" />
+      <food name="そらまめ" />
+      <food name="たけのこ" />
+      <food name="たまねぎ" />
+      <food name="にら" />
+      <food name="パセリ" />
+      <food name="ふき" />
+    </vegetable>
+    <imo_mushroom>
+      <food name="じゃがいも" />
+      <food name="ながいも" />
+      <food name="しいたけ" />
+    </imo_mushroom>
+    <fruit_nut>
+      <food name="びわ" />
+    </fruit_nut>
+  </season>
+
+  <season month="6">
+    <vegetable>
+      <food name="アスパラガス" />
+      <food name="いんげん" />
+      <food name="オクラ" />
+      <food name="きくらげ" />
+      <food name="きゅうり" />
+      <food name="グリーンピース" />
+      <food name="しそ" />
+      <food name="そらまめ" />
+      <food name="トマト" />
+      <food name="にら" />
+      <food name="にんにく" />
+      <food name="ピーマン" />
+      <food name="パプリカ" />
+      <food name="らっきょう" />
+    </vegetable>
+    <imo_mushroom>
+      <food name="じゃがいも" />
+    </imo_mushroom>
+    <fruit_nut>
+      <food name="あんず" />
+      <food name="うめ" />
+      <food name="さくらんぼ" />
+      <food name="パイナップル" />
+      <food name="びわ" />
+      <food name="マンゴー" />
+      <food name="メロン" />
+    </fruit_nut>
+  </season>
+
+  <season month="7">
+    <vegetable>
+      <food name="いんげん" />
+      <food name="えだまめ" />
+      <food name="オクラ" />
+      <food name="かぼちゃ" />
+      <food name="きくらげ" />
+      <food name="きゅうり" />
+      <food name="ゴーヤ" />
+      <food name="ししとうがらし" />
+      <food name="しそ" />
+      <food name="ズッキーニ" />
+      <food name="とうがん" />
+      <food name="とうもろこし" />
+      <food name="トマト" />
+      <food name="なす" />
+      <food name="にら" />
+      <food name="にんにく" />
+      <food name="ピーマン" />
+      <food name="パプリカ" />
+      <food name="みょうが" />
+      <food name="モロヘイヤ" />
+      <food name="らっきょう" />
+      <food name="レタス" />
+    </vegetable>
+    <imo_mushroom/>
+    <fruit_nut>
+      <food name="あんず" />
+      <food name="うめ" />
+      <food name="さくらんぼ" />
+      <food name="スイカ" />
+      <food name="マンゴー" />
+      <food name="メロン" />
+      <food name="ゆず" />
+    </fruit_nut>
+  </season>
+
+  <season month="8">
+    <vegetable>
+      <food name="いんげん" />
+      <food name="えだまめ" />
+      <food name="オクラ" />
+      <food name="かぼちゃ" />
+      <food name="きくらげ" />
+      <food name="きゅうり" />
+      <food name="ゴーヤ" />
+      <food name="ししとうがらし" />
+      <food name="しそ" />
+      <food name="ズッキーニ" />
+      <food name="とうがん" />
+      <food name="とうもろこし" />
+      <food name="トマト" />
+      <food name="なす" />
+      <food name="にら" />
+      <food name="にんにく" />
+      <food name="ピーマン" />
+      <food name="パプリカ" />
+      <food name="みょうが" />
+      <food name="モロヘイヤ" />
+      <food name="レタス" />
+    </vegetable>
+    <imo_mushroom/>
+    <fruit_nut>
+      <food name="いちじく" />
+      <food name="かぼす" />
+      <food name="なし" />
+      <food name="ぶどう" />
+      <food name="マンゴー" />
+      <food name="ゆず" />
+    </fruit_nut>
+  </season>
+
+  <season month="9">
+    <vegetable>
+      <food name="いんげん" />
+      <food name="かぼちゃ" />
+      <food name="きくらげ" />
+      <food name="ズッキーニ" />
+      <food name="ちんげんさい" />
+      <food name="とうがん" />
+      <food name="なす" />
+      <food name="にら" />
+      <food name="パセリ" />
+      <food name="みょうが" />
+    </vegetable>
+    <imo_mushroom>
+      <food name="さつまいも" />
+      <food name="しめじ" />
+      <food name="まいたけ" />
+      <food name="まつたけ" />
+    </imo_mushroom>
+    <fruit_nut>
+      <food name="いちじく" />
+      <food name="かぼす" />
+      <food name="くり" />
+      <food name="なし" />
+      <food name="ぶどう" />
+      <food name="ゆず" />
+    </fruit_nut>
+  </season>
+
+  <season month="10">
+    <vegetable>
+      <food name="かぼちゃ" />
+      <food name="ちんげんさい" />
+      <food name="にんじん" />
+      <food name="パセリ" />
+      <food name="みょうが" />
+    </vegetable>
+    <imo_mushroom>
+      <food name="さつまいも" />
+      <food name="さといも" />
+      <food name="じゃがいも" />
+      <food name="しめじ" />
+      <food name="なめこ" />
+      <food name="まいたけ" />
+      <food name="マッシュルーム" />
+      <food name="まつたけ" />
+    </imo_mushroom>
+
+    <fruit_nut>
+      <food name="いちじく" />
+      <food name="かき" />
+      <food name="かぼす" />
+      <food name="くり" />
+      <food name="くるみ" />
+      <food name="ぎんなん" />
+      <food name="ゆず" />
+      <food name="りんご" />
+    </fruit_nut>
+  </season>
+
+  <season month="11">
+    <vegetable>
+      <food name="かぶ" />
+      <food name="カリフラワー" />
+      <food name="ごぼう" />
+      <food name="しゅんぎく" />
+      <food name="ちんげんさい" />
+      <food name="にんじん" />
+      <food name="のざわな" />
+      <food name="はくさい" />
+      <food name="パセリ" />
+      <food name="ブロッコリー" />
+      <food name="ルッコラ" />
+      <food name="レンコン" />
+    </vegetable>
+    <imo_mushroom>
+      <food name="さつまいも" />
+      <food name="さといも" />
+      <food name="じゃがいも" />
+      <food name="やまいも" />
+      <food name="しいたけ" />
+      <food name="なめこ" />
+      <food name="マッシュルーム" />
+    </imo_mushroom>
+    <fruit_nut>
+      <food name="かき" />
+      <food name="くるみ" />
+      <food name="ぎんなん" />
+      <food name="ゆず" />
+      <food name="りんご" />
+    </fruit_nut>
+  </season>
+
+  <season month="12">
+    <vegetable>
+      <food name="かぶ" />
+      <food name="カリフラワー" />
+      <food name="キャベツ" />
+      <food name="ごぼう" />
+      <food name="こまつな" />
+      <food name="しゅんぎく" />
+      <food name="せり" />
+      <food name="セロリ" />
+      <food name="だいこん" />
+      <food name="ねぎ" />
+      <food name="のざわな" />
+      <food name="はくさい" />
+      <food name="ブロッコリー" />
+      <food name="ほうれんそう" />
+      <food name="ルッコラ" />
+      <food name="レンコン" />
+    </vegetable>
+    <imo_mushroom>
+      <food name="さといも" />
+      <food name="ながいも" />
+      <food name="やまいも" />
+      <food name="マッシュルーム" />
+    </imo_mushroom>
+    <fruit_nut>
+      <food name="みかん" />
+      <food name="ゆず" />
+      <food name="りんご" />
+      <food name="レモン" />
+    </fruit_nut>
+  </season>
+</foods>
