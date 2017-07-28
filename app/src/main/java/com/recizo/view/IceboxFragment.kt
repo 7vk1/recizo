@@ -63,7 +63,7 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
       (activity as ChangeToSearchFragment).changeSearchFragment(iceboxAdapter!!.getSearchItemList())
     }
     undo_btn.setOnClickListener {
-      //todo impl
+      iceboxAdapter?.onUndoClicked()
     }
 
   }
