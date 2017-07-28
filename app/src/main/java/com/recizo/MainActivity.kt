@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
   private fun changeFragment(fragment: Fragment) {
     val transaction = fragmentManager.beginTransaction()
+    transaction.addToBackStack(null)
     transaction.replace(R.id.fragment_frame, fragment)
     transaction.commit()
   }
