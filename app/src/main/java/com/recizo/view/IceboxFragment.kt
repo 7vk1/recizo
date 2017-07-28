@@ -17,12 +17,10 @@ import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
-import android.view.animation.Animation
-import android.view.animation.AnimationSet
-
 
 class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
   var iceboxAdapter: IceboxAdapter? = null
+  var isSortOpen = false
   override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {
     add_btn.visibility = if(add) View.VISIBLE else View.INVISIBLE
     undo_btn.visibility = if(undo) View.VISIBLE else View.INVISIBLE
@@ -51,6 +49,7 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     iceboxAdapter = IceboxAdapter(this)
     recyclerView.layoutManager = LinearLayoutManager(activity)
     recyclerView.adapter = iceboxAdapter
+    sort_by_name.alpha = 0f
 
     add_btn.setOnClickListener {
       activity.startActivity(Intent(activity, RegisterActivity::class.java))
@@ -71,18 +70,20 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
       iceboxAdapter?.onUndoClicked()
     }
     sort_btn.setOnClickListener {
-      fun createAnimation(target: View, x: Float, y: Float): ObjectAnimator {
-        val xHolder = PropertyValuesHolder.ofFloat("translationX", 0f, x)
-        val yHolder = PropertyValuesHolder.ofFloat("translationY", 0f, y)
-        val animator = ObjectAnimator.ofPropertyValuesHolder(target, xHolder, yHolder)
+      fun createAnimation(target: View, x: Float, y: Float, close: Boolean = false): ObjectAnimator {
+        val xHolder = if(!close) PropertyValuesHolder.ofFloat("translationX", 0f, x) else PropertyValuesHolder.ofFloat("translationX", x, 0f)
+        val yHolder = if(!close) PropertyValuesHolder.ofFloat("translationY", 0f, y) else PropertyValuesHolder.ofFloat("translationY", y, 0f)
+        val opacity = if(!close) PropertyValuesHolder.ofFloat("alpha", 0f, 1f ) else PropertyValuesHolder.ofFloat("alpha", 1f, 0f)
+        val animator = ObjectAnimator.ofPropertyValuesHolder(target, xHolder, yHolder, opacity)
         animator.duration = 500
         return animator
       }
       val set = AnimatorSet()
       set.playTogether(listOf(
-          createAnimation(sort_by_name, -20f, -150f),
-          createAnimation(sort_by_date, 110f, -110f),
-          createAnimation(sort_by_category, 150f, 20f)))
+          createAnimation(sort_by_name, -30f, -160f, isSortOpen),
+          createAnimation(sort_by_date, 120f, -120f, isSortOpen),
+          createAnimation(sort_by_category, 160f, 30f, isSortOpen)))
+      isSortOpen = !isSortOpen
       set.start()
     }
 
