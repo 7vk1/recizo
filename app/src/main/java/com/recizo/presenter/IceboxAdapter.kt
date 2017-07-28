@@ -13,14 +13,15 @@ import com.recizo.module.IceboxDao
 
 
 class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxViewHolder>() {
-  init {
-    setHasStableIds(true)
-  }
   var itemList = IceboxDao.getAll().toMutableList()
   var searchList = mutableSetOf<Long>()
   var garbageList = mutableSetOf<Long>()
   var recyclerView: RecyclerView? = null
   var selectedItemIdList = mutableSetOf<Long>()
+  init {
+    setHasStableIds(true)
+    itemList.add(IceboxItem(id = -1, memo = "", name = "empty", date = ""))
+  }
 
   override fun getItemCount(): Int {
     return itemList.size
@@ -43,6 +44,10 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
 
   override fun onBindViewHolder(holder: IceboxViewHolder?, position: Int) {
     val item = itemList[position]
+    if(item.id == -1) {
+      holder!!.itemView.visibility = View.INVISIBLE
+      return
+    }
     holder!!.title.text = item.name
     holder.memo.text = item.memo
     holder.date.text = item.date
@@ -135,6 +140,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxVi
 
   fun updateDataSet() {
     itemList = IceboxDao.getAll().toMutableList()
+    itemList.add(IceboxItem(-1, "empty", "", ""))
     this.notifyDataSetChanged()
   }
 

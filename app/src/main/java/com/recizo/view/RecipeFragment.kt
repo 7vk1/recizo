@@ -31,7 +31,7 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
         DividerItemDecoration(searched_recyclerView.context
         , LinearLayoutManager(activity).orientation))
 
-    val recipePresenter = RecipePresenter(searched_recyclerView, listOf("鹿","トマト"))
+    val recipePresenter = RecipePresenter(activity, searched_recyclerView, items)
     recipePresenter.setLoadEventListener(object : RecipePresenter.LoadEventListener {
       override fun onLoadStart() {
         searched_recipe_progressBar.visibility = View.VISIBLE
