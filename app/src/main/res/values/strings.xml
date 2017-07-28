@@ -15,6 +15,8 @@
   <string name="navigation_drawer_season">食材の旬</string>
   <string name="settings">設定</string>
 
+  <string name="category">カテゴリー</string>
+  <string name="name">名前</string>
   <string name="register_view_vegetable_name">野菜名</string>
   <string name="register_view_memo">メモ</string>
   <string name="register_view_date">登録日</string>

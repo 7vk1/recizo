@@ -21,12 +21,14 @@ class ChangeActivity: AppCompatActivity() {
     }
     val item = intent.getSerializableExtra("item") as IceboxItem
 
+
     fragment_icebox_change_register_btn.setOnClickListener {
       val name: String = fragment_icebox_change_name.text.toString()
       val memo: String = fragment_icebox_change_memo.text.toString()
       val year: String = fragment_icebox_change_date.year.toString()
       val month: String = (fragment_icebox_change_date.month + 1).toString()
       val day: String = fragment_icebox_change_date.dayOfMonth.toString()
+//      val category: IceboxItem.Category = spinner
       if(!TextUtils.isEmpty(name) ) {
         IceboxDao.update(IceboxItem(item.id, name, memo, year, month, day))
         finish()
