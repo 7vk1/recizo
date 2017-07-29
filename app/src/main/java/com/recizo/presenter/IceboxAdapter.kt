@@ -145,7 +145,16 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
       this.title.text = item.name
       this.memo.text = item.memo
       this.date.text = item.date
-      this.categoryImg.setImageResource(R.drawable.cat_vegetable)
+      val img_id = when(item.category) {
+        IceboxItem.Category.vegetable -> R.drawable.cat_vegetable
+        IceboxItem.Category.fruit -> R.drawable.cat_fruit
+        IceboxItem.Category.meat -> R.drawable.cat_meat
+        IceboxItem.Category.seafood -> R.drawable.cat_seafood
+        IceboxItem.Category.dairy -> R.drawable.cat_dairy
+        IceboxItem.Category.mushroom -> R.drawable.cat_mushroom
+        IceboxItem.Category.seasoning -> R.drawable.cat_seasoning
+      }
+      this.categoryImg.setImageResource(img_id)
       swipeLayout.showMode = SwipeLayout.ShowMode.PullOut
       swipeLayout.addDrag(SwipeLayout.DragEdge.Right,swipeLayout.findViewById(R.id.icebox_item_del))
       swipeLayout.addDrag(SwipeLayout.DragEdge.Left,swipeLayout.findViewById(R.id.icebox_item_search))
