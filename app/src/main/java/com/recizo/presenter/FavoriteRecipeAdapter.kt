@@ -29,7 +29,7 @@ class FavoriteRecipeAdapter(private val favoriteRecipeListView: RecyclerView, pr
     this.setHasStableIds(true)
   }
   val favoriteRecipeList = mutableListOf<CookpadRecipe>()
-  val garbageList = mutableListOf<Long>()
+  val garbageList = mutableSetOf<Long>()
   var recycleView: RecyclerView? = null
   val undoList: MutableList<Long> = mutableListOf()
 
@@ -52,6 +52,7 @@ class FavoriteRecipeAdapter(private val favoriteRecipeListView: RecyclerView, pr
       override fun onOpen(layout: SwipeLayout?) {
         super.onOpen(layout)
         if(layout!!.dragEdge == SwipeLayout.DragEdge.Right) {
+          println(holder.itemId)
           garbageList.add(holder.itemId)
           undoList.add(holder.itemId)
           removeBtn.visibility = View.VISIBLE
@@ -72,7 +73,7 @@ class FavoriteRecipeAdapter(private val favoriteRecipeListView: RecyclerView, pr
   }
 
   fun onDeleteClicked() {
-    garbageList.map {
+    garbageList.sortedBy { it }.reversed().map {
       FavoriteRecipeDao.remove(favoriteRecipeList[it.toInt()].title)
       favoriteRecipeList.removeAt(it.toInt())
     }
