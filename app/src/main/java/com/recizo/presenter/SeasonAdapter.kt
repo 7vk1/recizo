@@ -3,13 +3,11 @@ package com.recizo.presenter
 import android.content.Context
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.recizo.R
-import com.recizo.model.viewholder.IceboxViewHolder
 
 class SeasonAdapter(context: Context,val seasonList: List<String>): RecyclerView.Adapter<SeasonAdapter.SeasonViewHolder>() {
   init {
@@ -23,13 +21,8 @@ class SeasonAdapter(context: Context,val seasonList: List<String>): RecyclerView
   override fun onBindViewHolder(holder: SeasonViewHolder?, position: Int) {
     val pos = holder!!.itemId.toInt()
     holder.name.text = seasonList[pos]
-    if(isDivider(seasonList[pos])) {
-      holder.frame.setBackgroundColor(Color.GREEN)
-    } else {
-      holder.frame.setBackgroundColor(Color.WHITE)
-    }
-
-
+    if(isDivider(seasonList[pos])) holder.frame.setBackgroundColor(Color.GREEN)
+    else holder.frame.setBackgroundColor(Color.WHITE)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SeasonViewHolder {
