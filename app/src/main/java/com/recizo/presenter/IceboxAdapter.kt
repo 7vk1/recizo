@@ -18,6 +18,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
   private var searchList = mutableSetOf<Long>()
   private var garbageList = mutableSetOf<Long>()
   private var recyclerView: RecyclerView? = null
+  private var sort = Sort.CATEGORY
   init {
     setHasStableIds(true)
     itemList.add(IceboxItem(id = -1, memo = "", name = "empty", date = "", category = IceboxItem.Category.vegetable))
@@ -32,6 +33,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
   fun updateDataSet() {
     itemList = IceboxDao.getAll().toMutableList()
     itemList.add(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
+    sortItems(sort)
     this.notifyDataSetChanged()
     fragment.changeBtnVisibility(add = true)
   }
@@ -46,6 +48,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
 
   fun sortItems(type: Sort) {
     itemList.removeAt(itemList.size -1)
+    sort = type
     when(type) {
       Sort.NAME -> itemList.sortBy { it.name }
       Sort.DATE -> itemList.sortBy { it.date }
