@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
       R.id.nav_season -> {} // TODO
       R.id.nav_flyer -> changeFragment(FlyerFragment())
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
-      R.id.nav_settings -> {}//TODO
+      R.id.nav_settings -> changeFragment(SettingFragment())
       R.id.nav_favorite_recipe -> changeFragment(FavoriteRecipeFragment())
     }
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
