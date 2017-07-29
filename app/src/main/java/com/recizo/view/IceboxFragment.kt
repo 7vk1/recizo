@@ -83,6 +83,7 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
   }
 
   private fun toggleSortBtn() {
+    val viewSize = sort_btn.width.toFloat()
     fun createAnimation(target: View, x: Float, y: Float, close: Boolean = false): ObjectAnimator {
       val xHolder = if(!close) PropertyValuesHolder.ofFloat("translationX", 0f, x) else PropertyValuesHolder.ofFloat("translationX", x, 0f)
       val yHolder = if(!close) PropertyValuesHolder.ofFloat("translationY", 0f, y) else PropertyValuesHolder.ofFloat("translationY", y, 0f)
@@ -93,9 +94,9 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     }
     val set = AnimatorSet()
     set.playTogether(listOf(
-        createAnimation(sort_by_name, -30f, -160f, isSortOpen),
-        createAnimation(sort_by_date, 120f, -120f, isSortOpen),
-        createAnimation(sort_by_category, 160f, 30f, isSortOpen)))
+        createAnimation(sort_by_name, 0 - viewSize * 0.2f, 0 - viewSize * 1.2f, isSortOpen),
+        createAnimation(sort_by_date, viewSize, 0 - viewSize, isSortOpen),
+        createAnimation(sort_by_category, viewSize * 1.2f, viewSize * 0.2f, isSortOpen)))
     isSortOpen = !isSortOpen
     set.start()
   }
