@@ -25,7 +25,7 @@ class SettingFragment : PreferenceFragment() {
       if(v.toString().matches("""^\d{7}$""".toRegex())){
         editTextPreference.summary = v.toString()
         true
-      }else false
+      }else false //todo impl
     }
 
     // alert settings
