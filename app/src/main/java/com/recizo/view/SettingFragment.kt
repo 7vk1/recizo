@@ -15,6 +15,9 @@ class SettingFragment : PreferenceFragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     addPreferencesFromResource(R.xml.preferences)
+
+
+    // postcode setting
     val editTextPreference = findPreference("edit_postcode_key")
     editTextPreference.summary =
             PreferenceManager.getDefaultSharedPreferences(AppContextHolder.context).getString("edit_postcode_key", "")
@@ -26,7 +29,17 @@ class SettingFragment : PreferenceFragment() {
     }
 
 
-    val alertPreference = findPreference("alert_item")
+    // alert settings
+    val alertPreference = findPreference("alert_item") as SettingItemView
     alertPreference.summary = "1日前8時"
+    alertPreference.setListOnClickListener(object : SettingItemView.OnListClickListener{
+      override fun onListClick() {
+
+      }
+    })
+
+
+    //  about this app
+
   }
 }
