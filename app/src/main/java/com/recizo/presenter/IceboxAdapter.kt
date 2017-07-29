@@ -39,7 +39,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
   }
 
   fun onDeleteClicked() {
-    garbageList.sorted().reversed().map {
+    garbageList.map {
       removeItem(it)
     }
     garbageList.clear()
