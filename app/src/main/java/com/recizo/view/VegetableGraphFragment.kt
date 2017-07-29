@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter
 import com.recizo.R
 import com.recizo.module.RecizoApi
 import kotlinx.android.synthetic.main.fragment_vegetable_graph.*
-import com.recizo.presenter.VegetableGraphAdaptor
+import com.recizo.presenter.VegetableGraphPresenter
 
 
 class VegetableGraphFragment : Fragment() {
@@ -21,7 +21,7 @@ class VegetableGraphFragment : Fragment() {
   }
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val lineDataAdapter = VegetableGraphAdaptor(chart)
+    val lineDataAdapter = VegetableGraphPresenter(chart)
     val adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item)
     spinner.adapter = adapter
     RecizoApi.Vegetables.values().forEach {

@@ -39,6 +39,7 @@
     <string name="preference_postcode_title">住所設定</string>
     <string name="checkbox_postcode_title">郵便番号</string>
 
+
     <!-- このアプリについて -->
     <string name="about_me_title1">1. サービスの内容について</string>
     <string name="about_me_title2">2. 関連サイト</string>
@@ -53,5 +54,18 @@
     <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
 
     <!-- ライセンス -->
+  
+  <string name="month_jan">1月</string>
+  <string name="month_feb">2月</string>
+  <string name="month_mar">3月</string>
+  <string name="month_apr">4月</string>
+  <string name="month_may">5月</string>
+  <string name="month_jun">6月</string>
+  <string name="month_jul">7月</string>
+  <string name="month_aug">8月</string>
+  <string name="month_sep">9月</string>
+  <string name="month_oct">10月</string>
+  <string name="month_nov">11月</string>
+  <string name="month_dec">12月</string>
 
 </resources>
