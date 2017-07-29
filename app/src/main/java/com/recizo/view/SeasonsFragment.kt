@@ -29,4 +29,10 @@ class SeasonsFragment : Fragment(){
     season_tab.setupWithViewPager(seasons_viewpager)
   }
 
+  override fun onDestroyView() {
+    super.onDestroyView()
+    seasons_viewpager.adapter = null
+    season_tab.setupWithViewPager(null)
+  }
+
 }
