@@ -1,11 +1,14 @@
 package com.recizo
 
+import android.app.Dialog
 import android.app.Fragment
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -16,48 +19,41 @@ import com.recizo.view.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.MoveToSearchFragment {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    AppContextHolder.context = applicationContext
     setContentView(R.layout.activity_main)
     val toolbar = findViewById(R.id.toolbar) as Toolbar
     setSupportActionBar(toolbar)
-
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
     val toggle = ActionBarDrawerToggle(
         this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
     drawer.addDrawerListener(toggle)
     toggle.syncState()
-
-    AppContextHolder.context = applicationContext
-
     val transaction = fragmentManager.beginTransaction()
     transaction.add(R.id.fragment_frame, IceboxFragment())
     transaction.commit()
-
     val navigationView = findViewById(R.id.nav_view) as NavigationView
     navigationView.setNavigationItemSelectedListener(this)
   }
 
-  override fun onBackPressed() {
+  override fun onBackPressed() {//todo change nav selected item
+    print(fragmentManager.backStackEntryCount)
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
-    if (drawer.isDrawerOpen(GravityCompat.START)) drawer.closeDrawer(GravityCompat.START)
-    else super.onBackPressed()
-  }
-
-  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.main, menu)
-    return true
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    val id = item.itemId
-    if (id == R.id.action_settings) return true
-    return super.onOptionsItemSelected(item)
+    if(drawer.isDrawerOpen(GravityCompat.START)) drawer.closeDrawer(GravityCompat.START)
+    if(fragmentManager.backStackEntryCount != 0) super.onBackPressed()
+    else {
+      AlertDialog.Builder(this)
+          .setMessage("アプリを終了しますか？")
+          .setPositiveButton("OK", { _, _ -> super.onBackPressed() })
+          .setNegativeButton("CANCEL", null)
+          .show()
+    }
   }
 
   override fun onNavigationItemSelected(item: MenuItem): Boolean {
     val id = item.itemId
     when (id) {
       R.id.nav_icebox_list -> changeFragment(IceboxFragment())
-      R.id.nav_season -> changeFragment(SeasonsFragment()) // TODO
+      R.id.nav_season -> changeFragment(SeasonsFragment())
       R.id.nav_flyer -> changeFragment(FlyerFragment())
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
       R.id.nav_settings -> changeFragment(SettingFragment())
