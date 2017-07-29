@@ -15,22 +15,20 @@
     <string name="navigation_drawer_season">食材の旬</string>
     <string name="settings">設定</string>
 
-  <string name="category">カテゴリー</string>
-  <string name="category_icon">カテゴリーアイコン</string>
-  <string name="name">名前</string>
-  <string name="register_view_vegetable_name">野菜名</string>
-  <string name="register_view_memo">メモ</string>
-  <string name="register_view_date">登録日</string>
-  <string name="register_view_register_button">登録</string>
-  <string name="cancel_button">キャンセル</string>
-  <string name="change_view_change_button">変更</string>
+    <string name="category">カテゴリー</string>
+    <string name="category_icon">カテゴリーアイコン</string>
+    <string name="name">名前</string>
+    <string name="register_view_vegetable_name">野菜名</string>
+    <string name="register_view_memo">メモ</string>
+    <string name="register_view_date">登録日</string>
+    <string name="register_view_register_button">登録</string>
+    <string name="cancel_button">キャンセル</string>
+    <string name="change_view_change_button">変更</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="recipe_image">完成イメージ</string>
-
-
 
 
     <!-- preference strings -->
