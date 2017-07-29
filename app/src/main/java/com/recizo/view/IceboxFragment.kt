@@ -9,14 +9,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.recizo.ChangeActivity
 import com.recizo.R
-import com.recizo.RegisterActivity
 import com.recizo.model.entity.IceboxItem
 import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import com.recizo.IceboxItemSetActivity
 
 class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
   var iceboxAdapter: IceboxAdapter? = null
@@ -28,8 +27,8 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     recipe_search_btn.visibility = if(search) View.VISIBLE else View.INVISIBLE
   }
 
-  override fun toChangeActivity(item: IceboxItem) {
-    val intent = Intent(activity, ChangeActivity::class.java)
+  override fun toIceboxItemSetActivity(item: IceboxItem) {
+    val intent = Intent(activity, IceboxItemSetActivity::class.java)
     intent.putExtra("item", item)
     activity.startActivity(intent)
   }
@@ -52,7 +51,7 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     sort_by_name.alpha = 0f
 
     add_btn.setOnClickListener {
-      activity.startActivity(Intent(activity, RegisterActivity::class.java))
+      activity.startActivity(Intent(activity, IceboxItemSetActivity::class.java))
     }
     delete_btn.setOnClickListener {
       AlertDialog.Builder(activity)
@@ -64,7 +63,7 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
           .show()
     }
     recipe_search_btn.setOnClickListener {
-      (activity as ChangeToSearchFragment).changeSearchFragment(iceboxAdapter!!.getSearchItemList())
+      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxAdapter!!.getSearchItemList())
     }
     undo_btn.setOnClickListener {
       iceboxAdapter?.onUndoClicked()
@@ -101,8 +100,8 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     set.start()
   }
 
-  interface ChangeToSearchFragment {
-    fun changeSearchFragment(items: Set<String>)
+  interface MoveToSearchFragment {
+    fun moveToSearchFragment(items: Set<String>)
   }
 
 }

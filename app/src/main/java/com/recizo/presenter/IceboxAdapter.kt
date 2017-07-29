@@ -114,7 +114,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
     })
 
     holder.cardView.setOnClickListener {
-      fragment.toChangeActivity(itemList.first { it.id.toLong() == holder.itemId })
+      fragment.toIceboxItemSetActivity(itemList.first { it.id.toLong() == holder.itemId })
     }
   }
 
@@ -134,7 +134,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
 
   interface IceboxButtons {
     fun changeBtnVisibility(add: Boolean = false, undo: Boolean = false, search: Boolean = false, delete: Boolean = false)
-    fun toChangeActivity(item: IceboxItem)
+    fun toIceboxItemSetActivity(item: IceboxItem)
   }
 
   class IceboxViewHolder(v: View): RecyclerView.ViewHolder(v) {

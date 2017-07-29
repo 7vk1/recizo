@@ -5,56 +5,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.recizo.ChangeActivity">
+    tools:context="com.recizo.IceboxItemSetActivity">
 
   <TextView
-      android:id="@+id/textView2"
+      android:labelFor="@+id/et_name"
+      android:id="@+id/tv_name"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/name"
       android:layout_marginStart="8dp"
       app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      android:layout_marginTop="7dp"
+      android:layout_marginTop="0dp"
       android:layout_marginEnd="8dp"
       app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintHorizontal_bias="0.12"/>
+      app:layout_constraintHorizontal_bias="0.146"
+      app:layout_constraintTop_toBottomOf="@+id/spinner"/>
 
   <EditText
-      android:id="@+id/fragment_icebox_change_name"
+      android:id="@+id/et_name"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="8dp"
       android:layout_marginLeft="8dp"
       android:layout_marginRight="8dp"
       android:layout_marginStart="8dp"
-      android:layout_marginTop="15dp"
+      android:layout_marginTop="16dp"
       android:ems="10"
       android:inputType="textPersonName"
       android:labelFor="@+id/fragment_icebox_change_name"
       app:layout_constraintHorizontal_bias="0.503"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView2"/>
+      app:layout_constraintTop_toBottomOf="@+id/tv_name"/>
 
   <TextView
-      android:id="@+id/textView"
+      android:id="@+id/tv_cat"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/category"
-      android:layout_marginTop="6dp"
-      app:layout_constraintTop_toBottomOf="@+id/fragment_icebox_change_name"
       android:layout_marginStart="8dp"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintHorizontal_bias="0.12"/>
+      app:layout_constraintHorizontal_bias="0.165"
+      app:layout_constraintTop_toTopOf="parent"
+      android:layout_marginTop="8dp"/>
 
   <Spinner
       android:id="@+id/spinner"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="0dp"
-      app:layout_constraintTop_toBottomOf="@+id/textView"
+      app:layout_constraintTop_toBottomOf="@+id/tv_cat"
       android:layout_marginRight="8dp"
       android:layout_marginLeft="8dp"
       app:layout_constraintLeft_toLeftOf="parent"
@@ -62,7 +63,8 @@
       app:layout_constraintHorizontal_bias="0.5" />
 
   <TextView
-      android:id="@+id/textView3"
+      android:labelFor="@+id/et_memo"
+      android:id="@+id/tv_memo"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/register_view_memo"
@@ -70,14 +72,14 @@
       app:layout_constraintRight_toRightOf="parent"
       android:layout_marginLeft="8dp"
       app:layout_constraintLeft_toLeftOf="parent"
-      android:layout_marginTop="8dp"
-      app:layout_constraintTop_toBottomOf="@+id/spinner"
-      app:layout_constraintHorizontal_bias="0.12"
+      app:layout_constraintHorizontal_bias="0.117"
       android:layout_marginStart="8dp"
-      android:layout_marginEnd="8dp"/>
+      android:layout_marginEnd="8dp"
+      android:layout_marginTop="8dp"
+      app:layout_constraintTop_toBottomOf="@+id/et_name"/>
 
   <EditText
-      android:id="@+id/fragment_icebox_change_memo"
+      android:id="@+id/et_memo"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="8dp"
@@ -87,14 +89,13 @@
       android:layout_marginTop="19dp"
       android:ems="10"
       android:inputType="textPersonName"
-      android:labelFor="@+id/fragment_icebox_change_memo"
       app:layout_constraintHorizontal_bias="0.503"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView3"/>
+      app:layout_constraintTop_toBottomOf="@+id/tv_memo"/>
 
   <TextView
-      android:id="@+id/textView4"
+      android:id="@+id/tv_date"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/register_view_date"
@@ -104,12 +105,12 @@
       android:layout_marginLeft="8dp"
       app:layout_constraintLeft_toLeftOf="parent"
       android:layout_marginTop="14dp"
-      app:layout_constraintTop_toBottomOf="@+id/fragment_icebox_change_memo"
+      app:layout_constraintTop_toBottomOf="@+id/et_memo"
       app:layout_constraintHorizontal_bias="0.122"
       android:layout_marginEnd="8dp"/>
 
   <DatePicker
-      android:id="@+id/fragment_icebox_change_date"
+      android:id="@+id/date_picker"
       android:layout_width="248dp"
       android:layout_height="174dp"
       android:calendarViewShown="false"
@@ -122,30 +123,23 @@
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
       android:layout_marginTop="8dp"
-      app:layout_constraintTop_toBottomOf="@+id/textView4"
+      app:layout_constraintTop_toBottomOf="@+id/tv_date"
       tools:targetApi="lollipop"/>
 
   <LinearLayout
       android:layout_width="0dp"
-      android:layout_height="46dp"
+      android:layout_height="wrap_content"
       android:layout_marginBottom="32dp"
-      android:layout_marginLeft="8dp"
-      android:layout_marginRight="8dp"
-      android:layout_marginTop="8dp"
       android:orientation="horizontal"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/fragment_icebox_change_date"
-      app:layout_constraintVertical_bias="0.555"
+      app:layout_constraintTop_toBottomOf="@+id/date_picker"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp">
 
-
-    <!-- TODO styleを考える -->
     <Button
-        android:id="@+id/fragment_icebox_change_cancel_btn"
+        android:id="@+id/cancel_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -153,7 +147,7 @@
         android:text="@string/cancel_button"/>
 
     <Button
-        android:id="@+id/fragment_icebox_change_register_btn"
+        android:id="@+id/register_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
