@@ -84,7 +84,7 @@
     <TextView
         style="@style/IceboxItemSetTitle"
         android:id="@+id/tv_date"
-        android:text="@string/register_view_date"
+        android:text="@string/expiration_date"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_memo"/>

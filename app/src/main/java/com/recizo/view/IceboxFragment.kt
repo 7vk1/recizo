@@ -20,6 +20,7 @@ import com.recizo.IceboxItemSetActivity
 class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
   var iceboxAdapter: IceboxAdapter? = null
   var isSortOpen = false
+
   override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {
     add_btn.visibility = if(add) View.VISIBLE else View.INVISIBLE
     undo_btn.visibility = if(undo) View.VISIBLE else View.INVISIBLE
