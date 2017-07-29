@@ -19,6 +19,7 @@ import com.recizo.view.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.MoveToSearchFragment {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    AppContextHolder.context = applicationContext
     setContentView(R.layout.activity_main)
     val toolbar = findViewById(R.id.toolbar) as Toolbar
     setSupportActionBar(toolbar)
@@ -27,7 +28,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
     drawer.addDrawerListener(toggle)
     toggle.syncState()
-    AppContextHolder.context = applicationContext
     val transaction = fragmentManager.beginTransaction()
     transaction.add(R.id.fragment_frame, IceboxFragment())
     transaction.commit()
@@ -47,17 +47,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
           .setNegativeButton("CANCEL", null)
           .show()
     }
-  }
-
-  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.main, menu)
-    return true
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    val id = item.itemId
-    if (id == R.id.action_settings) return true
-    return super.onOptionsItemSelected(item)
   }
 
   override fun onNavigationItemSelected(item: MenuItem): Boolean {
