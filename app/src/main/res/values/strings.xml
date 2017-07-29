@@ -15,22 +15,20 @@
     <string name="navigation_drawer_season">食材の旬</string>
     <string name="settings">設定</string>
 
-  <string name="category">カテゴリー</string>
-  <string name="category_icon">カテゴリーアイコン</string>
-  <string name="name">名前</string>
-  <string name="register_view_vegetable_name">野菜名</string>
-  <string name="register_view_memo">メモ</string>
-  <string name="register_view_date">登録日</string>
-  <string name="register_view_register_button">登録</string>
-  <string name="cancel_button">キャンセル</string>
-  <string name="change_view_change_button">変更</string>
+    <string name="category">カテゴリー</string>
+    <string name="category_icon">カテゴリーアイコン</string>
+    <string name="name">名前</string>
+    <string name="register_view_vegetable_name">野菜名</string>
+    <string name="register_view_memo">メモ</string>
+    <string name="register_view_date">登録日</string>
+    <string name="register_view_register_button">登録</string>
+    <string name="cancel_button">キャンセル</string>
+    <string name="change_view_change_button">変更</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="recipe_image">完成イメージ</string>
-
-
 
 
     <!-- preference strings -->
@@ -41,6 +39,22 @@
     <string name="preference_postcode_title">住所設定</string>
     <string name="checkbox_postcode_title">郵便番号</string>
 
+
+    <!-- このアプリについて -->
+    <string name="about_me_title1">1. サービスの内容について</string>
+    <string name="about_me_title2">2. 関連サイト</string>
+    <string name="about_me_title3">3. 連絡先</string>
+    <string name="about_me_title4">4. 引用させていただいたサービス</string>
+    <string name="about_me_title5">5. コピーライト</string>
+
+    <string name="about_me_content1">RECIZOは、冷蔵庫の情報を登録してもらい、レシピを検索したり、食材についての様々な情報を提供するサービスです。</string>
+    <string name="about_me_content2">http://recizo.com</string>
+    <string name="about_me_content3">team.item.19@gmail.com</string>
+    <string name="about_me_content4">ベジ探（野菜の卸売価格）：http://vegetan.alic.go.jp \n クックパッド（レシピ検索）：https://cookpad.com \n Shufoo!（チラシ検索）：http://www.shufoo.net</string>
+    <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
+
+    <!-- ライセンス -->
+  
   <string name="month_jan">1月</string>
   <string name="month_feb">2月</string>
   <string name="month_mar">3月</string>

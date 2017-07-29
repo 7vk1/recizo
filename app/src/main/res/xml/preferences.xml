@@ -36,11 +36,11 @@
     <PreferenceCategory android:title="一般">
         <com.recizo.view.SettingItemView
             android:defaultValue="1"
-            android:key="alert_item"
+            android:key="about_me_item"
             android:title="このアプリについて"/>
         <com.recizo.view.SettingItemView
             android:defaultValue="1"
-            android:key="alert_item"
+            android:key="licence_item"
             android:title="ライセンス"/>
     </PreferenceCategory>
 
