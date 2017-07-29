@@ -27,14 +27,10 @@ class SeasonsItemFragment(val position: Int = 0): Fragment() {
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    // TODO 旬の食材
     val parse = XMLSeasonParser(resources)
     val seasonsList = parse.parseSeason()
     val monthList = seasonsList[position]
-
-
     val recycleView: RecyclerView? = view?.findViewById(R.id.season_list_view)
-
     season_list_view.layoutManager = LinearLayoutManager(activity)
     season_list_view.addItemDecoration(DividerItemDecoration(
         season_list_view.context,

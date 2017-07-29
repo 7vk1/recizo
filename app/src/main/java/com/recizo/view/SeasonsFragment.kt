@@ -24,9 +24,9 @@ class SeasonsFragment : Fragment(){
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val fa = activity as FragmentActivity
-    _tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
+    season_tab.tabMode = TabLayout.MODE_SCROLLABLE
     seasons_viewpager.adapter = TabAdapter(fa.supportFragmentManager)
-    _tabLayout.setupWithViewPager(seasons_viewpager)
+    season_tab.setupWithViewPager(seasons_viewpager)
   }
 
 }
