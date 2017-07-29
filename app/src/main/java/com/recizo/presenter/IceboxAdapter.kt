@@ -67,6 +67,8 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
       val item = recyclerView?.findViewHolderForItemId(it)
       if(item != null) (item as IceboxViewHolder).swipeLayout.close()
     }
+    searchList.clear()
+    garbageList.clear()
     fragment.changeBtnVisibility(add = true)
   }
 
@@ -83,6 +85,11 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
     return IceboxViewHolder(v)
   }
 
+  override fun onViewAttachedToWindow(holder: IceboxViewHolder?) {
+    super.onViewAttachedToWindow(holder)
+    if(!garbageList.contains(holder!!.itemId) && !searchList.contains(holder.itemId)) holder.swipeLayout.close()
+  }
+
   override fun onBindViewHolder(holder: IceboxViewHolder?, position: Int) {
     val item = itemList[position]
     if(item.id == -1) {
@@ -90,6 +97,8 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
       return
     }
     holder!!.bindView(item)
+    if(!garbageList.contains(holder.itemId) && !searchList.contains(holder.itemId)) holder.swipeLayout.close()
+    holder.swipeLayout.close()
     holder.swipeLayout.addSwipeListener(object: SimpleSwipeListener() {
       override fun onOpen(layout: SwipeLayout?) {
         super.onOpen(layout)
