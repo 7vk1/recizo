@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.recizo.R
 import com.daimajia.swipe.*
@@ -48,7 +49,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
     when(type) {
       Sort.NAME -> itemList.sortBy { it.name }
       Sort.DATE -> itemList.sortBy { it.date }
-//      Sort.CATEGORY -> itemList.sortBy { it.categoryId } todo impl category
+      Sort.CATEGORY -> itemList.sortBy { it.category }
     }
     itemList.add(IceboxItem(-1, "blank", "", "", IceboxItem.Category.vegetable))
     notifyDataSetChanged()
@@ -85,7 +86,7 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
       holder!!.itemView.visibility = View.INVISIBLE
       return
     }
-    holder!!.bindView(name = item.name, memo = item.memo, date = item.date)
+    holder!!.bindView(item)
     holder.swipeLayout.addSwipeListener(object: SimpleSwipeListener() {
       override fun onOpen(layout: SwipeLayout?) {
         super.onOpen(layout)
@@ -139,10 +140,12 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
     val date: TextView = v.findViewById(R.id._icebox_item_date)
     val cardView: CardView = v.findViewById(R.id.icebox_item)
     val swipeLayout: SwipeLayout = v.findViewById(R.id.swipe_target)
-    fun bindView(name: String, memo: String, date: String) {
-      this.title.text = name
-      this.memo.text = memo
-      this.date.text = date
+    val categoryImg: ImageView = v.findViewById(R.id.category_img)
+    fun bindView(item: IceboxItem) {
+      this.title.text = item.name
+      this.memo.text = item.memo
+      this.date.text = item.date
+      this.categoryImg.setImageResource(R.drawable.cat_vegetable)
       swipeLayout.showMode = SwipeLayout.ShowMode.PullOut
       swipeLayout.addDrag(SwipeLayout.DragEdge.Right,swipeLayout.findViewById(R.id.icebox_item_del))
       swipeLayout.addDrag(SwipeLayout.DragEdge.Left,swipeLayout.findViewById(R.id.icebox_item_search))

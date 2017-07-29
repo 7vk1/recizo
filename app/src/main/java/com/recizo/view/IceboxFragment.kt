@@ -89,7 +89,7 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
       val yHolder = if(!close) PropertyValuesHolder.ofFloat("translationY", 0f, y) else PropertyValuesHolder.ofFloat("translationY", y, 0f)
       val opacity = if(!close) PropertyValuesHolder.ofFloat("alpha", 0f, 1f ) else PropertyValuesHolder.ofFloat("alpha", 1f, 0f)
       val animator = ObjectAnimator.ofPropertyValuesHolder(target, xHolder, yHolder, opacity)
-      animator.duration = 500
+      animator.duration = 200
       return animator
     }
     val set = AnimatorSet()
