@@ -2,6 +2,7 @@ package com.recizo.view
 
 import android.app.Fragment
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,6 +26,17 @@ class FavoriteRecipeFragment: Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     fragment_favorite_recipe_frame.layoutManager = LinearLayoutManager(activity)
-    FavoriteRecipePresenter(fragment_favorite_recipe_frame)
+    val removeBtn: FloatingActionButton = view!!.findViewById(R.id.favorite_recipe_remove_btn)
+    val undoBtn: FloatingActionButton = view!!.findViewById(R.id.favorite_recipe_undo_btn)
+    val presenter =  FavoriteRecipePresenter(fragment_favorite_recipe_frame, removeBtn, undoBtn)
+
+    removeBtn.setOnClickListener {
+      presenter.onRemoveClicked()
+    }
+
+    undoBtn.setOnClickListener {
+      presenter.onUndoClicked()
+    }
+
   }
 }
