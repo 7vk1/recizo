@@ -2,40 +2,57 @@ package com.recizo.presenter
 
 import android.content.Context
 import android.graphics.Color
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.TextView
+import android.widget.*
 import com.recizo.R
+import com.recizo.model.viewholder.IceboxViewHolder
 
-class SeasonAdapter(context: Context, val layoutId: Int,val seasonList: List<String>): ArrayAdapter<String>(context, layoutId, seasonList) {
-  var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-  override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-    Log.d("_TEST", "GET VIEW TOP")
-    val view = convertView ?: inflater.inflate(layoutId, null)
-    view.findViewById<TextView>(R.id.season_list_item_name).text = seasonList[position]
-    Log.d("_TEST", "GET VIEW BOTTOM")
-
-    if(!isEnabled(position)) {
-      view.setBackgroundColor(Color.GREEN)
-    }
-
-    return view
+class SeasonAdapter(context: Context,val seasonList: List<String>): RecyclerView.Adapter<SeasonAdapter.SeasonViewHolder>() {
+  init {
+    this.setHasStableIds(true)
   }
 
-  override fun isEnabled(position: Int): Boolean {
-    when(getItem(position)) {
-      // TODO カテゴリの名前を入れる
-      "野菜" -> return false
-      "魚介類" -> return false
-      "" -> return false
-      "" -> return false
-      "" -> return false
-      "" -> return false
+  override fun getItemCount(): Int {
+    return seasonList.size
+  }
+
+  override fun onBindViewHolder(holder: SeasonViewHolder?, position: Int) {
+    val pos = holder!!.itemId.toInt()
+    holder.name.text = seasonList[pos]
+    if(isDivider(seasonList[pos])) {
+      holder.frame.setBackgroundColor(Color.GREEN)
+    } else {
+      holder.frame.setBackgroundColor(Color.WHITE)
     }
-    return true
+
+
+  }
+
+  override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SeasonViewHolder {
+    val v = LayoutInflater.from(parent!!.context).inflate(R.layout.season_list_item, parent, false)
+    return SeasonViewHolder(v)
+  }
+
+  override fun getItemId(position: Int): Long {
+    return position.toLong()
+  }
+
+  fun isDivider(name: String): Boolean {
+    when(name) {
+      "野菜" -> return true
+      "魚・貝" -> return true
+      "芋・キノコ" -> return true
+      "果物・きのみ" -> return true
+    }
+    return false
+  }
+
+  class SeasonViewHolder(v: View): RecyclerView.ViewHolder(v) {
+    val name: TextView = v.findViewById(R.id.season_list_item_name)
+    val frame: LinearLayout = v.findViewById(R.id.season_list_item_frame)
   }
 }
