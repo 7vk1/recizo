@@ -34,10 +34,10 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
     val recipePresenter = RecipePresenter(activity, searched_recyclerView, items)
     recipePresenter.setLoadEventListener(object : RecipePresenter.LoadEventListener {
       override fun onLoadStart() {
-        searched_recipe_progressBar.visibility = View.VISIBLE
+        searched_recipe_progressBar?.visibility = View.VISIBLE
       }
       override fun onLoadEnd() {
-        searched_recipe_progressBar.visibility = View.GONE
+        searched_recipe_progressBar?.visibility = View.INVISIBLE
       }
     })
     recipePresenter.startRecipeListCreate()

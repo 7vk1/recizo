@@ -16,6 +16,7 @@
   <string name="settings">設定</string>
 
   <string name="category">カテゴリー</string>
+  <string name="category_icon">カテゴリーアイコン</string>
   <string name="name">名前</string>
   <string name="register_view_vegetable_name">野菜名</string>
   <string name="register_view_memo">メモ</string>
