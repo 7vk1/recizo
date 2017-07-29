@@ -30,10 +30,8 @@ class IceboxDatabaseHelper(context: Context) {
     val values = ContentValues()
     values.put("name", item.name)
     values.put("memo", item.memo)
-    val dates = item.date.split("/".toRegex() )
-    values.put("year", dates[0])
-    values.put("month", dates[1])
-    values.put("day", dates[2])
+    values.put("date", item.date)
+    values.put("category", item.category.name)
     val id = item.id
     db.update(TABLE_NAME, values, "_id=$id", null)
     db.close()
@@ -41,7 +39,7 @@ class IceboxDatabaseHelper(context: Context) {
 
   fun getAllItem(): MutableList<IceboxItem> {
     readableOpen()
-    val query = "SELECT _id, name, memo, year, month, day FROM $TABLE_NAME"
+    val query = "SELECT _id, name, memo, date, category FROM $TABLE_NAME"
     var list = mutableListOf<IceboxItem>()
     db.rawQuery(query, null).use {
       list = buildSequence {
@@ -51,9 +49,8 @@ class IceboxDatabaseHelper(context: Context) {
                   it.getInt(it.getColumnIndex("_id")),
                   it.getString(it.getColumnIndex("name")),
                   it.getString(it.getColumnIndex("memo")),
-                  it.getString(it.getColumnIndex("year")),
-                  it.getString(it.getColumnIndex("month")),
-                  it.getString(it.getColumnIndex("day"))
+                  it.getString(it.getColumnIndex("date")),
+                  IceboxItem.Category.valueOf(it.getString(it.getColumnIndex("category")))
               )
           )
         }
@@ -65,16 +62,15 @@ class IceboxDatabaseHelper(context: Context) {
 
   fun getLastItem(): IceboxItem {
     readableOpen()
-    val query = "SELECT _id, name, memo ,year, month, day FROM $TABLE_NAME"
+    val query = "SELECT _id, name, memo ,date, category FROM $TABLE_NAME"
     db.rawQuery(query, null).use {
       it.moveToLast()
       val ret = IceboxItem(
           it.getInt(it.getColumnIndex("_id")),
           it.getString(it.getColumnIndex("name")),
           it.getString(it.getColumnIndex("memo")),
-          it.getString(it.getColumnIndex("year")),
-          it.getString(it.getColumnIndex("month")),
-          it.getString(it.getColumnIndex("day"))
+          it.getString(it.getColumnIndex("date")),
+          IceboxItem.Category.valueOf(it.getString(it.getColumnIndex("category_id")))
       )
       db.close()
       return ret
@@ -86,11 +82,8 @@ class IceboxDatabaseHelper(context: Context) {
     val values: ContentValues = ContentValues()
     values.put("name", item.name)
     values.put("memo", item.memo)
-
-    val date = item.date.split("/".toRegex())
-    values.put("year", date[0])
-    values.put("month", date[1])
-    values.put("day", date[2])
+    values.put("date", item.date)
+    values.put("category", item.category.name)
     db.insertOrThrow(TABLE_NAME, null, values)
     db.close()
   }
@@ -122,10 +115,8 @@ class IceboxDatabaseHelper(context: Context) {
           "_id integer primary key autoincrement, " +
           "name char(256), " +
           "memo char(256), " +
-          "year int, " +
-          "month int, " +
-          "day int)"
-
+          "date char(9), " +
+          "category char(20))"
       db!!.execSQL(query)
     }
 

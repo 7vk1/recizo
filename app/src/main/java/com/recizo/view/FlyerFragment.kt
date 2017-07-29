@@ -36,10 +36,10 @@ class FlyerFragment : Fragment(){
     val flyerPresenter = FlyerPresenter(activity, searched_recyclerView, "1690074")
     flyerPresenter.setProgressBar(object:FlyerPresenter.IProgressBar{
       override fun showProgressBar() {
-        searched_recipe_progressBar.visibility = View.VISIBLE
+        searched_recipe_progressBar?.visibility = View.VISIBLE
       }
       override fun hideProgressBar() {
-        searched_recipe_progressBar.visibility = View.GONE
+        searched_recipe_progressBar?.visibility = View.GONE
       }
     })
     flyerPresenter.startFlyerListCreate()
