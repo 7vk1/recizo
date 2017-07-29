@@ -1,5 +1,6 @@
 package com.recizo.presenter
 
+import android.content.Context
 import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,7 +14,7 @@ import android.content.Intent
 import com.recizo.module.AppContextHolder
 
 
-class FlyerPresenter (flyerView: RecyclerView, keywords: String){
+class FlyerPresenter (context: Context, flyerView: RecyclerView, keywords: String){
   private val scraper: ShufooScraper = ShufooScraper(keywords)
   private var flyerListAdapter = FlyerListAdapter(flyerView)
   private var progressBarCallback: IProgressBar? = null
@@ -22,7 +23,7 @@ class FlyerPresenter (flyerView: RecyclerView, keywords: String){
     flyerView.adapter = flyerListAdapter
     flyerListAdapter.setOnItemClickListener(object: FlyerListAdapter.OnItemClickListener{
       override fun onItemClick(flyer: ShufooFlyer) {
-        AppContextHolder.context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(flyer.shufooLink)))
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(flyer.shufooLink)))
       }
     })
   }

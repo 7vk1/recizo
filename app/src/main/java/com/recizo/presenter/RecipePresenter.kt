@@ -1,5 +1,6 @@
 package com.recizo.presenter
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
@@ -11,7 +12,7 @@ import com.recizo.module.Scraper
 import com.recizo.view.RecipeFragment
 
 
-class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
+class RecipePresenter (context: Context, recipeListView: RecyclerView, keywords: Set<String>){
   private val scraper = CookpadScraper(keywords)
   private val recipeListAdapter = RecipeListAdapter(recipeListView)
   private var loadEventListener: LoadEventListener? = null
@@ -19,7 +20,7 @@ class RecipePresenter (recipeListView: RecyclerView, keywords: List<String>){
     recipeListView.adapter = recipeListAdapter
     recipeListAdapter.setOnItemClickListener(object: RecipeListAdapter.OnItemClickListener {
       override fun onItemClick(recipe: CookpadRecipe) {
-        AppContextHolder.context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(recipe.cookpadLink)))
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(recipe.cookpadLink)))
       }
     })
   }
