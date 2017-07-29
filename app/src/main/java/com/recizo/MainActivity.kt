@@ -15,7 +15,7 @@ import com.recizo.module.FavoriteRecipeDao
 import com.recizo.module.IceboxDao
 import com.recizo.view.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.ChangeToSearchFragment {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.MoveToSearchFragment {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     transaction.commit()
   }
 
-  override fun changeSearchFragment(items: Set<String>) {
+  override fun moveToSearchFragment(items: Set<String>) {
     changeFragment(RecipeFragment(items))
   }
 }
