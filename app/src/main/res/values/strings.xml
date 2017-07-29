@@ -40,13 +40,17 @@
     <string name="checkbox_postcode_title">郵便番号</string>
 
     <!-- このアプリについて -->
-    <string name="about_me_titele1">1. サービスの内容について</string>
-    <string name="about_me_titele2">2. 関連サイト</string>
-    <string name="about_me_titele3">3. 連絡先</string>
-    <string name="about_me_titele4">4. 引用させていただいたサービス</string>
-    <string name="about_me_titele5">5. コピーライト</string>
+    <string name="about_me_title1">1. サービスの内容について</string>
+    <string name="about_me_title2">2. 関連サイト</string>
+    <string name="about_me_title3">3. 連絡先</string>
+    <string name="about_me_title4">4. 引用させていただいたサービス</string>
+    <string name="about_me_title5">5. コピーライト</string>
 
-    <string name="about_me_titele1">1. サービスの内容について</string>
+    <string name="about_me_content1">RECIZOは、冷蔵庫の情報を登録してもらい、レシピを検索したり、食材についての様々な情報を提供するサービスです。</string>
+    <string name="about_me_content2">http://recizo.com</string>
+    <string name="about_me_content3">team.item.19@gmail.com</string>
+    <string name="about_me_content4">ベジ探（野菜の卸売価格）：http://vegetan.alic.go.jp \n クックパッド（レシピ検索）：https://cookpad.com \n Shufoo!（チラシ検索）：http://www.shufoo.net</string>
+    <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
 
     <!-- ライセンス -->
 
