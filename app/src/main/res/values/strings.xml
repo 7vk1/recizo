@@ -39,4 +39,15 @@
     <string name="preference_postcode_title">住所設定</string>
     <string name="checkbox_postcode_title">郵便番号</string>
 
+    <!-- このアプリについて -->
+    <string name="about_me_titele1">1. サービスの内容について</string>
+    <string name="about_me_titele2">2. 関連サイト</string>
+    <string name="about_me_titele3">3. 連絡先</string>
+    <string name="about_me_titele4">4. 引用させていただいたサービス</string>
+    <string name="about_me_titele5">5. コピーライト</string>
+
+    <string name="about_me_titele1">1. サービスの内容について</string>
+
+    <!-- ライセンス -->
+
 </resources>
