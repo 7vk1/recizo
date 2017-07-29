@@ -44,13 +44,14 @@
   <string name="about_me_title4">4. 引用させていただいたサービス</string>
   <string name="about_me_title5">5. コピーライト</string>
 
-  <string name="about_me_content1">RECIZOは、冷蔵庫の情報を登録してもらい、レシピを検索したり、食材についての様々な情報を提供するサービスです。</string>
-  <string name="about_me_content2">http://recizo.com</string>
-  <string name="about_me_content3">team.item.19@gmail.com</string>
-  <string name="about_me_content4">ベジ探（野菜の卸売価格）：http://vegetan.alic.go.jp \n クックパッド（レシピ検索）：https://cookpad.com \n Shufoo!（チラシ検索）：http://www.shufoo.net</string>
-  <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
-
   <!-- ライセンス -->
+    <string name="about_me_content1">RECIZOは、冷蔵庫の情報を登録してもらい、レシピを検索したり、食材についての様々な情報を提供するサービスです。</string>
+    <string name="about_me_content2">http://recizo.com</string>
+    <string name="about_me_content3">team.item.19@gmail.com</string>
+    <string name="about_me_content4_1">ベジ探（野菜の卸売価格）\n http://vegetan.alic.go.jp</string>
+    <string name="about_me_content4_2">クックパッド（レシピ検索）\n https://cookpad.com</string>
+    <string name="about_me_content4_3">Shufoo!（チラシ検索）\n http://www.shufoo.net</string>
+    <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
 
   <string name="month_jan">1月</string>
   <string name="month_feb">2月</string>
