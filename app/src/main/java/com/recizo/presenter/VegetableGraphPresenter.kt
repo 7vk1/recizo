@@ -10,14 +10,14 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.recizo.module.Http
 import com.recizo.module.RecizoApi
 
-class VegetableGraphAdaptor(private val chart: LineChart) {
+class VegetableGraphPresenter(private val chart: LineChart) {
   init {
     chart.description.text = "野菜の卸売価格"
     chart.isHorizontalScrollBarEnabled = false
     chart.axisRight.setDrawLabels(false)
     chart.xAxis.axisMinimum = 0f
     chart.xAxis.axisMaximum = 366f
-    chart.xAxis.labelCount = 12
+    chart.xAxis.labelCount = 7
   }
   var dataSet: LineDataSet? = null
   var isTheOtherFinished = false
@@ -41,10 +41,11 @@ class VegetableGraphAdaptor(private val chart: LineChart) {
   }
   private fun onResponseAll(response: Map<String, List<RecizoApi.DairyData>>){
     val lists: List<LineDataSet> = response.keys.map {
-      val data = mutableListOf<Entry>()
-      for(i in 0..response[it]!!.size -1) {
-        if(response[it]!![i].price != -1) data.add(Entry(i.toFloat(),response[it]!![i].price.toFloat()))
-      }
+      val data = (0..response[it]!!.size -1)
+          .asSequence()
+          .filter { i -> response[it]!![i].price != -1 }
+          .map { i -> Entry(i.toFloat(),response[it]!![i].price.toFloat()) }
+          .toList()
       val dataSet = LineDataSet(data, RecizoApi.Vegetables.valueOf(it).name_jp)
       dataSet.color = colors[RecizoApi.Vegetables.valueOf(it)]!!
       dataSet.valueTextColor = colors[RecizoApi.Vegetables.valueOf(it)]!!
@@ -67,7 +68,7 @@ class VegetableGraphAdaptor(private val chart: LineChart) {
       date.add(vegetableData[i].date)
       if(vegetableData[i].price != -1) list.add(Entry(i.toFloat(), vegetableData[i].price.toFloat()))
     }
-    val dataSet = LineDataSet(list, if(isRecent) "今年" else "過去")
+    val dataSet = LineDataSet(list, if(isRecent) "直近１年" else "過去５年平均")
     val color = if(isRecent)colors[RecizoApi.Vegetables.valueOf(key)]!! else Color.BLACK
     dataSet.color = color
     dataSet.valueTextColor = color
