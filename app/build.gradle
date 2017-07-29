@@ -22,7 +22,6 @@ android {
 }
 
 dependencies {
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -31,6 +30,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support:design:26.+'
@@ -40,7 +41,6 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.3'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     testCompile 'junit:junit:4.12'
-    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }
 repositories {
     mavenCentral()

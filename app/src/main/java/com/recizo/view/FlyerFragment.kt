@@ -2,6 +2,7 @@ package com.recizo.view
 
 import android.app.Fragment
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.recizo.presenter.FlyerListAdapter
 import com.recizo.presenter.FlyerPresenter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
 import com.recizo.R
+import com.recizo.module.AppContextHolder
 
 class FlyerFragment : Fragment(){
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +34,11 @@ class FlyerFragment : Fragment(){
             searched_recyclerView.context,
             LinearLayoutManager(activity).orientation)
     )
-
-    val flyerPresenter = FlyerPresenter(activity, searched_recyclerView, "1690074")
+    val flyerPresenter = FlyerPresenter(
+            activity,
+            searched_recyclerView,
+            PreferenceManager.getDefaultSharedPreferences(AppContextHolder.context).getString("edit_postcode_key", "")
+    )
     flyerPresenter.setProgressBar(object:FlyerPresenter.IProgressBar{
       override fun showProgressBar() {
         searched_recipe_progressBar.visibility = View.VISIBLE
