@@ -14,32 +14,30 @@ import com.recizo.model.entity.IceboxItem
 
 class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
   private var eventListener: EventListener? = null
-  var itemList = mutableListOf<IceboxItem>(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
-    get() {
-      val ret = field.map { it }.toMutableList()
-      ret.removeAt(ret.size -1)
-      return ret
-    }
-    set(value) {
-      field = value
-      field.add(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
-      notifyDataSetChanged()
-    }
+  private var itemList = mutableListOf(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
+  init { setHasStableIds(true) }
 
-  init {
-    setHasStableIds(true)
+  fun getItemList(): MutableList<IceboxItem> {
+    val ret = itemList.map { it }.toMutableList()
+    ret.removeAt(ret.size -1)
+    return ret
+  }
+
+  fun setItemList(list: MutableList<IceboxItem>) {
+    itemList = list
+    itemList.add(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
+    notifyDataSetChanged()
+  }
+
+  fun removeItem(index: Int) {
+    this.itemList.removeAt(index)
+    notifyItemRemoved(index)
   }
 
   fun setEventListener(listener: EventListener) { eventListener = listener }
 
-  override fun getItemCount(): Int {
-    return itemList.size
-  }
-
-  override fun getItemId(position: Int): Long {
-    return itemList[position].id.toLong()
-  }
-
+  override fun getItemCount(): Int { return itemList.size }
+  override fun getItemId(position: Int): Long { return itemList[position].id.toLong() }
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IceboxViewHolder {
     val v: View = LayoutInflater.from(parent.context).inflate(R.layout.icebox_item, parent, false)
     return IceboxViewHolder(v)

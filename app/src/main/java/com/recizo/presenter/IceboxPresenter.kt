@@ -52,21 +52,13 @@ class IceboxPresenter(val fragment: IceboxButtons) {
 
   fun dataUpdated() {
     val list = IceboxDao.getAll().toMutableList()
-    iceboxAdapter.itemList = list
+    iceboxAdapter.setItemList(list)
     fragment.changeBtnVisibility(add = true)
   }
 
   fun sortItems(type: Sort) {
     sort = type
-    iceboxAdapter.itemList = sortList(iceboxAdapter.itemList, sort)
-  }
-
-  private fun sortList(list: MutableList<IceboxItem>, type: Sort): MutableList<IceboxItem> {
-    return when(type) {
-      Sort.NAME -> list.sortedBy { it.name }
-      Sort.DATE -> list.sortedBy { it.date }
-      Sort.CATEGORY -> list.sortedBy { it.category }
-    }.toMutableList()
+    iceboxAdapter.setItemList(sortList(iceboxAdapter.getItemList(), sort))
   }
 
   fun onUndoClicked() {
@@ -86,21 +78,27 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   }
 
   fun getSearchItemList(): Set<String> {
-    return searchList.map { id -> iceboxAdapter.itemList.first { it.id.toLong() == id }.name }.toSet()
+    return searchList.map { id -> iceboxAdapter.getItemList().first { it.id.toLong() == id }.name }.toSet()
+  }
+
+  private fun sortList(list: MutableList<IceboxItem>, type: Sort): MutableList<IceboxItem> {
+    return when(type) {
+      Sort.NAME -> list.sortedBy { it.name }
+      Sort.DATE -> list.sortedBy { it.date }
+      Sort.CATEGORY -> list.sortedBy { it.category }
+    }.toMutableList()
   }
 
   private fun removeItem(id: Long) {
     IceboxDao.delete(id.toInt())
-    val index: Int = iceboxAdapter.itemList.indexOfFirst { it.id.toLong() == id }
-    val list = iceboxAdapter.itemList
-    list.removeAt(index)
-    iceboxAdapter.itemList = list
-    iceboxAdapter.notifyItemRemoved(index)
+    val index: Int = iceboxAdapter.getItemList().indexOfFirst { it.id.toLong() == id }
+    iceboxAdapter.removeItem(index)
   }
 
   enum class Sort {
     NAME, DATE, CATEGORY
   }
+
   interface IceboxButtons {
     fun changeBtnVisibility(add: Boolean = false, undo: Boolean = false, search: Boolean = false, delete: Boolean = false)
     fun toIceboxItemSetActivity(item: IceboxItem)
