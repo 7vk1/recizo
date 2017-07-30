@@ -11,14 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.model.entity.IceboxItem
-import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import com.recizo.IceboxItemSetActivity
+import com.recizo.presenter.IceboxPresenter
 
-class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
-  var iceboxAdapter: IceboxAdapter? = null
+class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
+  var iceboxPresenter = IceboxPresenter(this)
   var isSortOpen = false
 
   override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {
@@ -41,14 +41,13 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
 
   override fun onResume() {
     super.onResume()
-    iceboxAdapter?.updateDataSet()
+    iceboxPresenter.dataUpdated()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    iceboxAdapter = IceboxAdapter(this)
+    iceboxPresenter.setRecyclerView(recyclerView)
     recyclerView.layoutManager = LinearLayoutManager(activity)
-    recyclerView.adapter = iceboxAdapter
     sort_by_name.alpha = 0f
 
     add_btn.setOnClickListener {
@@ -58,27 +57,27 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
       AlertDialog.Builder(activity)
           .setMessage("削除しておk？")//todo
           .setPositiveButton("OK", { _, _ ->
-            iceboxAdapter?.onDeleteClicked()
+            iceboxPresenter.onDeleteClicked()
           })
           .setNegativeButton("CANCEL", null)
           .show()
     }
     recipe_search_btn.setOnClickListener {
-      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxAdapter!!.getSearchItemList())
+      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter.getSearchItemList())
     }
     undo_btn.setOnClickListener {
-      iceboxAdapter?.onUndoClicked()
+      iceboxPresenter.onUndoClicked()
     }
     sort_btn.setOnClickListener { toggleSortBtn() }
-    sort_by_name.setOnClickListener { onSortMethodClicked(IceboxAdapter.Sort.NAME) }
-    sort_by_date.setOnClickListener { onSortMethodClicked(IceboxAdapter.Sort.DATE) }
-    sort_by_category.setOnClickListener { onSortMethodClicked(IceboxAdapter.Sort.CATEGORY) }
+    sort_by_name.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.NAME) }
+    sort_by_date.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.DATE) }
+    sort_by_category.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.CATEGORY) }
     //todo sort by item id いるか　デフォルトソート考える
   }
 
-  private fun onSortMethodClicked(type: IceboxAdapter.Sort) {
+  private fun onSortMethodClicked(type: IceboxPresenter.Sort) {
     if(isSortOpen) {
-      iceboxAdapter?.sortItems(type)
+      iceboxPresenter.sortItems(type)
       toggleSortBtn()
     }
   }
