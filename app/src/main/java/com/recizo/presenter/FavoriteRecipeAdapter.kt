@@ -1,11 +1,8 @@
 package com.recizo.presenter
 
-import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.daimajia.swipe.SimpleSwipeListener
 import com.daimajia.swipe.SwipeLayout
 import com.recizo.R
@@ -25,12 +21,14 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
-class FavoriteRecipeAdapter(private val context: Context, private val favoriteRecipeListView: RecyclerView, private val removeBtn: FloatingActionButton, private val undoBtn: FloatingActionButton): RecyclerView.Adapter<FavoriteRecipeAdapter.FavoriteRecipeViewHolder>() {
-  init {this.setHasStableIds(true)}
+class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.ChangeVisibility, val error: FavoriteRecipePresenter.Error, val intent: FavoriteRecipePresenter.Intent): RecyclerView.Adapter<FavoriteRecipeAdapter.FavoriteRecipeViewHolder>() {
   val favoriteRecipeList = mutableListOf<CookpadRecipe>()
   val garbageList = mutableSetOf<Long>()
   var recycleView: RecyclerView? = null
   val undoList: MutableList<Long> = mutableListOf()
+  init {
+    this.setHasStableIds(true)
+  }
 
   fun onDeleteClicked() {
     garbageList.sortedBy { it }.reversed().map {
@@ -39,7 +37,9 @@ class FavoriteRecipeAdapter(private val context: Context, private val favoriteRe
     }
     notifyDataSetChanged()
     garbageList.clear()
-    changeBtnVisibility(remove = false, undo = false)
+    changeVisibility.changeButtonVisibility(remove = false, undo = false)
+    if(isFavoriteEmpty()) changeVisibility.changeTextVisibility(true)
+    else changeVisibility.changeTextVisibility(false)
   }
 
   fun onUndoClicked() {
@@ -48,12 +48,7 @@ class FavoriteRecipeAdapter(private val context: Context, private val favoriteRe
       if(item != null) (item as FavoriteRecipeViewHolder).swipeLayout.close()
     }
     garbageList.clear()
-    changeBtnVisibility(remove = false, undo = false)
-  }
-
-  private fun changeBtnVisibility(remove: Boolean, undo: Boolean) {
-    undoBtn.visibility = if (undo) View.VISIBLE else View.INVISIBLE
-    removeBtn.visibility = if (remove) View.VISIBLE else View.INVISIBLE
+    changeVisibility.changeButtonVisibility(remove = false, undo = false)
   }
 
   fun viewFavoriteList() {
@@ -67,6 +62,13 @@ class FavoriteRecipeAdapter(private val context: Context, private val favoriteRe
       )
       notifyItemInserted(favoriteRecipeList.size)
     }
+    if(isFavoriteEmpty()) changeVisibility.changeTextVisibility(true)
+    else changeVisibility.changeTextVisibility(false)
+  }
+
+  private fun isFavoriteEmpty(): Boolean {
+    if(favoriteRecipeList.size == 0) return true
+    return false
   }
 
   private fun getImageStream(imageUrl: String) = async(CommonPool) {
@@ -96,21 +98,19 @@ class FavoriteRecipeAdapter(private val context: Context, private val favoriteRe
         holder.imageUrl.setImageBitmap(getBitmapImage(favoriteRecipeList[position].imgUrl).await())
       }catch (e: Exception){
         // TODO ここでToast出すとお気に入りの数だけToastが出続けるからToastを出すなら他の場所にする。Toastから読み込み失敗画像に変える予定
-        Toast.makeText(favoriteRecipeListView.context, "画像の読み込みに失敗しました", Toast.LENGTH_SHORT).show()
+        error.failedGetImage()
       }
     }
     holder.cardFrame.setOnClickListener{
-      context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(favoriteRecipeList[position].cookpadLink)))
+      intent.onRecipe(Uri.parse(favoriteRecipeList[position].cookpadLink))
     }
     holder.swipeLayout.addSwipeListener(object :SimpleSwipeListener(){
       override fun onOpen(layout: SwipeLayout?) {
         super.onOpen(layout)
         if(layout!!.dragEdge == SwipeLayout.DragEdge.Right) {
-          println(holder.itemId)
           garbageList.add(holder.itemId)
           undoList.add(holder.itemId)
-          removeBtn.visibility = View.VISIBLE
-          undoBtn.visibility = View.VISIBLE
+          changeVisibility.changeButtonVisibility(remove = true, undo = true)
         }
       }
 
@@ -119,8 +119,7 @@ class FavoriteRecipeAdapter(private val context: Context, private val favoriteRe
         garbageList.remove(holder.itemId)
         undoList.remove(holder.itemId)
         if(garbageList.size == 0) {
-          removeBtn.visibility = View.INVISIBLE
-          undoBtn.visibility = View.INVISIBLE
+          changeVisibility.changeButtonVisibility(remove = false, undo = false)
         }
       }
     })
