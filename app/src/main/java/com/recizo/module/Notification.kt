@@ -51,7 +51,7 @@ object Notification {
     manager.notify(0, builder.build())
   }
 
-  fun notifyLergeIcon(context: Context, title: String, message: String) {
+  fun notifyLargeIcon(context: Context, title: String, message: String) {
     val builder = NotificationCompat.Builder(context)
     builder.setSmallIcon(R.drawable.cat_fruit)
     builder.setLargeIcon(getBitmapFromVectorDrawable(context, R.drawable.ic_reci_0611_01_grate))
@@ -64,9 +64,7 @@ object Notification {
     builder.setContentIntent(pendingIntent)
     builder.priority = NotificationCompat.PRIORITY_HIGH
     builder.color = ContextCompat.getColor(context, R.color.colorPrimary)
-    val bigTextStyle = NotificationCompat.BigTextStyle(builder)
-    bigTextStyle.setBigContentTitle(title)
-    bigTextStyle.bigText(message)
+    builder.setDefaults(NotificationCompat.DEFAULT_ALL)
     val managerCompat = NotificationManagerCompat.from(context)
     managerCompat.notify(0, builder.build())
   }
