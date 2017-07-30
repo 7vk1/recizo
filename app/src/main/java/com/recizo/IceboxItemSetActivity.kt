@@ -28,7 +28,7 @@ class IceboxItemSetActivity : AppCompatActivity() {
       date_picker.updateDate(year, month, day)
       register_btn.text = "変更"
     } else register_btn.text = "追加"
-    Notification.notifyLargeIcon(this, "title", "msg")
+    Notification.set(this, 22, 36)
     cancel_btn.setOnClickListener { finish() }
 
     register_btn.setOnClickListener {
