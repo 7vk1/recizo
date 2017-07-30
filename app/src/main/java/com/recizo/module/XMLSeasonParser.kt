@@ -19,7 +19,7 @@ class XMLSeasonParser(resouces: Resources) {
       if(isSeasonStartTag(eventType)) {
         val list = mutableListOf<String>()
         while (!isSeasonEndTag(eventType)) {
-          if(isCategoryStartTag(eventType)) list.add(Category.valueOf(parser.name).name_jp)
+          if(isCategoryStartTag(eventType)) list.add(getCategoryName())
           if(isFoodStartTag(eventType)) list.add(getFoodName())
           eventType = parser.next()
         }
@@ -30,43 +30,47 @@ class XMLSeasonParser(resouces: Resources) {
     return seasonList
   }
 
-  fun isSeasonStartTag(eventType: Int): Boolean {
+  private fun isSeasonStartTag(eventType: Int): Boolean {
     if(parser.name == "season" && eventType == XmlPullParser.START_TAG) {
       return true
     }
     return false
   }
 
-  fun isSeasonEndTag(eventType: Int): Boolean {
+  private fun isSeasonEndTag(eventType: Int): Boolean {
     if(parser.name == "season" && eventType == XmlPullParser.END_TAG) {
       return true
     }
     return false
   }
 
-  fun isCategoryStartTag(eventType: Int): Boolean {
+  private fun isCategoryStartTag(eventType: Int): Boolean {
     if(Category.values().map { it.name }.contains(parser.name) && eventType == XmlPullParser.START_TAG) return true
     return false
   }
 
-  fun isCategoryEndTag(eventType: Int): Boolean {
+  private fun getCategoryName(): String {
+    return Category.valueOf(parser.name).name_jp
+  }
+
+  private fun isCategoryEndTag(eventType: Int): Boolean {
     if(Category.values().map { it.name }.contains(parser.name) && eventType == XmlPullParser.END_TAG) return true
     return false
   }
 
-  fun isFoodStartTag(eventType: Int): Boolean {
+  private fun isFoodStartTag(eventType: Int): Boolean {
     if(parser.name == "food" && eventType == XmlPullParser.START_TAG) return true
     return false
   }
 
-  fun getFoodName(): String {
+  private fun getFoodName(): String {
     if(parser.attributeCount == 1) {
       return parser.getAttributeValue(null, "name")
     }
     return "-"
   }
 
-  enum class Category(val name_jp: String) {
+  private enum class Category(val name_jp: String) {
     vegetable("野菜"),
     imo_mushroom("芋・キノコ"),
     fruit_nut("果物・きのみ"),

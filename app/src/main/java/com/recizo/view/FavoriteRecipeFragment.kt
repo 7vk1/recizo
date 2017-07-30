@@ -26,17 +26,8 @@ class FavoriteRecipeFragment: Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     fragment_favorite_recipe_frame.layoutManager = LinearLayoutManager(activity)
-    val removeBtn: FloatingActionButton = view!!.findViewById(R.id.favorite_recipe_remove_btn)
-    val undoBtn: FloatingActionButton = view!!.findViewById(R.id.favorite_recipe_undo_btn)
-    val presenter =  FavoriteRecipePresenter(fragment_favorite_recipe_frame, removeBtn, undoBtn)
-
-    removeBtn.setOnClickListener {
-      presenter.onRemoveClicked()
-    }
-
-    undoBtn.setOnClickListener {
-      presenter.onUndoClicked()
-    }
+    val presenter =  FavoriteRecipePresenter(activity, view!!)
+    presenter.setUpView()
 
   }
 }

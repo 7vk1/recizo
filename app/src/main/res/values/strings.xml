@@ -27,6 +27,7 @@
 
   <string name="recipe_image">完成イメージ</string>
 
+  <string name="empty_text">登録されていません</string>
 
   <!-- preference strings -->
   <string name="preference_network_title">ネットワーク設定</string>
@@ -52,18 +53,5 @@
     <string name="about_me_content4_2">クックパッド（レシピ検索）\n https://cookpad.com</string>
     <string name="about_me_content4_3">Shufoo!（チラシ検索）\n http://www.shufoo.net</string>
     <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
-
-  <string name="month_jan">1月</string>
-  <string name="month_feb">2月</string>
-  <string name="month_mar">3月</string>
-  <string name="month_apr">4月</string>
-  <string name="month_may">5月</string>
-  <string name="month_jun">6月</string>
-  <string name="month_jul">7月</string>
-  <string name="month_aug">8月</string>
-  <string name="month_sep">9月</string>
-  <string name="month_oct">10月</string>
-  <string name="month_nov">11月</string>
-  <string name="month_dec">12月</string>
 
 </resources>
