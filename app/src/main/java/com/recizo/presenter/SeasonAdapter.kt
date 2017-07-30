@@ -26,23 +26,23 @@ class SeasonAdapter(val context: Context,val seasonList: List<String>): Recycler
     }
   }
   
-  private fun setFramePadding(frame: LinearLayout, start_multiple: Int, top_plus: Int, end_multiple: Int, bottom_plus: Int) {
-    val s = PropertyHolder.framePaddingStart!!.times(start_multiple)
-    val e = PropertyHolder.framePaddingEnd!!.times(end_multiple)
-    val t = PropertyHolder.framePaddingTop!!.plus(top_plus)
-    val b = PropertyHolder.framePaddingBottom!!.plus(bottom_plus)
+  private fun setFramePadding(frame: LinearLayout, start: Int, top: Int, end: Int, bottom: Int) {
+    val s = PropertyHolder.framePaddingStart!!.times(start)
+    val e = PropertyHolder.framePaddingEnd!!.times(end)
+    val t = PropertyHolder.framePaddingTop!!.times(top)
+    val b = PropertyHolder.framePaddingBottom!!.times(bottom)
     frame.setPaddingRelative(s, e, t, b)
   }
 
   private fun dividerSetting(frame: LinearLayout, name: TextView) {
     frame.setBackgroundColor(context.resources.getColor(R.color.colorAccent))
-    setFramePadding(frame, 1, 0, 1, 0)
+    setFramePadding(frame, start = 10, top = 0, end = 0, bottom = 0)
     name.textSize = PropertyHolder.nameSize!!.times(0.5f)
   }
 
   private fun columnSetting(frame: LinearLayout, name: TextView) {
     frame.setBackgroundColor(Color.WHITE)
-    setFramePadding(frame, 2, 10, 2, 0)
+    setFramePadding(frame, start = 20,top = 0, end = 0, bottom = 0)
     name.textSize = PropertyHolder.nameSize!!.times(0.25f)
   }
   
