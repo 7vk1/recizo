@@ -1,11 +1,11 @@
 package com.recizo.presenter
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.ActionBarDrawerToggle
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -18,16 +18,14 @@ import com.daimajia.swipe.SimpleSwipeListener
 import com.daimajia.swipe.SwipeLayout
 import com.recizo.R
 import com.recizo.model.entity.CookpadRecipe
-import com.recizo.module.AppContextHolder
 import com.recizo.module.FavoriteRecipeDao
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import java.net.URL
-import kotlin.properties.Delegates
 
-class FavoriteRecipeAdapter(private val favoriteRecipeListView: RecyclerView, private val removeBtn: FloatingActionButton, private val undoBtn: FloatingActionButton): RecyclerView.Adapter<FavoriteRecipeAdapter.FavoriteRecipeViewHolder>() {
+class FavoriteRecipeAdapter(private val context: Context, private val favoriteRecipeListView: RecyclerView, private val removeBtn: FloatingActionButton, private val undoBtn: FloatingActionButton): RecyclerView.Adapter<FavoriteRecipeAdapter.FavoriteRecipeViewHolder>() {
   init {this.setHasStableIds(true)}
   val favoriteRecipeList = mutableListOf<CookpadRecipe>()
   val garbageList = mutableSetOf<Long>()
@@ -102,7 +100,7 @@ class FavoriteRecipeAdapter(private val favoriteRecipeListView: RecyclerView, pr
       }
     }
     holder.cardFrame.setOnClickListener{
-      AppContextHolder.context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(favoriteRecipeList[position].cookpadLink)))
+      context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(favoriteRecipeList[position].cookpadLink)))
     }
     holder.swipeLayout.addSwipeListener(object :SimpleSwipeListener(){
       override fun onOpen(layout: SwipeLayout?) {

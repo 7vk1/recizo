@@ -1,5 +1,6 @@
 package com.recizo.presenter
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.design.widget.FloatingActionButton
@@ -9,8 +10,8 @@ import android.view.View
 import com.recizo.model.entity.CookpadRecipe
 import com.recizo.module.AppContextHolder
 
-class FavoriteRecipePresenter(favoriteRecipeListView: RecyclerView, removeBtn: FloatingActionButton, undoBtn: FloatingActionButton) {
-  private val favoriteRecipeAdapter = FavoriteRecipeAdapter(favoriteRecipeListView, removeBtn, undoBtn)
+class FavoriteRecipePresenter(context: Context, favoriteRecipeListView: RecyclerView, removeBtn: FloatingActionButton, undoBtn: FloatingActionButton) {
+  private val favoriteRecipeAdapter = FavoriteRecipeAdapter(context, favoriteRecipeListView, removeBtn, undoBtn)
   init{
     favoriteRecipeListView.adapter = favoriteRecipeAdapter
     favoriteRecipeAdapter.viewFavoriteList()
