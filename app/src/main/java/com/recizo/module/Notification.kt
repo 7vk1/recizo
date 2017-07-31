@@ -17,7 +17,6 @@ import android.content.BroadcastReceiver
 import com.recizo.MainActivity
 
 
-
 object Notification {
 
   fun set(context: Context, hour: Int, minute: Int) {
@@ -39,14 +38,12 @@ object Notification {
 
   }
 
-
   fun notifyLargeIcon(context: Context, title: String, message: String) {
     val builder = NotificationCompat.Builder(context)
     builder.setSmallIcon(R.drawable.cat_fruit)
     builder.setLargeIcon(getBitmapFromVectorDrawable(context, R.drawable.ic_reci_0611_01_grate))
     builder.setContentTitle(title)
     builder.setContentText(message)
-    builder.setTicker(message)
     builder.setAutoCancel(true)
     val intent = Intent(AppContextHolder.context, MainActivity::class.java)
     val pendingIntent = PendingIntent.getActivity(AppContextHolder.context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -73,7 +70,18 @@ object Notification {
 
   class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-      Notification.notifyLargeIcon(context, "title", "message")
+      val day = 1
+      val cal = Calendar.getInstance()
+      cal.add(Calendar.DAY_OF_MONTH, day)
+      val now = cal.timeInMillis
+      val items = IceboxDao.getAll().filter {
+        val date = it.date.split("/")
+        cal.set(Calendar.YEAR, date[0].toInt())
+        cal.set(Calendar.MONTH, date[1].toInt())
+        cal.set(Calendar.DAY_OF_MONTH, date[2].toInt())
+        cal.timeInMillis < now
+      }
+      Notification.notifyLargeIcon(context, "賞味期限通知", "${items.size}つの素材の賞味期限が切れそうです！！")//TODO MESSAGE
     }
   }
 }
