@@ -13,10 +13,11 @@ import org.jsoup.nodes.Document
 import android.content.Intent
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.recizo.R
 
 
-class FlyerPresenter (context: Context,val view: View,val keywords: String){
+class FlyerPresenter (val context: Context,val view: View,val keywords: String){
   private val scraper: ShufooScraper = ShufooScraper(keywords)
   private var flyerListAdapter = FlyerListAdapter(view.findViewById(R.id.flyer_recyclerView))
   private var progressBarCallback: IProgressBar? = null
@@ -35,8 +36,6 @@ class FlyerPresenter (context: Context,val view: View,val keywords: String){
 
   fun startFlyerListCreate() {
     if (keywords != "" && keywords.isNotEmpty() && keywords != "0") {
-      Log.d("FLYER KEY WORDS", keywords)
-      Log.d("FLYER", "OK KEYWORDS")
       view.findViewById<LinearLayout>(R.id.flyer_empty_text_box).visibility = View.INVISIBLE
       progressBarCallback?.showProgressBar()
       scraper.scrapingHTML(object : Scraper.ScraperCallBack {
@@ -47,7 +46,9 @@ class FlyerPresenter (context: Context,val view: View,val keywords: String){
         }
 
         override fun failed(errorCode: ErrorCode) {
-          Log.d("TEST ERROR CODE", errorCode.toString())
+          if(errorCode.name == ErrorCode.IO_ERROR.name) Toast.makeText(context, "ネットワークエラー", Toast.LENGTH_SHORT).show()
+          else if(errorCode.name == ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR.name) Toast.makeText(context, "郵便番号を発見できませんでした", Toast.LENGTH_SHORT).show()
+          else Toast.makeText(context, "予期せぬエラー", Toast.LENGTH_SHORT).show()
           progressBarCallback?.hideProgressBar()
         }
       })
