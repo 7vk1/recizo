@@ -91,6 +91,7 @@ class IceboxPresenter(val fragment: IceboxButtons) {
       Sort.NAME -> list.sortedBy { it.name }
       Sort.DATE -> list.sortedBy { it.date }
       Sort.CATEGORY -> list.sortedBy { it.category }
+      Sort.CREATED -> list.sortedBy { it.id }
     }.toMutableList()
   }
 
@@ -101,7 +102,7 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   }
 
   enum class Sort {
-    NAME, DATE, CATEGORY
+    NAME, DATE, CATEGORY, CREATED
   }
 
   interface IceboxButtons {
