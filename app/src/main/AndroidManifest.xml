@@ -22,7 +22,6 @@
       </intent-filter>
     </activity>
     <activity android:name=".IceboxItemSetActivity" />
-    <activity android:name=".setting_avtivitys.AlertSettingActivity" />
     <activity android:name=".setting_avtivitys.LicenceActivity" />
     <activity android:name=".setting_avtivitys.AboutMeActivity" />
     <receiver android:name=".module.Notification$AlarmReceiver"
