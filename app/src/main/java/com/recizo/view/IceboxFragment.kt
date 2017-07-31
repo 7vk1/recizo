@@ -14,6 +14,9 @@ import com.recizo.model.entity.IceboxItem
 import kotlinx.android.synthetic.main.fragment_icebox.*
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import com.recizo.IceboxItemSetActivity
 import com.recizo.presenter.IceboxPresenter
 
@@ -36,6 +39,21 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
 
   override fun toSearchActivity(set: Set<String>) {
     (activity as MoveToSearchFragment).moveToSearchFragment(set)
+  }
+
+  override fun onSortMethodChange(type: IceboxPresenter.Sort) {
+    val colorPrimary = ContextCompat.getColor(activity, R.color.colorPrimary)
+    val defColor = Color.rgb(255, 204, 102)
+    sort_by_created.backgroundTintList = ColorStateList.valueOf(defColor)
+    sort_by_category.backgroundTintList = ColorStateList.valueOf(defColor)
+    sort_by_date.backgroundTintList = ColorStateList.valueOf(defColor)
+    sort_by_name.backgroundTintList = ColorStateList.valueOf(defColor)
+    when(type) {
+      IceboxPresenter.Sort.CREATED -> sort_by_created.backgroundTintList = ColorStateList.valueOf(colorPrimary)
+      IceboxPresenter.Sort.CATEGORY -> sort_by_category.backgroundTintList = ColorStateList.valueOf(colorPrimary)
+      IceboxPresenter.Sort.DATE -> sort_by_date.backgroundTintList = ColorStateList.valueOf(colorPrimary)
+      IceboxPresenter.Sort.NAME -> sort_by_name.backgroundTintList = ColorStateList.valueOf(colorPrimary)
+    }
   }
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -9,7 +9,7 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   private var searchList = mutableSetOf<Long>()
   private var garbageList = mutableSetOf<Long>()
   private var recyclerView: RecyclerView? = null
-  private var sort = Sort.CATEGORY
+  private var sort = Sort.CREATED
   private val iceboxAdapter = IceboxAdapter()
   init {
     iceboxAdapter.setEventListener(object : IceboxAdapter.EventListener {
@@ -58,12 +58,14 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   fun dataUpdated() {
     val list = IceboxDao.getAll().toMutableList()
     iceboxAdapter.setItemList(list)
+    sortItems(sort)
     fragment.changeBtnVisibility(add = true)
   }
 
   fun sortItems(type: Sort) {
     sort = type
     iceboxAdapter.setItemList(sortList(iceboxAdapter.getItemList(), sort))
+    fragment.onSortMethodChange(sort)
   }
 
   fun onUndoClicked() {
@@ -109,5 +111,6 @@ class IceboxPresenter(val fragment: IceboxButtons) {
     fun changeBtnVisibility(add: Boolean = false, undo: Boolean = false, search: Boolean = false, delete: Boolean = false)
     fun toIceboxItemSetActivity(item: IceboxItem)
     fun toSearchActivity(set: Set<String>)
+    fun onSortMethodChange(type: Sort)
   }
 }
