@@ -9,7 +9,7 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   private var searchList = mutableSetOf<Long>()
   private var garbageList = mutableSetOf<Long>()
   private var recyclerView: RecyclerView? = null
-  private var sort = Sort.CATEGORY
+  private var sort = Sort.CREATED
   private val iceboxAdapter = IceboxAdapter()
   init {
     iceboxAdapter.setEventListener(object : IceboxAdapter.EventListener {
@@ -58,12 +58,14 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   fun dataUpdated() {
     val list = IceboxDao.getAll().toMutableList()
     iceboxAdapter.setItemList(list)
+    sortItems(sort)
     fragment.changeBtnVisibility(add = true)
   }
 
   fun sortItems(type: Sort) {
     sort = type
     iceboxAdapter.setItemList(sortList(iceboxAdapter.getItemList(), sort))
+    fragment.onSortMethodChange(sort)
   }
 
   fun onUndoClicked() {
@@ -91,6 +93,7 @@ class IceboxPresenter(val fragment: IceboxButtons) {
       Sort.NAME -> list.sortedBy { it.name }
       Sort.DATE -> list.sortedBy { it.date }
       Sort.CATEGORY -> list.sortedBy { it.category }
+      Sort.CREATED -> list.sortedBy { it.id }
     }.toMutableList()
   }
 
@@ -101,12 +104,13 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   }
 
   enum class Sort {
-    NAME, DATE, CATEGORY
+    NAME, DATE, CATEGORY, CREATED
   }
 
   interface IceboxButtons {
     fun changeBtnVisibility(add: Boolean = false, undo: Boolean = false, search: Boolean = false, delete: Boolean = false)
     fun toIceboxItemSetActivity(item: IceboxItem)
     fun toSearchActivity(set: Set<String>)
+    fun onSortMethodChange(type: Sort)
   }
 }
