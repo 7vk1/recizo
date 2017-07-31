@@ -31,7 +31,7 @@
     <CheckBoxPreference
         android:title="通知"
         android:defaultValue="true"
-        android:key="isNotify"
+        android:key="isAlert"
         android:singleLine="true"/>
 
     <com.recizo.view.SettingItemView

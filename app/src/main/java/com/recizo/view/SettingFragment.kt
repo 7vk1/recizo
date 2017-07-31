@@ -4,6 +4,7 @@ package com.recizo.view
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.preference.CheckBoxPreference
 import android.preference.PreferenceFragment
 import com.recizo.R
 import android.preference.Preference
@@ -29,6 +30,9 @@ class SettingFragment : PreferenceFragment() {
     }
 
     // alert settings
+
+    val isAlert = findPreference("isAlert") as CheckBoxPreference
+
     val alertDay = findPreference("alert_day") as SettingItemView
     alertDay.summary = "賞味期限の${alertDay.value}日前"
     alertDay.onListClickListener = object : SettingItemView.OnListClickListener {
@@ -57,6 +61,16 @@ class SettingFragment : PreferenceFragment() {
           alertTime.value = "$hour:${if(min < 10) "0$min" else "$min"}"
           alertTime.summary = alertTime.value + "に通知"
         }, time[0].toInt(), time[1].toInt(), false)
+
+    if(!isAlert.isChecked) {
+      alertDay.isEnabled = false
+      alertTime.isEnabled = false
+    }
+    isAlert.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, f ->
+      alertDay.isEnabled = f as Boolean
+      alertTime.isEnabled = f
+      true
+    }
 
 
     // about this app
