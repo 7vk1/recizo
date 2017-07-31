@@ -40,7 +40,7 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
       }
     })
     recipePresenter.startRecipeListCreate()
-    recipePresenter.dispSearchedText(searched_keywordtext)
+    recipePresenter.dispSearchedText(searche_result_keyword_flame)
 
     searched_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
