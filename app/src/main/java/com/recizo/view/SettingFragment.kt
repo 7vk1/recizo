@@ -10,6 +10,7 @@ import com.recizo.R
 import android.preference.Preference
 import android.preference.PreferenceManager
 import com.recizo.module.AppContextHolder
+import com.recizo.module.Notification
 import com.recizo.setting_avtivitys.AboutMeActivity
 import com.recizo.setting_avtivitys.AlertSettingActivity
 import com.recizo.setting_avtivitys.LicenceActivity
@@ -67,9 +68,15 @@ class SettingFragment : PreferenceFragment() {
     isAlert.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, f ->
       alertDay.isEnabled = f as Boolean
       alertTime.isEnabled = f
+      if(f == false) Notification.cancel(activity)
+      else Notification.set(activity)
       true
     }
-    alertTime.onPreferenceChangeListener // TODO IMPL
+    alertTime.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, any ->
+      Notification.cancel(activity)
+      Notification.set(activity)
+      true
+    }
 
 
     // about this app

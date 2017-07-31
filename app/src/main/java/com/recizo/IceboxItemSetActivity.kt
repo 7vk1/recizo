@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import com.recizo.model.entity.IceboxItem
 import com.recizo.module.IceboxDao
-import com.recizo.module.Notification
 import com.recizo.presenter.ItemCategoryAdapter
 import kotlinx.android.synthetic.main.activity_icebox_item_set.*
 
@@ -28,7 +27,6 @@ class IceboxItemSetActivity : AppCompatActivity() {
       date_picker.updateDate(year, month, day)
       register_btn.text = "変更"
     } else register_btn.text = "追加"
-    Notification.set(this, 22, 36)
     cancel_btn.setOnClickListener { finish() }
 
     register_btn.setOnClickListener {
