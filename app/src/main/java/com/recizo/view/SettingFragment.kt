@@ -11,8 +11,8 @@ import android.preference.Preference
 import android.preference.PreferenceManager
 import com.recizo.module.AppContextHolder
 import com.recizo.module.Notification
-import com.recizo.setting_avtivitys.AboutMeActivity
-import com.recizo.setting_avtivitys.LicenceActivity
+import com.recizo.setting_activities.AboutMeActivity
+import com.recizo.setting_activities.LicenceActivity
 
 class SettingFragment : PreferenceFragment() {
   override fun onCreate(savedInstanceState: Bundle?) {

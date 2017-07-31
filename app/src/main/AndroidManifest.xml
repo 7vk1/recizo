@@ -22,8 +22,8 @@
       </intent-filter>
     </activity>
     <activity android:name=".IceboxItemSetActivity" />
-    <activity android:name=".setting_avtivitys.LicenceActivity" />
-    <activity android:name=".setting_avtivitys.AboutMeActivity" />
+    <activity android:name=".setting_activities.LicenceActivity" />
+    <activity android:name=".setting_activities.AboutMeActivity" />
     <receiver android:name=".module.Notification$AlarmReceiver"
               android:process=":remote"/>
   </application>
