@@ -37,9 +37,14 @@ class IceboxPresenter(val fragment: IceboxButtons) {
         searchList.remove(itemId)
         if (garbageList.size == 0 && searchList.size == 0) fragment.changeBtnVisibility(add = true)
       }
-
       override fun onItemClicked(item: IceboxItem) {
         fragment.toIceboxItemSetActivity(item)
+      }
+      override fun onDeleteClicked(itemId: Long) {
+        removeItem(itemId)
+      }
+      override fun onSearchClicked(item: IceboxItem) {
+        fragment.toSearchActivity(getSearchItemList()) // todo アイテム１つで検索？
       }
     })
   }
@@ -102,5 +107,6 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   interface IceboxButtons {
     fun changeBtnVisibility(add: Boolean = false, undo: Boolean = false, search: Boolean = false, delete: Boolean = false)
     fun toIceboxItemSetActivity(item: IceboxItem)
+    fun toSearchActivity(set: Set<String>)
   }
 }
