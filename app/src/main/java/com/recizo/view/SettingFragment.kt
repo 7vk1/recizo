@@ -12,7 +12,6 @@ import android.preference.PreferenceManager
 import com.recizo.module.AppContextHolder
 import com.recizo.module.Notification
 import com.recizo.setting_avtivitys.AboutMeActivity
-import com.recizo.setting_avtivitys.AlertSettingActivity
 import com.recizo.setting_avtivitys.LicenceActivity
 
 class SettingFragment : PreferenceFragment() {
