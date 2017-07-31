@@ -34,6 +34,10 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
     activity.startActivity(intent)
   }
 
+  override fun toSearchActivity(set: Set<String>) {
+    (activity as MoveToSearchFragment).moveToSearchFragment(set)
+  }
+
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     super.onCreateView(inflater, container, savedInstanceState)
     return inflater!!.inflate(R.layout.fragment_icebox, container, false)
