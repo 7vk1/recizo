@@ -20,8 +20,23 @@ import com.recizo.MainActivity
 object Notification {
   fun set(context: Context) {
     val time = PreferenceManager.getDefaultSharedPreferences(context).getString("alert_time", context.resources.getString(R.string.default_time)).split(":")
-    val hour = time[0].toInt()
-    val minute = time[1].toInt()
+    setNotification(context, time[0].toInt(), time[1].toInt())
+  }
+
+  fun change(context: Context, hour: Int, minute: Int) {
+    cancel(context)
+    setNotification(context, hour, minute)
+  }
+
+  fun cancel(context: Context) {
+    val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val intent = Intent(context, AlarmReceiver::class.java)
+    intent.setClass(context, AlarmReceiver::class.java)
+    val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+    alarm.cancel(pendingIntent)
+  }
+
+  private fun setNotification(context: Context, hour: Int, minute: Int) {
     val cal = Calendar.getInstance()
     cal.timeZone = TimeZone.getTimeZone("Asia/Tokyo")
     val now = cal.timeInMillis
@@ -35,14 +50,6 @@ object Notification {
     val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     if(Build.VERSION.SDK_INT < 23) alarm.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
     else alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-  }
-
-  fun cancel(context: Context) {
-    val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    val intent = Intent(context, AlarmReceiver::class.java)
-    intent.setClass(context, AlarmReceiver::class.java)
-    val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
-    alarm.cancel(pendingIntent)
   }
 
   private fun notifyLargeIcon(context: Context, title: String, message: String) {

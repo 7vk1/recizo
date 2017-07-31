@@ -59,6 +59,7 @@ class SettingFragment : PreferenceFragment() {
         TimePickerDialog.OnTimeSetListener { _, hour, min ->
           alertTime.value = "$hour:${if(min < 10) "0$min" else "$min"}"
           alertTime.summary = alertTime.value + "に通知"
+          Notification.change(activity, hour, min)
         }, time[0].toInt(), time[1].toInt(), false)
 
     if(!isAlert.isChecked) {
@@ -70,11 +71,6 @@ class SettingFragment : PreferenceFragment() {
       alertTime.isEnabled = f
       if(f == false) Notification.cancel(activity)
       else Notification.set(activity)
-      true
-    }
-    alertTime.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, any ->
-      Notification.cancel(activity)
-      Notification.set(activity)
       true
     }
 
