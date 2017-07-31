@@ -30,6 +30,8 @@
   <string name="recipe_image">完成イメージ</string>
 
   <string name="empty_text">登録されていません</string>
+  <string name="flyer_empty_text">郵便番号が登録されていません</string>
+  <string name="flyer_empty_text_desc">郵便番号の設定は「メニュー」の「設定」から行えます</string>
 
   <!-- preference strings -->
   <string name="preference_network_title">ネットワーク設定</string>
