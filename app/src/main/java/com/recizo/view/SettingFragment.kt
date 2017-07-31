@@ -1,6 +1,7 @@
 package com.recizo.view
 
 
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceFragment
@@ -29,7 +30,7 @@ class SettingFragment : PreferenceFragment() {
 
     // alert settings
     val alertDay = findPreference("alert_day") as SettingItemView
-    alertDay.summary = "賞味期限の${alertDay.value}日前に通知"
+    alertDay.summary = "賞味期限の${alertDay.value}日前"
     alertDay.onListClickListener = object : SettingItemView.OnListClickListener {
       override fun onListClick() {
         NumberPickerDialog()
@@ -40,12 +41,26 @@ class SettingFragment : PreferenceFragment() {
             .listener(object : NumberPickerDialog.OnClickListener {
               override fun onPositive(number: Int) {
                 alertDay.value = number.toString()
-                alertDay.summary = "賞味期限の$number 日前に通知"
+                alertDay.summary = "賞味期限の${number}日前"
               }
               override fun onNegative() {} })
             .show(fragmentManager, "set_alert_day")
       }
     }
+
+    val alertTime =findPreference("alert_time") as SettingItemView
+    alertTime.setDefaultValue("18:00")
+    alertTime.summary = alertTime.value + "に通知"
+    alertTime.setListOnClickListener(object : SettingItemView.OnListClickListener{
+      override fun onListClick() {
+        val sp = alertTime.value.split(":")
+        TimePickerDialog(activity,
+            TimePickerDialog.OnTimeSetListener { _, hour, min ->
+              alertTime.value = "$hour:${if(min < 10) "0$min" else "$min"}"
+              alertTime.summary = alertTime.value + "に通知"
+            }, sp[0].toInt(), sp[1].toInt(), false).show()
+      }
+    })
 
     val alertPreference = findPreference("alert_item") as SettingItemView
     alertPreference.summary = "1日前8時"

@@ -37,6 +37,10 @@
         android:key="alert_day"/>
 
     <com.recizo.view.SettingItemView
+        android:defaultValue="1800"
+        android:key="alert_time"/>
+
+    <com.recizo.view.SettingItemView
         android:defaultValue="1"
         android:key="alert_item"
         android:title="賞味期限通知"/>
