@@ -55,6 +55,8 @@ class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
       return
     }
     holder!!.bindView(item)
+    holder.del.setOnClickListener { eventListener?.onDeleteClicked(holder.itemId) }
+    holder.search.setOnClickListener { eventListener?.onSearchClicked(item) }
     eventListener?.onBindViewHolder(holder, position)
     holder.swipeLayout.addSwipeListener(object: SimpleSwipeListener() {
       override fun onOpen(layout: SwipeLayout?) {
@@ -78,6 +80,8 @@ class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
     fun onItemOpen(dragEdge: SwipeLayout.DragEdge, itemId: Long)
     fun onViewAttached(holder: IceboxViewHolder)
     fun onBindViewHolder(holder: IceboxViewHolder, position: Int)
+    fun onDeleteClicked(itemId: Long)
+    fun onSearchClicked(item: IceboxItem)
   }
 
   class IceboxViewHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -87,6 +91,8 @@ class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
     val cardView: CardView = v.findViewById(R.id.icebox_item)
     val swipeLayout: SwipeLayout = v.findViewById(R.id.swipe_target)
     val categoryImg: ImageView = v.findViewById(R.id.category_img)
+    val del: CardView = v.findViewById(R.id.icebox_item_del)
+    val search: CardView = v.findViewById(R.id.icebox_item_search)
     fun bindView(item: IceboxItem) {
       this.title.text = item.name
       this.memo.text = item.memo
