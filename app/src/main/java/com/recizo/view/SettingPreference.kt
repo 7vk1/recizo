@@ -20,5 +20,4 @@ class SettingPreference(context: Context, attr: AttributeSet) : Preference(conte
   override fun onClick() {
     setDialog?.show()
   }
-
 }

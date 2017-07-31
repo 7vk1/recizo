@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-
   <Preference
       android:selectable="false"
       android:enabled="true"
       android:key="example_key"
       android:title="バージョン"
       android:summary="1.0.0" />
-
   <PreferenceCategory android:title="@string/preference_network_title">
     <SwitchPreference
         android:key="checkbox_network_key"
@@ -26,31 +23,17 @@
   </PreferenceCategory>
 
   <PreferenceCategory android:title="賞味期限通知設定">
-
-
     <CheckBoxPreference
         android:title="通知"
         android:defaultValue="true"
         android:key="isAlert"
         android:singleLine="true"/>
-
     <com.recizo.view.SettingItemView
         android:defaultValue="1"
         android:key="alert_day"/>
-
     <com.recizo.view.SettingPreference
         android:key="alert_time"/>
-
-    <com.recizo.view.SettingItemView
-        android:defaultValue="1800"
-        android:key="alert_time-0"/>
-
-    <com.recizo.view.SettingItemView
-        android:defaultValue="1"
-        android:key="alert_item"
-        android:title="賞味期限通知"/>
   </PreferenceCategory>
-
 
   <PreferenceCategory android:title="一般">
     <com.recizo.view.SettingItemView
@@ -62,5 +45,4 @@
         android:key="licence_item"
         android:title="ライセンス"/>
   </PreferenceCategory>
-
 </PreferenceScreen>

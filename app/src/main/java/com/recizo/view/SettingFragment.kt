@@ -30,9 +30,7 @@ class SettingFragment : PreferenceFragment() {
     }
 
     // alert settings
-
     val isAlert = findPreference("isAlert") as CheckBoxPreference
-
     val alertDay = findPreference("alert_day") as SettingItemView
     alertDay.summary = "賞味期限の${alertDay.value}日前"
     alertDay.onListClickListener = object : SettingItemView.OnListClickListener {
@@ -74,22 +72,18 @@ class SettingFragment : PreferenceFragment() {
 
 
     // about this app
-    (findPreference("about_me_item") as SettingItemView).setListOnClickListener(
-        object : SettingItemView.OnListClickListener{
-          override fun onListClick() {
-            activity.startActivity(Intent(activity, AboutMeActivity::class.java))
-          }
-        }
-    )
+    (findPreference("about_me_item") as SettingItemView).setListOnClickListener(object : SettingItemView.OnListClickListener{
+      override fun onListClick() {
+        activity.startActivity(Intent(activity, AboutMeActivity::class.java))
+      }
+    })
 
 
     // ライセンス
-    (findPreference("licence_item") as SettingItemView).setListOnClickListener(
-            object : SettingItemView.OnListClickListener{
-              override fun onListClick() {
-                activity.startActivity(Intent(activity, LicenceActivity::class.java))
-              }
-            }
-    )
+    (findPreference("licence_item") as SettingItemView).setListOnClickListener(object : SettingItemView.OnListClickListener{
+      override fun onListClick() {
+        activity.startActivity(Intent(activity, LicenceActivity::class.java))
+      }
+    })
   }
 }
