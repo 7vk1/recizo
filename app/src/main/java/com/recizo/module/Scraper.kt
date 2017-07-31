@@ -22,7 +22,9 @@ abstract class Scraper {
       sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
       isLoading = false
       next()
-    }catch (e: IOException){ callback.failed(ErrorCode.IO_ERROR) }catch (e: Exception){
+    }catch (e: IOException){ callback.failed(ErrorCode.IO_ERROR)
+    }catch (e: IndexOutOfBoundsException){ callback.failed(ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR)
+    }catch (e: Exception){
       e.printStackTrace()
       callback.failed(ErrorCode.GENERIC_ERROR)
     }
