@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.widget.TextView
 import com.recizo.model.ErrorCode
 import com.recizo.model.entity.CookpadRecipe
 import com.recizo.module.AppContextHolder
@@ -12,7 +13,7 @@ import com.recizo.module.Scraper
 import com.recizo.view.RecipeFragment
 
 
-class RecipePresenter (context: Context, recipeListView: RecyclerView, keywords: Set<String>){
+class RecipePresenter (context: Context, recipeListView: RecyclerView,val keywords: Set<String>){
   private val scraper = CookpadScraper(keywords)
   private val recipeListAdapter = RecipeListAdapter(recipeListView)
   private var loadEventListener: LoadEventListener? = null
@@ -28,7 +29,6 @@ class RecipePresenter (context: Context, recipeListView: RecyclerView, keywords:
   fun setLoadEventListener(listener: LoadEventListener) { loadEventListener = listener }
 
   fun startRecipeListCreate(){
-
     loadEventListener?.onLoadStart()
     scraper.scrapingHTML(object : Scraper.ScraperCallBack {
       override fun succeed(html: org.jsoup.nodes.Document?) {
@@ -42,6 +42,13 @@ class RecipePresenter (context: Context, recipeListView: RecyclerView, keywords:
         loadEventListener?.onLoadEnd()
       }
     })
+  }
+
+  fun dispSearchedText(textView: TextView) {
+    keywords.map {
+      val carry: String = textView.text.toString()
+      textView.text = (carry + it + " ")
+    }
   }
 
   fun addRecipeList(recyclerView: android.support.v7.widget.RecyclerView?, dy: Int){
