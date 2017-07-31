@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.recizo.setting_avtivitys.AboutMeActivity">
+    tools:context="com.recizo.setting_activities.AboutMeActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

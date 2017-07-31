@@ -5,6 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.recizo.setting_avtivitys.LicenceActivity">
+    tools:context="com.recizo.setting_activities.LicenceActivity">
 
 </android.support.constraint.ConstraintLayout>
