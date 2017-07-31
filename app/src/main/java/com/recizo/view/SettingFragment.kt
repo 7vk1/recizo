@@ -48,27 +48,16 @@ class SettingFragment : PreferenceFragment() {
       }
     }
 
-    val alertTime =findPreference("alert_time") as SettingItemView
-    alertTime.setDefaultValue("18:00")
+    val alertTime = findPreference("alert_time") as SettingPreference
+    alertTime.defaultValue = "18:00"
     alertTime.summary = alertTime.value + "に通知"
-    alertTime.setListOnClickListener(object : SettingItemView.OnListClickListener{
-      override fun onListClick() {
-        val sp = alertTime.value.split(":")
-        TimePickerDialog(activity,
-            TimePickerDialog.OnTimeSetListener { _, hour, min ->
-              alertTime.value = "$hour:${if(min < 10) "0$min" else "$min"}"
-              alertTime.summary = alertTime.value + "に通知"
-            }, sp[0].toInt(), sp[1].toInt(), false).show()
-      }
-    })
+    val time = alertTime.value.split(":")
+    alertTime.setDialog = TimePickerDialog(activity,
+        TimePickerDialog.OnTimeSetListener { _, hour, min ->
+          alertTime.value = "$hour:${if(min < 10) "0$min" else "$min"}"
+          alertTime.summary = alertTime.value + "に通知"
+        }, time[0].toInt(), time[1].toInt(), false)
 
-    val alertPreference = findPreference("alert_item") as SettingItemView
-    alertPreference.summary = "1日前8時"
-    alertPreference.setListOnClickListener(object : SettingItemView.OnListClickListener{
-      override fun onListClick() {
-        activity.startActivity(Intent(activity, AlertSettingActivity::class.java))
-      }
-    })
 
     // about this app
     (findPreference("about_me_item") as SettingItemView).setListOnClickListener(

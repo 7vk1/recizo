@@ -36,6 +36,9 @@
   <string name="preference_postcode_title">住所設定</string>
   <string name="checkbox_postcode_title">郵便番号</string>
 
+  <!--default value-->
+  <string name="default_time">18:00</string>
+
 
   <!-- このアプリについて -->
   <string name="about_me_title1">1. サービスの内容について</string>
