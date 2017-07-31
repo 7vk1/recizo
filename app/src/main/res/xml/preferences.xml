@@ -1,47 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <Preference
+      android:selectable="false"
+      android:enabled="true"
+      android:key="example_key"
+      android:title="バージョン"
+      android:summary="1.0.0" />
+  <PreferenceCategory android:title="@string/preference_network_title">
+    <SwitchPreference
+        android:key="checkbox_network_key"
+        android:title="@string/checkbox_network_title"
+        android:summary="@string/checkbox_network_summary" />
+  </PreferenceCategory>
 
+  <PreferenceCategory android:title="@string/preference_postcode_title">
+    <EditTextPreference
+        android:defaultValue="0000000"
+        android:key="edit_postcode_key"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/checkbox_postcode_title"/>
+  </PreferenceCategory>
 
-    <Preference
-        android:selectable="false"
-        android:enabled="true"
-        android:key="example_key"
-        android:title="バージョン"
-        android:summary="1.0.0" />
+  <PreferenceCategory android:title="賞味期限通知設定">
+    <CheckBoxPreference
+        android:title="通知"
+        android:defaultValue="true"
+        android:key="isAlert"
+        android:singleLine="true"/>
+    <com.recizo.view.SettingItemView
+        android:defaultValue="1"
+        android:key="alert_day"/>
+    <com.recizo.view.SettingPreference
+        android:key="alert_time"/>
+  </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/preference_network_title">
-        <SwitchPreference
-            android:key="checkbox_network_key"
-            android:title="@string/checkbox_network_title"
-            android:summary="@string/checkbox_network_summary" />
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/preference_postcode_title">
-        <EditTextPreference
-            android:defaultValue="0000000"
-            android:key="edit_postcode_key"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/checkbox_postcode_title"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="通知設定">
-        <com.recizo.view.SettingItemView
-            android:defaultValue="1"
-            android:key="alert_item"
-            android:title="通知タイミング"/>
-    </PreferenceCategory>
-
-
-    <PreferenceCategory android:title="一般">
-        <com.recizo.view.SettingItemView
-            android:defaultValue="1"
-            android:key="about_me_item"
-            android:title="このアプリについて"/>
-        <com.recizo.view.SettingItemView
-            android:defaultValue="1"
-            android:key="licence_item"
-            android:title="ライセンス"/>
-    </PreferenceCategory>
-
+  <PreferenceCategory android:title="一般">
+    <com.recizo.view.SettingItemView
+        android:defaultValue="1"
+        android:key="about_me_item"
+        android:title="このアプリについて"/>
+    <com.recizo.view.SettingItemView
+        android:defaultValue="1"
+        android:key="licence_item"
+        android:title="ライセンス"/>
+  </PreferenceCategory>
 </PreferenceScreen>
