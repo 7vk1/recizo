@@ -19,6 +19,7 @@ class NumberPickerDialog : DialogFragment() {
   private var negativeText: String? = null
   private var min: Int? = null
   private var max: Int? = null
+  private var value: Int = 0
 
   fun title(v: String): NumberPickerDialog { title = v; return this }
   fun message(v: String): NumberPickerDialog { message = v; return this }
@@ -26,6 +27,7 @@ class NumberPickerDialog : DialogFragment() {
   fun positiveBtn(v: String): NumberPickerDialog { positiveText = v; return this}
   fun negativeBtn(v: String): NumberPickerDialog { negativeText = v; return this }
   fun range(min: Int, max: Int): NumberPickerDialog { this.min = min; this.max = max; return this }
+  fun value(v: Int): NumberPickerDialog { this.value = v; return this }
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     val builder = AlertDialog.Builder(activity)
@@ -36,6 +38,7 @@ class NumberPickerDialog : DialogFragment() {
       numberPicker.minValue = min!!
       numberPicker.maxValue = max!!
     }
+    numberPicker.value = value
     builder.setView(content)
     if(title != null) builder.setTitle(title)
     if(message != null) builder.setMessage(message)

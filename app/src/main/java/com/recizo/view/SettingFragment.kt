@@ -34,11 +34,15 @@ class SettingFragment : PreferenceFragment() {
       override fun onListClick() {
         NumberPickerDialog()
             .title("賞味期限の通知設定")
-            .listener(object : NumberPickerDialog.OnClickListener {
-              override fun onPositive(number: Int) { alertDay.summary = "賞味期限の$number 日前に通知" }
-              override fun onNegative() {} })
             .positiveBtn("set").negativeBtn("cancel")
             .range(0, 9)
+            .value(alertDay.value.toInt())
+            .listener(object : NumberPickerDialog.OnClickListener {
+              override fun onPositive(number: Int) {
+                alertDay.value = number.toString()
+                alertDay.summary = "賞味期限の$number 日前に通知"
+              }
+              override fun onNegative() {} })
             .show(fragmentManager, "set_alert_day")
       }
     }

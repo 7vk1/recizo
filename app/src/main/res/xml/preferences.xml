@@ -25,13 +25,12 @@
         android:title="@string/checkbox_postcode_title"/>
   </PreferenceCategory>
 
-  <PreferenceCategory android:title="通知設定">
+  <PreferenceCategory android:title="賞味期限通知設定">
     <CheckBoxPreference
-        android:title="賞味期限通知"
+        android:title="通知"
         android:defaultValue="true"
         android:key="isNotify"
         android:singleLine="true"/>
-
 
     <com.recizo.view.SettingItemView
         android:defaultValue="1"
