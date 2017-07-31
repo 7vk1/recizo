@@ -21,19 +21,19 @@
         android:defaultValue="true"
         android:key="isAlert"
         android:singleLine="true"/>
-    <com.recizo.view.SettingItemView
+    <com.recizo.view.SettingItemPreference
         android:defaultValue="1"
         android:key="alert_day"/>
-    <com.recizo.view.SettingPreference
+    <com.recizo.view.SettingDialogPreference
         android:key="alert_time"/>
   </PreferenceCategory>
 
   <PreferenceCategory android:title="一般">
-    <com.recizo.view.SettingItemView
+    <com.recizo.view.SettingItemPreference
         android:defaultValue="1"
         android:key="about_me_item"
         android:title="このアプリについて"/>
-    <com.recizo.view.SettingItemView
+    <com.recizo.view.SettingItemPreference
         android:defaultValue="1"
         android:key="licence_item"
         android:title="ライセンス"/>

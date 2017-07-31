@@ -5,7 +5,7 @@ import android.content.Context
 import android.preference.Preference
 import android.util.AttributeSet
 
-class SettingPreference(context: Context, attr: AttributeSet) : Preference(context, attr) {
+class SettingDialogPreference(context: Context, attr: AttributeSet) : Preference(context, attr) {
   init {
     summary = value
   }
