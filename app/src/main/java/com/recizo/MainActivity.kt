@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import com.recizo.module.AppContextHolder
+import com.recizo.module.Notification
 import com.recizo.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.MoveToSearchFragment {
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     transaction.commit()
     val navigationView = findViewById(R.id.nav_view) as NavigationView
     navigationView.setNavigationItemSelectedListener(this)
+    Notification.set(this)
   }
 
   override fun onBackPressed() {//todo change nav selected item
