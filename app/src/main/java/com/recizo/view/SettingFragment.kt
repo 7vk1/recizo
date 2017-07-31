@@ -38,7 +38,7 @@ class SettingFragment : PreferenceFragment() {
         NumberPickerDialog()
             .title("賞味期限の通知設定")
             .positiveBtn("set").negativeBtn("cancel")
-            .range(0, 9)
+            .range(0, 7)
             .value(alertDay.value.toInt())
             .listener(object : NumberPickerDialog.OnClickListener {
               override fun onPositive(number: Int) {
@@ -51,7 +51,7 @@ class SettingFragment : PreferenceFragment() {
     }
 
     val alertTime = findPreference("alert_time") as SettingPreference
-    alertTime.defaultValue = "18:00"
+    alertTime.defaultValue = this.resources.getString(R.string.default_time)
     alertTime.summary = alertTime.value + "に通知"
     val time = alertTime.value.split(":")
     alertTime.setDialog = TimePickerDialog(activity,
@@ -69,6 +69,7 @@ class SettingFragment : PreferenceFragment() {
       alertTime.isEnabled = f
       true
     }
+    alertTime.onPreferenceChangeListener // TODO IMPL
 
 
     // about this app

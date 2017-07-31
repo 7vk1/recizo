@@ -14,12 +14,14 @@ import android.os.Build
 import java.util.*
 import android.app.AlarmManager
 import android.content.BroadcastReceiver
+import android.preference.PreferenceManager
 import com.recizo.MainActivity
 
-
 object Notification {
-
-  fun set(context: Context, hour: Int, minute: Int) {
+  fun set(context: Context) {
+    val time = PreferenceManager.getDefaultSharedPreferences(context).getString("alert_time", context.resources.getString(R.string.default_time)).split(":")
+    val hour = time[0].toInt()
+    val minute = time[1].toInt()
     val cal = Calendar.getInstance()
     cal.timeZone = TimeZone.getTimeZone("Asia/Tokyo")
     val now = cal.timeInMillis
@@ -29,16 +31,21 @@ object Notification {
     if (cal.timeInMillis < now) cal.add(Calendar.DAY_OF_MONTH, 1)
     val intent = Intent(context, AlarmReceiver::class.java)
     intent.setClass(context, AlarmReceiver::class.java)
-    val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+    val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
     val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//    if(Build.VERSION.SDK_INT < 23) alarm.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-//    else alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-    if(Build.VERSION.SDK_INT < 23) alarm.setExact(AlarmManager.RTC_WAKEUP, now, pendingIntent)
-    else alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, now, pendingIntent)
-
+    if(Build.VERSION.SDK_INT < 23) alarm.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
+    else alarm.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
   }
 
-  fun notifyLargeIcon(context: Context, title: String, message: String) {
+  fun cancel(context: Context) {
+    val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val intent = Intent(context, AlarmReceiver::class.java)
+    intent.setClass(context, AlarmReceiver::class.java)
+    val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+    alarm.cancel(pendingIntent)
+  }
+
+  private fun notifyLargeIcon(context: Context, title: String, message: String) {
     val builder = NotificationCompat.Builder(context)
     builder.setSmallIcon(R.drawable.cat_fruit)
     builder.setLargeIcon(getBitmapFromVectorDrawable(context, R.drawable.ic_reci_0611_01_grate))
@@ -70,7 +77,8 @@ object Notification {
 
   class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-      val day = 1
+      val prefManager = PreferenceManager.getDefaultSharedPreferences(context)
+      val day = prefManager.getString("alert_day", context.resources.getString(R.string.default_day)).toInt()
       val cal = Calendar.getInstance()
       cal.add(Calendar.DAY_OF_MONTH, day)
       val now = cal.timeInMillis
@@ -82,6 +90,7 @@ object Notification {
         cal.timeInMillis < now
       }
       Notification.notifyLargeIcon(context, "賞味期限通知", "${items.size}つの素材の賞味期限が切れそうです！！")//TODO MESSAGE
+      Notification.set(context)
     }
   }
 }
