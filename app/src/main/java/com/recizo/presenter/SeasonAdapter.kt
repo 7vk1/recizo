@@ -36,7 +36,7 @@ class SeasonAdapter(val context: Context,val seasonList: List<String>): Recycler
   }
 
   private fun dividerSetting(frame: LinearLayout, name: TextView) {
-    frame.setBackgroundColor(context.resources.getColor(R.color.background))
+    frame.setBackgroundColor(context.resources.getColor(R.color.colorAccent))
     setFramePadding(frame, start = 10, top = 0, end = 0, bottom = 0)
     name.textSize = PropertyHolder.nameSize!!.times(0.5f)
   }
