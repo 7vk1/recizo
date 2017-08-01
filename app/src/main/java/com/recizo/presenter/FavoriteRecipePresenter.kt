@@ -17,9 +17,9 @@ import java.net.URL
 import java.util.concurrent.BlockingDeque
 
 class FavoriteRecipePresenter(context: Context, val view: View) {
-  val removeBtn = view.findViewById<FloatingActionButton>(R.id.favorite_recipe_remove_btn)
-  val undoBtn = view.findViewById<FloatingActionButton>(R.id.favorite_recipe_undo_btn)
-  val emptyText = view.findViewById<TextView>(R.id.empty_text)
+  val removeBtn: FloatingActionButton = view.findViewById(R.id.favorite_recipe_remove_btn)
+  val undoBtn: FloatingActionButton = view.findViewById(R.id.favorite_recipe_undo_btn)
+  val emptyText: TextView = view.findViewById(R.id.empty_text)
   private val favoriteRecipeAdapter = FavoriteRecipeAdapter(
       object :FavoriteRecipePresenter.ChangeVisibility{
         override fun changeTextVisibility(visible: Boolean) {

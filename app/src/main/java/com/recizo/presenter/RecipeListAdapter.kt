@@ -17,8 +17,9 @@ import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
 class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Adapter<RecipeViewHolder>(), View.OnClickListener {
-  val recipeList = mutableListOf<CookpadRecipe>()
   private var onItemClickListener: OnItemClickListener? = null
+  val recipeList = mutableListOf<CookpadRecipe>()
+
   fun setOnItemClickListener(listener: OnItemClickListener){
     onItemClickListener = listener
   }

@@ -11,7 +11,6 @@ import com.recizo.R
 import com.daimajia.swipe.*
 import com.recizo.model.entity.IceboxItem
 
-
 class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
   private var eventListener: EventListener? = null
   private var itemList = mutableListOf(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))

@@ -4,10 +4,10 @@ import android.content.res.Resources
 import android.util.Xml
 import org.xmlpull.v1.XmlPullParser
 
-class XMLSeasonParser(resouces: Resources) {
-  val parser = Xml.newPullParser()
+class XMLSeasonParser(resources: Resources) {
+  val parser: XmlPullParser = Xml.newPullParser()
   init {
-    val maneger = resouces.assets
+    val maneger = resources.assets
     val stream = maneger.open("foods.xml")
     parser.setInput(stream , "UTF-8")
   }

@@ -21,10 +21,14 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
-class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.ChangeVisibility, val error: FavoriteRecipePresenter.Error, val intent: FavoriteRecipePresenter.Intent): RecyclerView.Adapter<FavoriteRecipeAdapter.FavoriteRecipeViewHolder>() {
+class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.ChangeVisibility,
+                            val error: FavoriteRecipePresenter.Error,
+                            val intent: FavoriteRecipePresenter.Intent)
+  : RecyclerView.Adapter<FavoriteRecipeAdapter.FavoriteRecipeViewHolder>() {
+
+  var recycleView: RecyclerView? = null
   val favoriteRecipeList = mutableListOf<CookpadRecipe>()
   val garbageList = mutableSetOf<Long>()
-  var recycleView: RecyclerView? = null
   val undoList: MutableList<Long> = mutableListOf()
   init {
     this.setHasStableIds(true)
@@ -85,9 +89,7 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
     return@async Bitmap.createScaledBitmap(bitmapImage, width, height, false)
   }
 
-  override fun getItemCount(): Int {
-    return favoriteRecipeList.size
-  }
+  override fun getItemCount(): Int { return favoriteRecipeList.size }
 
   override fun onBindViewHolder(holder: FavoriteRecipeViewHolder?, position: Int) {
     holder!!.title.text = favoriteRecipeList[position].title

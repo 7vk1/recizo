@@ -6,9 +6,6 @@ import android.preference.Preference
 import android.util.AttributeSet
 
 class SettingDialogPreference(context: Context, attr: AttributeSet) : Preference(context, attr) {
-  init {
-    summary = value
-  }
   var defaultValue = ""
   var value: String
     get() = getPersistedString("18:00")
@@ -17,7 +14,8 @@ class SettingDialogPreference(context: Context, attr: AttributeSet) : Preference
       summary = value
     }
   var setDialog: Dialog? = null
-  override fun onClick() {
-    setDialog?.show()
+  init {
+    summary = value
   }
+  override fun onClick() { setDialog?.show() }
 }

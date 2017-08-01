@@ -1,6 +1,5 @@
 package com.recizo.view
 
-
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle

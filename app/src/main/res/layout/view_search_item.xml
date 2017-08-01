@@ -14,7 +14,6 @@
   <TextView
       android:gravity="center_vertical"
       android:textSize="20sp"
-      android:text="test"
       android:id="@+id/textView"
       android:layout_width="wrap_content"
       android:layout_height="30dp"/>

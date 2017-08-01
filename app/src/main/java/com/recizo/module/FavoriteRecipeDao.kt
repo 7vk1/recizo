@@ -6,16 +6,11 @@ import com.recizo.model.entity.CookpadRecipe
 
 object FavoriteRecipeDao {
   var context: Context? = null
-    get
     set(value) {
       if(field != null) return
       else field = value
     }
-
   private var favoriteRecipeDatabaseHelper: FavoriteRecipeDatabaseHelper? = null
-
-  private fun access() { favoriteRecipeDatabaseHelper = FavoriteRecipeDatabaseHelper(AppContextHolder.context!!) }
-  private fun close() { favoriteRecipeDatabaseHelper = null }
 
   fun add(recipe: CookpadRecipe) {
     this.access()
@@ -42,4 +37,7 @@ object FavoriteRecipeDao {
     catch (e: Exception) { return null }
     finally { close() }
   }
+
+  private fun access() { favoriteRecipeDatabaseHelper = FavoriteRecipeDatabaseHelper(AppContextHolder.context!!) }
+  private fun close() { favoriteRecipeDatabaseHelper = null }
 }

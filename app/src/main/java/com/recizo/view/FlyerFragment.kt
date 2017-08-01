@@ -9,17 +9,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.recizo.model.entity.ShufooFlyer
-import com.recizo.module.ShufooScraper
-import com.recizo.presenter.FlyerListAdapter
 import com.recizo.presenter.FlyerPresenter
-import kotlinx.android.synthetic.main.searched_recipe_list.*
 import com.recizo.R
 import com.recizo.module.AppContextHolder
-import kotlinx.android.synthetic.main.flyer_empty_text.*
 import kotlinx.android.synthetic.main.fragment_flyer.*
 
-class FlyerFragment : Fragment(){
+class FlyerFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
   }
@@ -50,7 +45,6 @@ class FlyerFragment : Fragment(){
       }
     })
     flyerPresenter.startFlyerListCreate()
-
     flyer_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)

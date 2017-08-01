@@ -13,11 +13,10 @@ import com.recizo.module.Scraper
 import com.recizo.view.RecipeFragment
 import com.recizo.view.SearchItemView
 
-
 class RecipePresenter (val context: Activity, recipeListView: RecyclerView, val keywords: Set<String>){
   private var scraper = CookpadScraper(keywords)
-  private val recipeListAdapter = RecipeListAdapter(recipeListView)
   private var loadEventListener: LoadEventListener? = null
+  private val recipeListAdapter = RecipeListAdapter(recipeListView)
   init {
     recipeListView.adapter = recipeListAdapter
     recipeListAdapter.setOnItemClickListener(object: RecipeListAdapter.OnItemClickListener {
@@ -29,7 +28,7 @@ class RecipePresenter (val context: Activity, recipeListView: RecyclerView, val 
 
   fun setLoadEventListener(listener: LoadEventListener) { loadEventListener = listener }
 
-  fun startRecipeListCreate(){
+  fun startRecipeListCreate() {
     loadEventListener?.onLoadStart()
     scraper.scrapingHTML(object : Scraper.ScraperCallBack {
       override fun succeed(html: org.jsoup.nodes.Document?) {
@@ -55,14 +54,7 @@ class RecipePresenter (val context: Activity, recipeListView: RecyclerView, val 
     }
   }
 
-  private fun eraseKeyword(v: String) {
-    val transaction = context.fragmentManager.beginTransaction()
-    transaction.addToBackStack(null)
-    transaction.replace(R.id.fragment_frame, RecipeFragment(keywords.filter { it != v }.toSet()))
-    transaction.commit()
-  }
-
-  fun addRecipeList(recyclerView: android.support.v7.widget.RecyclerView?, dy: Int){
+  fun addRecipeList(recyclerView: RecyclerView?, dy: Int){
     if (dy == 0 || scraper.isLoading || scraper.idFinished()) return
     val layoutManager = recyclerView!!.layoutManager as android.support.v7.widget.LinearLayoutManager
     val totalItemCount = layoutManager.itemCount
@@ -71,6 +63,13 @@ class RecipePresenter (val context: Activity, recipeListView: RecyclerView, val 
       scraper.isLoading = true
       startRecipeListCreate()
     }
+  }
+
+  private fun eraseKeyword(v: String) {
+    val transaction = context.fragmentManager.beginTransaction()
+    transaction.addToBackStack(null)
+    transaction.replace(R.id.fragment_frame, RecipeFragment(keywords.filter { it != v }.toSet()))
+    transaction.commit()
   }
 
   interface LoadEventListener{

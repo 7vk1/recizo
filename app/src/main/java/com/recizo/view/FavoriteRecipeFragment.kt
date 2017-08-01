@@ -2,18 +2,15 @@ package com.recizo.view
 
 import android.app.Fragment
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
-import com.recizo.presenter.FavoriteRecipeAdapter
 import com.recizo.presenter.FavoriteRecipePresenter
 import kotlinx.android.synthetic.main.fragment_favorite_recipe.*
 
-class FavoriteRecipeFragment: Fragment() {
+class FavoriteRecipeFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
   }
@@ -28,6 +25,5 @@ class FavoriteRecipeFragment: Fragment() {
     fragment_favorite_recipe_frame.layoutManager = LinearLayoutManager(activity)
     val presenter =  FavoriteRecipePresenter(activity, view!!)
     presenter.setUpView()
-
   }
 }

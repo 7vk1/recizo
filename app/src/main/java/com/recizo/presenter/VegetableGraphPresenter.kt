@@ -11,6 +11,9 @@ import com.recizo.module.Http
 import com.recizo.module.RecizoApi
 
 class VegetableGraphPresenter(private val chart: LineChart) {
+  var dataSet: LineDataSet? = null
+  var isTheOtherFinished = false
+  val colors = HashMap<RecizoApi.Vegetables, Int>()
   init {
     chart.description.text = "野菜の卸売価格"
     chart.isHorizontalScrollBarEnabled = false
@@ -18,11 +21,6 @@ class VegetableGraphPresenter(private val chart: LineChart) {
     chart.xAxis.axisMinimum = 0f
     chart.xAxis.axisMaximum = 366f
     chart.xAxis.labelCount = 7
-  }
-  var dataSet: LineDataSet? = null
-  var isTheOtherFinished = false
-  val colors = HashMap<RecizoApi.Vegetables, Int>()
-  init {
     colors.put(RecizoApi.Vegetables.burokkori, Color.rgb(255,0,0))
     colors.put(RecizoApi.Vegetables.daikon, Color.rgb(255,102,0))
     colors.put(RecizoApi.Vegetables.hakusai, Color.rgb(255,204,0))
@@ -39,51 +37,7 @@ class VegetableGraphPresenter(private val chart: LineChart) {
     colors.put(RecizoApi.Vegetables.tamanegi, Color.rgb(255,0,204))
     colors.put(RecizoApi.Vegetables.tomato, Color.rgb(255,0,102))
   }
-  private fun onResponseAll(response: Map<String, List<RecizoApi.DairyData>>){
-    val lists: List<LineDataSet> = response.keys.map {
-      val data = (0..response[it]!!.size -1)
-          .asSequence()
-          .filter { i -> response[it]!![i].price != -1 }
-          .map { i -> Entry(i.toFloat(),response[it]!![i].price.toFloat()) }
-          .toList()
-      val dataSet = LineDataSet(data, RecizoApi.Vegetables.valueOf(it).name_jp)
-      dataSet.color = colors[RecizoApi.Vegetables.valueOf(it)]!!
-      dataSet.valueTextColor = colors[RecizoApi.Vegetables.valueOf(it)]!!
-      dataSet.setDrawCircles(false)
-      dataSet
-    }
-    val dateList = response[response.keys.first()]!!.map { it.date }
-    val lineData = LineData(lists)
-    lineData.setDrawValues(false)
-    chart.xAxis.valueFormatter = XAxisValueFormatter(dateList.toTypedArray())
-    chart.data = lineData
-    chart.invalidate()
-  }
-  private fun onResponse(response: Map<String, List<RecizoApi.DairyData>>, isRecent: Boolean){
-    val key = response.keys.first()
-    val vegetableData = response[key]!!
-    val list = mutableListOf<Entry>()
-    val date = mutableListOf<String>()
-    for(i in 0..vegetableData.size -1) {
-      date.add(vegetableData[i].date)
-      if(vegetableData[i].price != -1) list.add(Entry(i.toFloat(), vegetableData[i].price.toFloat()))
-    }
-    val dataSet = LineDataSet(list, if(isRecent) "直近１年" else "過去５年平均")
-    val color = if(isRecent)colors[RecizoApi.Vegetables.valueOf(key)]!! else Color.BLACK
-    dataSet.color = color
-    dataSet.valueTextColor = color
-    dataSet.setDrawCircles(false)
-    if(isTheOtherFinished) {
-      chart.data = LineData(dataSet, this.dataSet)
-      chart.xAxis.valueFormatter = XAxisValueFormatter(date.toTypedArray())
-      chart.invalidate()
-    } else {
-      this.dataSet = dataSet
-      this.isTheOtherFinished = true
-    }
-  }
-  private fun handleError(code: Http.ErrorCode) {//TODO IMPL
-  }
+
   fun onItemChange(v: String) {
     val vegetable = RecizoApi.Vegetables.values().find { it.name_jp == v }!!
     chart.data = LineData()
@@ -108,6 +62,55 @@ class VegetableGraphPresenter(private val chart: LineChart) {
       })
     }
   }
+
+  private fun onResponseAll(response: Map<String, List<RecizoApi.DairyData>>){
+    val lists: List<LineDataSet> = response.keys.map {
+      val data = (0..response[it]!!.size -1)
+          .asSequence()
+          .filter { i -> response[it]!![i].price != -1 }
+          .map { i -> Entry(i.toFloat(),response[it]!![i].price.toFloat()) }
+          .toList()
+      val dataSet = LineDataSet(data, RecizoApi.Vegetables.valueOf(it).name_jp)
+      dataSet.color = colors[RecizoApi.Vegetables.valueOf(it)]!!
+      dataSet.valueTextColor = colors[RecizoApi.Vegetables.valueOf(it)]!!
+      dataSet.setDrawCircles(false)
+      dataSet
+    }
+    val dateList = response[response.keys.first()]!!.map { it.date }
+    val lineData = LineData(lists)
+    lineData.setDrawValues(false)
+    chart.xAxis.valueFormatter = XAxisValueFormatter(dateList.toTypedArray())
+    chart.data = lineData
+    chart.invalidate()
+  }
+
+  private fun onResponse(response: Map<String, List<RecizoApi.DairyData>>, isRecent: Boolean){
+    val key = response.keys.first()
+    val vegetableData = response[key]!!
+    val list = mutableListOf<Entry>()
+    val date = mutableListOf<String>()
+    for(i in 0..vegetableData.size -1) {
+      date.add(vegetableData[i].date)
+      if(vegetableData[i].price != -1) list.add(Entry(i.toFloat(), vegetableData[i].price.toFloat()))
+    }
+    val dataSet = LineDataSet(list, if(isRecent) "直近１年" else "過去５年平均")
+    val color = if(isRecent)colors[RecizoApi.Vegetables.valueOf(key)]!! else Color.BLACK
+    dataSet.color = color
+    dataSet.valueTextColor = color
+    dataSet.setDrawCircles(false)
+    if(isTheOtherFinished) {
+      chart.data = LineData(dataSet, this.dataSet)
+      chart.xAxis.valueFormatter = XAxisValueFormatter(date.toTypedArray())
+      chart.invalidate()
+    } else {
+      this.dataSet = dataSet
+      this.isTheOtherFinished = true
+    }
+  }
+
+  private fun handleError(code: Http.ErrorCode) {//TODO IMPL
+  }
+
   private class XAxisValueFormatter(private val mValues: Array<String>) : IAxisValueFormatter {
     override fun getFormattedValue(value: Float, axis: AxisBase): String {
       if(mValues.size -1 < value.toInt()) return ""

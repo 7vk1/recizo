@@ -11,10 +11,10 @@ import android.widget.TextView
 import com.recizo.R
 
 class SearchItemView(context: Context, private var item: String) : LinearLayout(context) {
+  var listener: OnCloseClickListener? = null
   val layout: View = LayoutInflater.from(context).inflate(R.layout.view_search_item, this)
   val textView: TextView = layout.findViewById(R.id.textView)
   val imageView: ImageView = layout.findViewById(R.id.imageView)
-  var listener: OnCloseClickListener? = null
   init {
     textView.text = item
     imageView.setOnClickListener { this.listener?.onClick(item) }

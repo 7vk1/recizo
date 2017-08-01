@@ -3,7 +3,6 @@ package com.recizo.module
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-
 class RecizoApi {
   private var isRecent = true
   private var vegetable = Vegetables.all
@@ -44,28 +43,14 @@ class RecizoApi {
   companion object {
     val BASE_URL = "http://recizo.com/api/"
   }
+
   interface Callback {
     fun onSuccess(response: Map<String, List<DairyData>>)
     fun onError(errCode: Http.ErrorCode)
   }
+
   data class DairyData(val date: String, val price: Int)
-  class Response {
-    val burokkori: Array<DairyData>? = null
-    val daikon: Array<DairyData>? = null
-    val hakusai: Array<DairyData>? = null
-    val hourensou: Array<DairyData>? = null
-    val jagaimo: Array<DairyData>? = null
-    val kyabetsu: Array<DairyData>? = null
-    val kyuri: Array<DairyData>? = null
-    val nasu: Array<DairyData>? = null
-    val negi: Array<DairyData>? = null
-    val ninjin: Array<DairyData>? = null
-    val piman: Array<DairyData>? = null
-    val retasu: Array<DairyData>? = null
-    val satoimo: Array<DairyData>? = null
-    val tamanegi: Array<DairyData>? = null
-    val tomato: Array<DairyData>? = null
-  }
+
   enum class Vegetables(val name_jp: String) {
     kyabetsu("キャベツ"),
     kyuri("きゅうり"),

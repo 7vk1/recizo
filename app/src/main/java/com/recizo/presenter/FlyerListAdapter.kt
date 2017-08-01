@@ -17,14 +17,8 @@ import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
 class FlyerListAdapter(private val recyclerView: RecyclerView): RecyclerView.Adapter<FlyerListAdapter.FlyerViewHolder>() , View.OnClickListener {
-
-  inner class FlyerViewHolder(v: View): RecyclerView.ViewHolder(v){
-    val storeName: TextView = v.findViewById(R.id.shufoo_shopName)
-    val description: TextView = v.findViewById(R.id.shufoo_description)
-    val imageUrl: ImageView = v.findViewById(R.id.flyer_image)
-  }
-  val flyerList = mutableListOf<ShufooFlyer>()
   private var onItemClickListener: FlyerListAdapter.OnItemClickListener? = null
+  val flyerList = mutableListOf<ShufooFlyer>()
 
   fun setOnItemClickListener(listener: FlyerListAdapter.OnItemClickListener){
     onItemClickListener = listener
@@ -65,15 +59,18 @@ class FlyerListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ada
     return FlyerViewHolder(v)
   }
 
-
   override fun onClick(view: View?) {
     val position = recyclerView.getChildAdapterPosition(view)
     onItemClickListener?.onItemClick(this.flyerList[position])
   }
 
-
   interface OnItemClickListener {
     fun onItemClick(flyer: ShufooFlyer)
   }
 
+  class FlyerViewHolder(v: View): RecyclerView.ViewHolder(v){
+    val storeName: TextView = v.findViewById(R.id.shufoo_shopName)
+    val description: TextView = v.findViewById(R.id.shufoo_description)
+    val imageUrl: ImageView = v.findViewById(R.id.flyer_image)
+  }
 }

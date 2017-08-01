@@ -9,11 +9,9 @@ import com.recizo.presenter.ItemCategoryAdapter
 import kotlinx.android.synthetic.main.activity_icebox_item_set.*
 
 class IceboxItemSetActivity : AppCompatActivity() {
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_icebox_item_set)
-
     val item: IceboxItem? = intent.getSerializableExtra("item") as IceboxItem?
     spinner.adapter = ItemCategoryAdapter(this)
     if (item != null) {

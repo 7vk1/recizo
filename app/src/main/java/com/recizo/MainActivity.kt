@@ -15,6 +15,13 @@ import com.recizo.module.Notification
 import com.recizo.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.MoveToSearchFragment {
+  private fun changeFragment(fragment: Fragment) {
+    val transaction = fragmentManager.beginTransaction()
+    transaction.addToBackStack(null)
+    transaction.replace(R.id.fragment_frame, fragment)
+    transaction.commit()
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     AppContextHolder.context = applicationContext
@@ -65,12 +72,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
   override fun moveToSearchFragment(items: Set<String>) {
     changeFragment(RecipeFragment(items))
-  }
-
-  private fun changeFragment(fragment: Fragment) {
-    val transaction = fragmentManager.beginTransaction()
-    transaction.addToBackStack(null)
-    transaction.replace(R.id.fragment_frame, fragment)
-    transaction.commit()
   }
 }

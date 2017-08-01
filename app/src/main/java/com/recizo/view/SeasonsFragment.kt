@@ -33,5 +33,4 @@ class SeasonsFragment : Fragment(){
     super.onDestroyView()
     seasons_viewpager.adapter = null
   }
-
 }

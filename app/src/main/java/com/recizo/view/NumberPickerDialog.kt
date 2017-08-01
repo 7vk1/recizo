@@ -9,8 +9,6 @@ import android.view.LayoutInflater
 import android.widget.NumberPicker
 import com.recizo.R
 
-
-
 class NumberPickerDialog : DialogFragment() {
   private var title: String? = null
   private var message: String? = null
@@ -51,5 +49,4 @@ class NumberPickerDialog : DialogFragment() {
     fun onPositive(number: Int)
     fun onNegative()
   }
-
 }

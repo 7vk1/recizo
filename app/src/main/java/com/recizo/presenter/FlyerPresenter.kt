@@ -16,11 +16,10 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.recizo.R
 
-
 class FlyerPresenter (val context: Context,val view: View,val keywords: String){
-  private val scraper: ShufooScraper = ShufooScraper(keywords)
   private var flyerListAdapter = FlyerListAdapter(view.findViewById(R.id.flyer_recyclerView))
   private var progressBarCallback: IProgressBar? = null
+  private val scraper: ShufooScraper = ShufooScraper(keywords)
   init {
     view.findViewById<RecyclerView>(R.id.flyer_recyclerView).adapter = flyerListAdapter
     flyerListAdapter.setOnItemClickListener(object: FlyerListAdapter.OnItemClickListener{
@@ -55,7 +54,7 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
     }
   }
 
-  fun addFlyerList(recyclerView: RecyclerView?, dy: Int){
+  fun addFlyerList(recyclerView: RecyclerView?, dy: Int) {
     if (dy == 0 || scraper.isLoading || scraper.idFinished()) return
     val layoutManager = recyclerView!!.layoutManager as LinearLayoutManager
     val totalItemCount = layoutManager.itemCount
