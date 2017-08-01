@@ -44,7 +44,7 @@ class SeasonAdapter(val context: Context,val seasonList: List<String>): Recycler
   private fun columnSetting(frame: LinearLayout, name: TextView) {
     frame.setBackgroundColor(Color.WHITE)
     setFramePadding(frame, start = 20,top = 0, end = 0, bottom = 0)
-    name.textSize = PropertyHolder.nameSize!!.times(0.25f)
+    name.textSize = PropertyHolder.nameSize!!.times(0.3f)
   }
   
   private fun setPropertyHolder(holder: SeasonViewHolder?) {
