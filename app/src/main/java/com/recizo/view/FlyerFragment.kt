@@ -27,10 +27,10 @@ class FlyerFragment : Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     flyer_recyclerView.layoutManager = LinearLayoutManager(activity)
-    flyer_recyclerView.addItemDecoration(DividerItemDecoration(
-        flyer_recyclerView.context,
-            LinearLayoutManager(activity).orientation)
-    )
+//    flyer_recyclerView.addItemDecoration(DividerItemDecoration(
+//        flyer_recyclerView.context,
+//            LinearLayoutManager(activity).orientation)
+//    )
     val flyerPresenter = FlyerPresenter(
             activity,
             view!!,

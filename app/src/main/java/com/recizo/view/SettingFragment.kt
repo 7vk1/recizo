@@ -4,6 +4,9 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.preference.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.module.Notification
 import com.recizo.setting_activities.AboutMeActivity
@@ -82,5 +85,10 @@ class SettingFragment : PreferenceFragment() {
       activity.startActivity(Intent(activity, LicenceActivity::class.java))
       true
     }
+  }
+
+  override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    view!!.setBackgroundColor(resources.getColor(R.color.background))
   }
 }
