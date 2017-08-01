@@ -57,9 +57,9 @@ object IceboxDao {
     close()
   }
 
-  fun getAllfromRemote(context: Context): List<IceboxItem> {
+  fun getAllFromRemote(context: Context): List<IceboxItem> {
     val db = IceboxDatabaseHelper(context)
-    val ret = iceboxDatabaseHelper?.getAllItem()
-    return ret ?: listOf<IceboxItem>()
+    val ret = db.getAllItem()
+    return ret
   }
 }

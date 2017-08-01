@@ -90,7 +90,7 @@ object Notification {
       cal.add(Calendar.DAY_OF_MONTH, day)
       val now = cal.timeInMillis
       IceboxDao.context = context
-      val items = IceboxDao.getAllfromRemote(context).filter {
+      val items = IceboxDao.getAllFromRemote(context).filter {
         val date = it.date.split("/")
         cal.set(Calendar.YEAR, date[0].toInt())
         cal.set(Calendar.MONTH, date[1].toInt())

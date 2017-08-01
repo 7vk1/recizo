@@ -5,7 +5,7 @@ import com.recizo.model.entity.CookpadRecipe
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-class CookpadScraper(val searchKeyWords: Set<String>): Scraper() {
+class CookpadScraper(private var searchKeyWords: Set<String>): Scraper() {
 
   companion object {
     val BASE_URL = "https://cookpad.com"
