@@ -1,6 +1,7 @@
 package com.recizo.module
 
 import android.content.res.Resources
+import android.util.Log
 import android.util.Xml
 import org.xmlpull.v1.XmlPullParser
 
@@ -17,13 +18,14 @@ class XMLSeasonParser(resources: Resources) {
     val seasonList = mutableListOf<List<String>>()
     while(eventType != XmlPullParser.END_DOCUMENT) {
       if(isSeasonStartTag(eventType)) {
-        val list = mutableListOf<String>()
+        val monthItems = mutableListOf<String>()
         while (!isSeasonEndTag(eventType)) {
-          if(isCategoryStartTag(eventType)) list.add(getCategoryName())
-          if(isFoodStartTag(eventType)) list.add(getFoodName())
+          // 旬が無い分類の読み飛ばしあり
+          if(isCategoryStartTag(eventType) && !isCategoryEmpty(eventType)) monthItems.add(getCategoryName())
+          if(isFoodStartTag(eventType)) monthItems.add(getFoodName())
           eventType = parser.next()
         }
-        seasonList.add(list)
+        seasonList.add(monthItems)
       }
       eventType = parser.next()
     }
@@ -41,6 +43,11 @@ class XMLSeasonParser(resources: Resources) {
     if(parser.name == "season" && eventType == XmlPullParser.END_TAG) {
       return true
     }
+    return false
+  }
+
+  private fun isCategoryEmpty(eventType: Int): Boolean {
+    if(parser.getAttributeValue(null, "empty") == "true") return true
     return false
   }
 
@@ -72,8 +79,9 @@ class XMLSeasonParser(resources: Resources) {
 
   private enum class Category(val name_jp: String) {
     vegetable("野菜"),
-    imo_mushroom("芋・キノコ"),
-    fruit_nut("果物・きのみ"),
-    fish_seafood("魚・貝")
+    mushroom("キノコ"),
+    fruit("果物"),
+    seafood("魚貝"),
+    other("その他")
   }
 }

@@ -19,9 +19,10 @@ class SeasonAdapter(val context: Context,val seasonList: List<String>): Recycler
   private fun isDivider(name: String): Boolean {
     when(name) {
       "野菜" -> return true
-      "魚・貝" -> return true
-      "芋・キノコ" -> return true
-      "果物・きのみ" -> return true
+      "魚貝" -> return true
+      "キノコ" -> return true
+      "果物" -> return true
+      "その他" -> return true
       else -> return false
     }
   }
@@ -43,7 +44,7 @@ class SeasonAdapter(val context: Context,val seasonList: List<String>): Recycler
   private fun columnSetting(frame: LinearLayout, name: TextView) {
     frame.setBackgroundColor(Color.WHITE)
     setFramePadding(frame, start = 20,top = 0, end = 0, bottom = 0)
-    name.textSize = PropertyHolder.nameSize!!.times(0.25f)
+    name.textSize = PropertyHolder.nameSize!!.times(0.3f)
   }
   
   private fun setPropertyHolder(holder: SeasonViewHolder?) {

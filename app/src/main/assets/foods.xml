@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <foods>
   <season month="1">
-    <vegetable>
+    <vegetable empty="false">
       <food name="かぶ" />
       <food name="カリフラワー" />
       <food name="キャベツ" />
@@ -11,26 +11,25 @@
       <food name="せり" />
       <food name="セロリ" />
       <food name="だいこん" />
+      <food name="ながいも" />
       <food name="なのはな" />
       <food name="ねぎ" />
       <food name="のざわな" />
       <food name="はくさい" />
       <food name="ブロッコリー" />
       <food name="ほうれんそう" />
+      <food name="やまいも" />
       <food name="レンコン" />
     </vegetable>
-    <imo_mushroom>
-      <food name="ながいも" />
-      <food name="やまいも" />
-    </imo_mushroom>
-    <fruit_nut>
+    <mushroom empty="true" />
+    <fruit empty="false">
       <food name="いちご" />
       <food name="オレンジ" />
       <food name="みかん" />
       <food name="ゆず" />
       <food name="レモン" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="いなだ・はまち" />
       <food name="きんめだい" />
       <food name="さわら" />
@@ -44,11 +43,12 @@
       <food name="かに" />
       <food name="しじみ" />
       <food name="のり" />
-    </fish_seafood>
+    </seafood>
+    <other empty="true" />
   </season>
 
   <season month="2">
-    <vegetable>
+    <vegetable empty="false">
       <food name="カリフラワー" />
       <food name="キャベツ" />
       <food name="ごぼう" />
@@ -65,12 +65,12 @@
       <food name="ほうれんそう" />
       <food name="レンコン" />
     </vegetable>
-    <imo_mushroom/>
-    <fruit_nut>
+    <mushroom empty="true" />
+    <fruit empty="false">
       <food name="いちご" />
       <food name="オレンジ" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="あんこう" />
       <food name="きんめだい" />
       <food name="さわら" />
@@ -84,11 +84,12 @@
       <food name="しじみ" />
       <food name="のり" />
       <food name="はまぐり" />
-    </fish_seafood>
+    </seafood>
+    <other empty="true" />
   </season>
 
   <season month="3">
-    <vegetable>
+    <vegetable empty="false">
       <food name="キャベツ" />
       <food name="クレソン" />
       <food name="しゅんぎく" />
@@ -99,14 +100,14 @@
       <food name="ブロッコリー" />
       <food name="みつば" />
     </vegetable>
-    <imo_mushroom>
+    <mushroom empty="false">
       <food name="しいたけ" />
-    </imo_mushroom>
-    <fruit_nut>
+    </mushroom>
+    <fruit empty="false">
       <food name="いちご" />
       <food name="オレンジ" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="あんこう" />
       <food name="さわら" />
       <food name="しらす" />
@@ -117,11 +118,12 @@
       <food name="はまぐり" />
       <food name="ひじき" />
       <food name="わかめ" />
-    </fish_seafood>
+    </seafood>
+    <other empty="true" />
   </season>
 
   <season month="4">
-    <vegetable>
+    <vegetable empty="false">
       <food name="アスパラガス" />
       <food name="キャベツ" />
       <food name="グリーンピース" />
@@ -132,20 +134,20 @@
       <food name="ぜんまい" />
       <food name="たけのこ" />
       <food name="たまねぎ" />
+      <food name="ながいも" />
       <food name="にら" />
       <food name="パセリ" />
       <food name="ふき" />
       <food name="みつば" />
     </vegetable>
-    <imo_mushroom>
-      <food name="ながいも" />
+    <mushroom empty="false">
       <food name="しいたけ" />
-    </imo_mushroom>
-    <fruit_nut>
+    </mushroom>
+    <fruit empty="false">
       <food name="いちご" />
       <food name="グレープフルーツ" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="さわら" />
       <food name="しらす" />
       <food name="たい" />
@@ -154,44 +156,46 @@
       <food name="ひじき" />
       <food name="もずく" />
       <food name="わかめ" />
-    </fish_seafood>
+    </seafood>
+    <other empty="true" />
   </season>
 
   <season month="5">
-    <vegetable>
+    <vegetable empty="false">
       <food name="アスパラガス" />
       <food name="グリーンピース" />
       <food name="クレソン" />
       <food name="ごぼう" />
       <food name="さやえんどう" />
+      <food name="じゃがいも" />
       <food name="ぜんまい" />
       <food name="そらまめ" />
       <food name="たけのこ" />
       <food name="たまねぎ" />
+      <food name="ながいも" />
       <food name="にら" />
       <food name="パセリ" />
       <food name="ふき" />
     </vegetable>
-    <imo_mushroom>
-      <food name="じゃがいも" />
-      <food name="ながいも" />
+    <mushroom empty="false">
       <food name="しいたけ" />
-    </imo_mushroom>
-    <fruit_nut>
+    </mushroom>
+    <fruit empty="false">
       <food name="びわ" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="いさき" />
       <food name="かつお" />
       <food name="さわら" />
       <food name="しらす" />
       <food name="もずく" />
       <food name="わかめ" />
-    </fish_seafood>
+    </seafood>
+    <other empty="true" />
   </season>
 
   <season month="6">
-    <vegetable>
+    <vegetable empty="false">
       <food name="アスパラガス" />
       <food name="いんげん" />
       <food name="オクラ" />
@@ -199,6 +203,7 @@
       <food name="きゅうり" />
       <food name="グリーンピース" />
       <food name="しそ" />
+      <food name="じゃがいも" />
       <food name="そらまめ" />
       <food name="トマト" />
       <food name="にら" />
@@ -207,19 +212,16 @@
       <food name="パプリカ" />
       <food name="らっきょう" />
     </vegetable>
-    <imo_mushroom>
-      <food name="じゃがいも" />
-    </imo_mushroom>
-    <fruit_nut>
+    <mushroom empty="true"/>
+    <fruit empty="false">
       <food name="あんず" />
-      <food name="うめ" />
       <food name="さくらんぼ" />
       <food name="パイナップル" />
       <food name="びわ" />
       <food name="マンゴー" />
       <food name="メロン" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="あじ" />
       <food name="あなご" />
       <food name="あゆ" />
@@ -233,11 +235,14 @@
       <food name="うに" />
       <food name="くるまえび" />
       <food name="もずく" />
-    </fish_seafood>
+    </seafood>
+    <other empty="false">
+      <food name="うめ" />
+    </other>
   </season>
 
   <season month="7">
-    <vegetable>
+    <vegetable empty="false">
       <food name="いんげん" />
       <food name="えだまめ" />
       <food name="オクラ" />
@@ -261,17 +266,16 @@
       <food name="らっきょう" />
       <food name="レタス" />
     </vegetable>
-    <imo_mushroom/>
-    <fruit_nut>
+    <mushroom empty="true" />
+    <fruit empty="false">
       <food name="あんず" />
-      <food name="うめ" />
       <food name="さくらんぼ" />
       <food name="スイカ" />
       <food name="マンゴー" />
       <food name="メロン" />
       <food name="ゆず" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="あじ" />
       <food name="あなご" />
       <food name="あゆ" />
@@ -290,11 +294,14 @@
       <food name="くるまえび" />
       <food name="こんぶ" />
       <food name="しじみ" />
-    </fish_seafood>
+    </seafood>
+    <other empty="false">
+      <food name="うめ" />
+    </other>
   </season>
 
   <season month="8">
-    <vegetable>
+    <vegetable empty="false">
       <food name="いんげん" />
       <food name="えだまめ" />
       <food name="オクラ" />
@@ -317,16 +324,16 @@
       <food name="モロヘイヤ" />
       <food name="レタス" />
     </vegetable>
-    <imo_mushroom/>
-    <fruit_nut>
+    <mushroom empty="true" />
+    <fruit empty="false">
       <food name="いちじく" />
       <food name="かぼす" />
       <food name="なし" />
       <food name="ぶどう" />
       <food name="マンゴー" />
       <food name="ゆず" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="あなご" />
       <food name="あゆ" />
       <food name="いわし" />
@@ -341,14 +348,16 @@
       <food name="うに" />
       <food name="くるまえび" />
       <food name="こんぶ" />
-    </fish_seafood>
+    </seafood>
+    <other empty="true" />
   </season>
 
   <season month="9">
-    <vegetable>
+    <vegetable empty="false">
       <food name="いんげん" />
       <food name="かぼちゃ" />
       <food name="きくらげ" />
+      <food name="さつまいも" />
       <food name="ズッキーニ" />
       <food name="ちんげんさい" />
       <food name="とうがん" />
@@ -357,21 +366,19 @@
       <food name="パセリ" />
       <food name="みょうが" />
     </vegetable>
-    <imo_mushroom>
-      <food name="さつまいも" />
+    <mushroom empty="false">
       <food name="しめじ" />
       <food name="まいたけ" />
       <food name="まつたけ" />
-    </imo_mushroom>
-    <fruit_nut>
+    </mushroom>
+    <fruit empty="false">
       <food name="いちじく" />
       <food name="かぼす" />
-      <food name="くり" />
       <food name="なし" />
       <food name="ぶどう" />
       <food name="ゆず" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="いわし" />
       <food name="かつお" />
       <food name="さけ" />
@@ -380,39 +387,38 @@
       <food name="たちうお" />
       <food name="いくら" />
       <food name="こんぶ" />
-    </fish_seafood>
+    </seafood>
+    <other empty="false">
+      <food name="くり" />
+    </other>
   </season>
 
   <season month="10">
-    <vegetable>
+    <vegetable empty="false">
       <food name="かぼちゃ" />
+      <food name="さつまいも" />
+      <food name="さといも" />
+      <food name="じゃがいも" />
       <food name="ちんげんさい" />
       <food name="にんじん" />
       <food name="パセリ" />
       <food name="みょうが" />
     </vegetable>
-    <imo_mushroom>
-      <food name="さつまいも" />
-      <food name="さといも" />
-      <food name="じゃがいも" />
+    <mushroom empty="false">
       <food name="しめじ" />
       <food name="なめこ" />
       <food name="まいたけ" />
       <food name="マッシュルーム" />
       <food name="まつたけ" />
-    </imo_mushroom>
-
-    <fruit_nut>
+    </mushroom>
+    <fruit empty="false">
       <food name="いちじく" />
       <food name="かき" />
       <food name="かぼす" />
-      <food name="くり" />
-      <food name="くるみ" />
-      <food name="ぎんなん" />
       <food name="ゆず" />
       <food name="りんご" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="いわし" />
       <food name="うなぎ" />
       <food name="かつお" />
@@ -423,14 +429,22 @@
       <food name="たちうお" />
       <food name="はも" />
       <food name="いくら" />
-    </fish_seafood>
+    </seafood>
+    <other empty="false">
+      <food name="くり" />
+      <food name="くるみ" />
+      <food name="ぎんなん" />
+    </other>
   </season>
 
   <season month="11">
-    <vegetable>
+    <vegetable empty="false">
       <food name="かぶ" />
       <food name="カリフラワー" />
       <food name="ごぼう" />
+      <food name="さつまいも" />
+      <food name="さといも" />
+      <food name="じゃがいも" />
       <food name="しゅんぎく" />
       <food name="ちんげんさい" />
       <food name="にんじん" />
@@ -438,26 +452,21 @@
       <food name="はくさい" />
       <food name="パセリ" />
       <food name="ブロッコリー" />
+      <food name="やまいも" />
       <food name="ルッコラ" />
       <food name="レンコン" />
     </vegetable>
-    <imo_mushroom>
-      <food name="さつまいも" />
-      <food name="さといも" />
-      <food name="じゃがいも" />
-      <food name="やまいも" />
+    <mushroom empty="false">
       <food name="しいたけ" />
       <food name="なめこ" />
       <food name="マッシュルーム" />
-    </imo_mushroom>
-    <fruit_nut>
+    </mushroom>
+    <fruit empty="false">
       <food name="かき" />
-      <food name="くるみ" />
-      <food name="ぎんなん" />
       <food name="ゆず" />
       <food name="りんご" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="うなぎ" />
       <food name="かます" />
       <food name="さけ" />
@@ -466,41 +475,45 @@
       <food name="はも" />
       <food name="ひらめ" />
       <food name="ふぐ" />
-    </fish_seafood>
+    </seafood>
+    <other empty="false">
+      <food name="くるみ" />
+      <food name="ぎんなん" />
+    </other>
   </season>
 
   <season month="12">
-    <vegetable>
+    <vegetable empty="false">
       <food name="かぶ" />
       <food name="カリフラワー" />
       <food name="キャベツ" />
       <food name="ごぼう" />
       <food name="こまつな" />
+      <food name="さといも" />
       <food name="しゅんぎく" />
       <food name="せり" />
       <food name="セロリ" />
       <food name="だいこん" />
+      <food name="ながいも" />
       <food name="ねぎ" />
       <food name="のざわな" />
       <food name="はくさい" />
       <food name="ブロッコリー" />
       <food name="ほうれんそう" />
+      <food name="やまいも" />
       <food name="ルッコラ" />
       <food name="レンコン" />
     </vegetable>
-    <imo_mushroom>
-      <food name="さといも" />
-      <food name="ながいも" />
-      <food name="やまいも" />
+    <mushroom empty="false">
       <food name="マッシュルーム" />
-    </imo_mushroom>
-    <fruit_nut>
+    </mushroom>
+    <fruit empty="false">
       <food name="みかん" />
       <food name="ゆず" />
       <food name="りんご" />
       <food name="レモン" />
-    </fruit_nut>
-    <fish_seafood>
+    </fruit>
+    <seafood empty="false">
       <food name="あんこう" />
       <food name="いなだ・はまち" />
       <food name="かます" />
@@ -516,6 +529,7 @@
       <food name="かに" />
       <food name="たらこ" />
       <food name="のり" />
-    </fish_seafood>
+    </seafood>
+    <other empty="true" />
   </season>
 </foods>
