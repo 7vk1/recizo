@@ -4,6 +4,9 @@ import android.support.v7.widget.RecyclerView
 import com.daimajia.swipe.SwipeLayout
 import com.recizo.model.entity.IceboxItem
 import com.recizo.module.IceboxDao
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 
 class IceboxPresenter(val fragment: IceboxButtons) {
   private var searchList = mutableSetOf<Long>()
@@ -14,13 +17,13 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   init {
     iceboxAdapter.setEventListener(object : IceboxAdapter.EventListener {
       override fun onViewAttached(holder: IceboxAdapter.IceboxViewHolder) {
-        if (!garbageList.contains(holder.itemId) && !searchList.contains(holder.itemId)) holder.swipeLayout.close()
+        checkHolder(holder)
       }
       override fun onBindViewHolder(holder: IceboxAdapter.IceboxViewHolder, position: Int) {
-        if (!garbageList.contains(holder.itemId) && !searchList.contains(holder.itemId)) holder.swipeLayout.close()
       }
+
       override fun onItemOpen(dragEdge: SwipeLayout.DragEdge, itemId: Long) {
-        when (dragEdge) {
+        when(dragEdge) {
           SwipeLayout.DragEdge.Left -> {
             searchList.add(itemId)
             fragment.changeBtnVisibility(search = true, undo = true)
@@ -60,6 +63,7 @@ class IceboxPresenter(val fragment: IceboxButtons) {
     iceboxAdapter.setItemList(list)
     sortItems(sort)
     fragment.changeBtnVisibility(add = true)
+    checkHolders()
   }
 
   fun sortItems(type: Sort) {
@@ -87,6 +91,25 @@ class IceboxPresenter(val fragment: IceboxButtons) {
 
   fun getSearchItemList(): Set<String> {
     return searchList.map { id -> iceboxAdapter.getItemList().first { it.id.toLong() == id }.name }.toSet()
+  }
+
+  private fun checkHolder(holder: IceboxAdapter.IceboxViewHolder) = launch(UI) {
+    delay(100)
+    if(garbageList.contains(holder.itemId)) holder.swipeLayout.open(false, SwipeLayout.DragEdge.Right)
+    else if(searchList.contains(holder.itemId)) holder.swipeLayout.open(false, SwipeLayout.DragEdge.Left)
+    else holder.swipeLayout.close(false)
+  }
+
+  private fun checkHolders() = launch(UI) {
+    delay(100)
+    garbageList.map {
+      val item = recyclerView?.findViewHolderForItemId(it)
+      if(item != null) (item as IceboxAdapter.IceboxViewHolder).swipeLayout.open(false, SwipeLayout.DragEdge.Right)
+    }
+    searchList.map {
+      val item = recyclerView?.findViewHolderForItemId(it)
+      if(item != null) (item as IceboxAdapter.IceboxViewHolder).swipeLayout.open(false, SwipeLayout.DragEdge.Left)
+    }
   }
 
   private fun sortList(list: MutableList<IceboxItem>, type: Sort): MutableList<IceboxItem> {

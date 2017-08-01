@@ -11,6 +11,7 @@ import com.recizo.R
 import com.daimajia.swipe.*
 import com.recizo.model.entity.IceboxItem
 
+
 class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
   private var eventListener: EventListener? = null
   private var itemList = mutableListOf(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
@@ -42,18 +43,18 @@ class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
     return IceboxViewHolder(v)
   }
 
-  override fun onViewAttachedToWindow(holder: IceboxViewHolder?) {
+  override fun onViewAttachedToWindow(holder: IceboxViewHolder) {
     super.onViewAttachedToWindow(holder)
-    eventListener?.onViewAttached(holder!!)
+    eventListener?.onViewAttached(holder)
   }
 
-  override fun onBindViewHolder(holder: IceboxViewHolder?, position: Int) {
+  override fun onBindViewHolder(holder: IceboxViewHolder, position: Int) {
     val item = itemList[position]
     if(item.id == -1) {
-      holder!!.itemView.visibility = View.INVISIBLE
+      holder.itemView.visibility = View.INVISIBLE
       return
     }
-    holder!!.bindView(item)
+    holder.bindView(item)
     holder.del.setOnClickListener { eventListener?.onDeleteClicked(holder.itemId) }
     holder.search.setOnClickListener { eventListener?.onSearchClicked(item) }
     eventListener?.onBindViewHolder(holder, position)
