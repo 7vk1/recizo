@@ -19,9 +19,10 @@ class SeasonAdapter(val context: Context,val seasonList: List<String>): Recycler
   private fun isDivider(name: String): Boolean {
     when(name) {
       "野菜" -> return true
-      "魚・貝" -> return true
-      "芋・キノコ" -> return true
-      "果物・きのみ" -> return true
+      "魚貝" -> return true
+      "キノコ" -> return true
+      "果物" -> return true
+      "その他" -> return true
       else -> return false
     }
   }
