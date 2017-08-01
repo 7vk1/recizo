@@ -1,6 +1,7 @@
 package com.recizo.view
 
 import android.app.Fragment
+import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.widget.DividerItemDecoration
@@ -36,6 +37,7 @@ class FlyerFragment : Fragment() {
             view!!,
             PreferenceManager.getDefaultSharedPreferences(AppContextHolder.context).getString("edit_postcode_key", "")
     )
+    searched_shufoo_progressBar.indeterminateDrawable.setColorFilter(resources.getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY)
     flyerPresenter.setProgressBar(object:FlyerPresenter.IProgressBar{
       override fun showProgressBar() {
         searched_shufoo_progressBar?.visibility = View.VISIBLE
