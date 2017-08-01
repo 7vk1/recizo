@@ -20,7 +20,7 @@ class XMLSeasonParser(resources: Resources) {
       if(isSeasonStartTag(eventType)) {
         val monthItems = mutableListOf<String>()
         while (!isSeasonEndTag(eventType)) {
-          // 旬が無い分類の読み飛ばし
+          // 旬が無い分類の読み飛ばしあり
           if(isCategoryStartTag(eventType) && !isCategoryEmpty(eventType)) monthItems.add(getCategoryName())
           if(isFoodStartTag(eventType)) monthItems.add(getFoodName())
           eventType = parser.next()
