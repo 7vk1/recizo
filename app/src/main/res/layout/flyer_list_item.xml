@@ -1,47 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
-    android:layout_marginTop="4dp">
+    android:layout_marginTop="4dp"
+    android:orientation="horizontal">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+  <ImageView
+      android:id="@+id/flyer_image"
+      android:layout_width="0dp"
+      android:layout_height="100dp"
+      android:layout_margin="8dp"
+      android:layout_weight="5"
+      android:contentDescription="@string/recipe_image"/>
 
-    <ImageView
-        android:id="@+id/flyer_image"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:contentDescription="@string/recipe_image"
-        android:layout_marginTop="8dp"
-        android:layout_weight="5"/>
+  <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="8dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginTop="8dp"
+      android:layout_weight="11"
+      android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="11"
-        android:layout_margin="8dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+      <TextView
+          android:id="@+id/shufoo_shopName"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="[ショップ名]"
+          android:textColor="#00F"
+          android:textSize="18sp"/>
 
-            <TextView
-                android:id="@+id/shufoo_shopName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="[ショップ名]"
-                android:textColor="#00F"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/shufoo_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="[チラシ概要]" />
-
-        </LinearLayout>
+      <TextView
+          android:id="@+id/shufoo_description"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="[チラシ概要]"/>
 
     </LinearLayout>
 
-</LinearLayout>
+  </LinearLayout>
+  </LinearLayout>
+
+</android.support.v7.widget.CardView>
