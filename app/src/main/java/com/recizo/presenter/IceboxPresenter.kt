@@ -21,7 +21,6 @@ class IceboxPresenter(val fragment: IceboxButtons) {
       }
       override fun onBindViewHolder(holder: IceboxAdapter.IceboxViewHolder, position: Int) {
       }
-
       override fun onItemOpen(dragEdge: SwipeLayout.DragEdge, itemId: Long) {
         when(dragEdge) {
           SwipeLayout.DragEdge.Left -> {
@@ -95,20 +94,20 @@ class IceboxPresenter(val fragment: IceboxButtons) {
 
   private fun checkHolder(holder: IceboxAdapter.IceboxViewHolder) = launch(UI) {
     delay(100)
-    if(garbageList.contains(holder.itemId)) holder.swipeLayout.open(false, SwipeLayout.DragEdge.Right)
-    else if(searchList.contains(holder.itemId)) holder.swipeLayout.open(false, SwipeLayout.DragEdge.Left)
+    if(garbageList.contains(holder.itemId)) holder.swipeLayout.open(true, false, SwipeLayout.DragEdge.Right)
+    else if(searchList.contains(holder.itemId)) holder.swipeLayout.open(true, false, SwipeLayout.DragEdge.Left)
     else holder.swipeLayout.close(false)
   }
 
   private fun checkHolders() = launch(UI) {
     delay(100)
     garbageList.map {
-      val item = recyclerView?.findViewHolderForItemId(it)
-      if(item != null) (item as IceboxAdapter.IceboxViewHolder).swipeLayout.open(false, SwipeLayout.DragEdge.Right)
+      val item = recyclerView?.findViewHolderForItemId(it) as IceboxAdapter.IceboxViewHolder?
+      item?.swipeLayout?.open(SwipeLayout.DragEdge.Right)
     }
     searchList.map {
-      val item = recyclerView?.findViewHolderForItemId(it)
-      if(item != null) (item as IceboxAdapter.IceboxViewHolder).swipeLayout.open(false, SwipeLayout.DragEdge.Left)
+      val item = recyclerView?.findViewHolderForItemId(it) as IceboxAdapter.IceboxViewHolder?
+      item?.swipeLayout?.open(SwipeLayout.DragEdge.Left)// false にするとLeft方向にだけ動かない
     }
   }
 

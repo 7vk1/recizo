@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   }
 
   override fun onBackPressed() {//todo change nav selected item
-    print(fragmentManager.backStackEntryCount)
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
     if(drawer.isDrawerOpen(GravityCompat.START)) drawer.closeDrawer(GravityCompat.START)
     if(fragmentManager.backStackEntryCount != 0) super.onBackPressed()
