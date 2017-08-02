@@ -30,9 +30,17 @@
   <string name="recipe_image">完成イメージ</string>
 
   <string name="empty_text">登録されていません</string>
-  <string name="flyer_empty_text">郵便番号が登録されていません</string>
-  <string name="flyer_empty_text_desc">郵便番号の設定は「メニュー」の「設定」から行えます</string>
   <string name="erase_btn">削除ボタン</string>
+
+  <!-- flyer error message -->
+  <string name="flyer_empty_text">郵便番号が登録されていません</string>
+  <string name="flyer_empty_detail">郵便番号の設定は「メニュー」の「設定」から行えます</string>
+  <string name="flyer_notfound_title">チラシを発見できませんでした</string>
+  <string name="flyer_notfound_detail">郵便番号を間違って設定していませんか？\n郵便番号の設定は「メニュー」の「設定」から行えます</string>
+  <string name="flyer_network_error_title">インターネットに接続できませんでした</string>
+  <string name="flyer_network_error_detail">Wifiまたはデータ通信がオフになっていませんか？</string>
+  <string name="flyer_other_error_title">予期せぬエラーが発生しました</string>
+  <string name="flyer_other_error_detail">時間を空けて再度試してください\n改善しない場合は以下のアドレスまでお知らせください\nteam.item.19@gmail.com</string>
 
   <!-- preference strings -->
   <string name="preference_network_title">ネットワーク設定</string>

@@ -13,6 +13,7 @@ import org.jsoup.nodes.Document
 import android.content.Intent
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.recizo.R
 
@@ -35,7 +36,8 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
 
   fun startFlyerListCreate() {
     if (keywords != "" && keywords.isNotEmpty() && keywords != "0") {
-      view.findViewById<LinearLayout>(R.id.flyer_empty_text_box).visibility = View.INVISIBLE
+      val errorMes = view.findViewById<LinearLayout>(R.id.flyer_error_mes_box)
+      errorMes.visibility = View.INVISIBLE
       progressBarCallback?.showProgressBar()
       scraper.scrapingHTML(object : Scraper.ScraperCallBack {
         override fun succeed(html: Document?) {
@@ -45,13 +47,27 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
         }
 
         override fun failed(errorCode: ErrorCode) {
-          if(errorCode.name == ErrorCode.IO_ERROR.name) Toast.makeText(context, "ネットワークエラー", Toast.LENGTH_SHORT).show()
-          else if(errorCode.name == ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR.name) Toast.makeText(context, "郵便番号を発見できませんでした", Toast.LENGTH_SHORT).show()
-          else Toast.makeText(context, "予期せぬエラー", Toast.LENGTH_SHORT).show()
+          if(errorCode.name == ErrorCode.IO_ERROR.name) {
+            setErrorMesText(R.string.flyer_network_error_title, R.string.flyer_network_error_detail)
+            errorMes.visibility = View.VISIBLE
+          }
+          else if(errorCode.name == ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR.name) {
+            setErrorMesText(R.string.flyer_notfound_title, R.string.flyer_notfound_detail)
+            errorMes.visibility = View.VISIBLE
+          }
+          else {
+            setErrorMesText(R.string.flyer_other_error_title, R.string.flyer_other_error_detail)
+            errorMes.visibility = View.VISIBLE
+          }
           progressBarCallback?.hideProgressBar()
         }
       })
-    }
+    } else setErrorMesText(R.string.flyer_empty_text, R.string.flyer_empty_detail)
+  }
+
+  fun setErrorMesText(title: Int, detail: Int) {
+    view.findViewById<TextView>(R.id.flyer_error_mes_title).text = context.resources.getString(title)
+    view.findViewById<TextView>(R.id.flyer_error_mes_detail).text = context.resources.getString(detail)
   }
 
   fun addFlyerList(recyclerView: RecyclerView?, dy: Int) {
