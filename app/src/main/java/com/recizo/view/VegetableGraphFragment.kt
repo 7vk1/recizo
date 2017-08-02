@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.recizo.R
 import com.recizo.module.RecizoApi
+import com.recizo.presenter.VegetableAdapter
 import kotlinx.android.synthetic.main.fragment_vegetable_graph.*
 import com.recizo.presenter.VegetableGraphPresenter
 
@@ -21,14 +22,11 @@ class VegetableGraphFragment : Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val lineDataAdapter = VegetableGraphPresenter(chart)
-    val adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item)
+    val adapter = VegetableAdapter(activity)
     spinner.adapter = adapter
-    RecizoApi.Vegetables.values().forEach {
-      adapter.add(it.name_jp)
-    }
     spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        lineDataAdapter.onItemChange(adapter.getItem(p2))
+        lineDataAdapter.onItemChange(adapter.getItem(p2).name_jp)
       }
       override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
