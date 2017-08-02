@@ -55,7 +55,7 @@ object Notification {
   private fun notifyLargeIcon(context: Context, title: String, message: String) {
     val builder = NotificationCompat.Builder(context)
     builder.setSmallIcon(R.drawable.cat_fruit)
-    builder.setLargeIcon(getBitmapFromVectorDrawable(context, R.drawable.ic_reci_0611_01_grate))
+    builder.setLargeIcon(getBitmapFromVectorDrawable(context, R.drawable.ic_recizo))
     builder.setContentTitle(title)
     builder.setContentText(message)
     builder.setAutoCancel(true)

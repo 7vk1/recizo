@@ -7,7 +7,7 @@
 
   <application
       android:allowBackup="true"
-      android:icon="@drawable/ic_reci_0611_01_grate"
+      android:icon="@drawable/ic_recizo"
       android:label="@string/app_name"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:supportsRtl="true"
