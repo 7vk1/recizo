@@ -22,7 +22,6 @@ object IceboxDao {
     access()
     val ret = iceboxDatabaseHelper?.getAllItem()
     close()
-    // nullで無い場合のみ左辺が帰り、nullなら右辺が帰る。右辺は左辺がnullの場合のみ評価される
     return ret ?: listOf<IceboxItem>()
   }
 

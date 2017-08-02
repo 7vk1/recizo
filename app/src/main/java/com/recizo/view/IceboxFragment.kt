@@ -64,9 +64,6 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
     recyclerView.layoutManager = LinearLayoutManager(activity)
     sort_by_name.alpha = 0f
 
-    add_btn.setOnClickListener {
-      activity.startActivity(Intent(activity, IceboxItemSetActivity::class.java))
-    }
     delete_btn.setOnClickListener {
       AlertDialog.Builder(activity)
           .setMessage("削除しておk？")//todo
@@ -76,12 +73,9 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
           .setNegativeButton("CANCEL", null)
           .show()
     }
-    recipe_search_btn.setOnClickListener {
-      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter.getSearchItemList())
-    }
-    undo_btn.setOnClickListener {
-      iceboxPresenter.onUndoClicked()
-    }
+    recipe_search_btn.setOnClickListener { (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter.getSearchItemList()) }
+    add_btn.setOnClickListener { activity.startActivity(Intent(activity, IceboxItemSetActivity::class.java)) }
+    undo_btn.setOnClickListener { iceboxPresenter.onUndoClicked() }
     sort_btn.setOnClickListener { toggleSortBtn() }
     sort_by_name.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.NAME) }
     sort_by_date.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.DATE) }

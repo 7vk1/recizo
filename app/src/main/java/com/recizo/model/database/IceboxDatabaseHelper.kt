@@ -12,18 +12,7 @@ import kotlin.coroutines.experimental.buildSequence
 class IceboxDatabaseHelper(context: Context) {
   private val dbHelper: DatabaseHelper
   lateinit var db: SQLiteDatabase
-
-  init {
-    dbHelper = DatabaseHelper(context)
-  }
-
-  private fun writableOpen() {
-    db = dbHelper.writableDatabase
-  }
-
-  private fun readableOpen() {
-    db = dbHelper.readableDatabase
-  }
+  init { dbHelper = DatabaseHelper(context) }
 
   fun updateItem(item: IceboxItem) {
     writableOpen()
@@ -90,18 +79,12 @@ class IceboxDatabaseHelper(context: Context) {
 
   fun deleteItem(itemId: Int) {
     writableOpen()
-    Log.d("TEST DELETE ID", itemId.toString() )
-    val result = db.delete(TABLE_NAME, "_id=$itemId", null)
-    Log.d("TEST DELETE RESULT", result.toString() )
+    db.delete(TABLE_NAME, "_id=$itemId", null)
     db.close()
   }
 
-//  fun deleteVegetable(vegetable: Vegetable) {
-//    writableOpen()
-//    val id = vegetable.id
-//    db.delete(TABLE_NAME, "_id=$id", null)
-//    db.close()
-//  }
+  private fun writableOpen() { db = dbHelper.writableDatabase }
+  private fun readableOpen() { db = dbHelper.readableDatabase }
 
   companion object {
     val TABLE_NAME = "icebox_table"

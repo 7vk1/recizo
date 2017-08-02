@@ -103,9 +103,7 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
         error.failedGetImage()
       }
     }
-    holder.cardFrame.setOnClickListener{
-      intent.onRecipe(Uri.parse(favoriteRecipeList[position].cookpadLink))
-    }
+    holder.cardFrame.setOnClickListener{ intent.onRecipe(Uri.parse(favoriteRecipeList[position].cookpadLink)) }
     holder.swipeLayout.addSwipeListener(object :SimpleSwipeListener(){
       override fun onOpen(layout: SwipeLayout?) {
         super.onOpen(layout)
@@ -142,9 +140,7 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
     return FavoriteRecipeViewHolder(v)
   }
 
-  override fun getItemId(position: Int): Long {
-    return position.toLong()
-  }
+  override fun getItemId(position: Int): Long { return position.toLong() }
 
   class FavoriteRecipeViewHolder(v: View): RecyclerView.ViewHolder(v) {
     val title: TextView = v.findViewById(R.id.recipe_title)

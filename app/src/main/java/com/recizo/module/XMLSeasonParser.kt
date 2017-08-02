@@ -33,16 +33,12 @@ class XMLSeasonParser(resources: Resources) {
   }
 
   private fun isSeasonStartTag(eventType: Int): Boolean {
-    if(parser.name == "season" && eventType == XmlPullParser.START_TAG) {
-      return true
-    }
+    if(parser.name == "season" && eventType == XmlPullParser.START_TAG) return true
     return false
   }
 
   private fun isSeasonEndTag(eventType: Int): Boolean {
-    if(parser.name == "season" && eventType == XmlPullParser.END_TAG) {
-      return true
-    }
+    if(parser.name == "season" && eventType == XmlPullParser.END_TAG) return true
     return false
   }
 
@@ -71,9 +67,7 @@ class XMLSeasonParser(resources: Resources) {
   }
 
   private fun getFoodName(): String {
-    if(parser.attributeCount == 1) {
-      return parser.getAttributeValue(null, "name")
-    }
+    if(parser.attributeCount == 1) return parser.getAttributeValue(null, "name")
     return "-"
   }
 

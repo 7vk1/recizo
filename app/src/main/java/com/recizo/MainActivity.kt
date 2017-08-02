@@ -34,8 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val toolbar = findViewById(R.id.toolbar) as Toolbar
     setSupportActionBar(toolbar)
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
-    val toggle = ActionBarDrawerToggle(
-        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+    val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
     drawer.addDrawerListener(toggle)
     toggle.syncState()
     val transaction = fragmentManager.beginTransaction()
@@ -74,9 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     return true
   }
 
-  override fun moveToSearchFragment(items: Set<String>) {
-    changeFragment(RecipeFragment(items))
-  }
+  override fun moveToSearchFragment(items: Set<String>) { changeFragment(RecipeFragment(items)) }
 
   enum class NavMenuItems {
     icebox, favorite_recipe, flyer, season, market_price, setting,

@@ -20,9 +20,7 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
   private var onItemClickListener: OnItemClickListener? = null
   val recipeList = mutableListOf<CookpadRecipe>()
 
-  fun setOnItemClickListener(listener: OnItemClickListener){
-    onItemClickListener = listener
-  }
+  fun setOnItemClickListener(listener: OnItemClickListener){ onItemClickListener = listener }
 
   fun addRecipe(recipe: CookpadRecipe) {
     recipeList.add(recipe)
@@ -40,9 +38,7 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
     return@async Bitmap.createScaledBitmap(bitmapImage, width, height, false)
   }
 
-  override fun getItemCount(): Int {
-    return recipeList.size
-  }
+  override fun getItemCount(): Int { return recipeList.size }
 
   override fun onBindViewHolder(holder: RecipeViewHolder?, position: Int) {
     launch(UI) {
@@ -64,9 +60,7 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
                 imgUrl = recipeList[position].imgUrl,
                 cookpadLink = recipeList[position].cookpadLink)
         )
-      } else {
-        FavoriteRecipeDao.remove(holder.title.text.toString() )
-      }
+      } else FavoriteRecipeDao.remove(holder.title.text.toString() )
     }
   }
 
@@ -81,7 +75,5 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
     onItemClickListener?.onItemClick(this.recipeList[position])
   }
 
-  interface OnItemClickListener {
-    fun onItemClick(recipe: CookpadRecipe)
-  }
+  interface OnItemClickListener { fun onItemClick(recipe: CookpadRecipe) }
 }

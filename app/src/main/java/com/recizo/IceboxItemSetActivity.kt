@@ -25,8 +25,8 @@ class IceboxItemSetActivity : AppCompatActivity() {
       date_picker.updateDate(year, month, day)
       register_btn.text = "変更"
     } else register_btn.text = "追加"
-    cancel_btn.setOnClickListener { finish() }
 
+    cancel_btn.setOnClickListener { finish() }
     register_btn.setOnClickListener {
       if (et_name.text.isBlank()) {
         AlertDialog.Builder(this)

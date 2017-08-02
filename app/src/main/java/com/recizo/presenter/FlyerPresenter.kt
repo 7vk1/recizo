@@ -30,9 +30,7 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
     })
   }
 
-  fun setProgressBar(progressBar: IProgressBar) {
-    progressBarCallback = progressBar
-  }
+  fun setProgressBar(progressBar: IProgressBar) { progressBarCallback = progressBar }
 
   fun startFlyerListCreate() {
     if (keywords != "" && keywords.isNotEmpty() && keywords != "0") {

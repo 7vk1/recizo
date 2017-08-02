@@ -71,7 +71,6 @@ class SettingFragment : PreferenceFragment() {
       true
     }
 
-
     // about this app
     (findPreference("about_me_item") as ListPreference).setOnPreferenceClickListener {
       activity.startActivity(Intent(activity, AboutMeActivity::class.java))

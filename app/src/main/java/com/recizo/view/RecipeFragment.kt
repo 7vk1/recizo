@@ -30,12 +30,8 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
     val recipePresenter = RecipePresenter(activity, view!!, items)
     searched_recipe_progressBar.indeterminateDrawable.setColorFilter(resources.getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY)
     recipePresenter.setLoadEventListener(object : RecipePresenter.LoadEventListener {
-      override fun onLoadStart() {
-        searched_recipe_progressBar?.visibility = View.VISIBLE
-      }
-      override fun onLoadEnd() {
-        searched_recipe_progressBar?.visibility = View.INVISIBLE
-      }
+      override fun onLoadStart() { searched_recipe_progressBar?.visibility = View.VISIBLE }
+      override fun onLoadEnd() { searched_recipe_progressBar?.visibility = View.INVISIBLE }
     })
     recipePresenter.startRecipeListCreate()
     recipePresenter.displaySearchedText(searche_result_keyword_flame)

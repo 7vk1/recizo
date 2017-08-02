@@ -11,16 +11,11 @@ import com.recizo.model.entity.CookpadRecipe
 class FavoriteRecipeDatabaseHelper(context: Context) {
   private val dbHelper: DatabaseHelper
   lateinit var db: SQLiteDatabase
-  init {
-    this.dbHelper = DatabaseHelper(context)
-  }
-  fun writableOpen() { db = dbHelper.writableDatabase }
-  fun readableOpen() { db = dbHelper.readableDatabase }
+  init { this.dbHelper = DatabaseHelper(context) }
 
   fun getRecipeAll(): MutableList<CookpadRecipe> {
     val query = "SELECT title, description, author, imgurl, link FROM ${TABLE_NAME}"
     val list = mutableListOf<CookpadRecipe>()
-
     this.readableOpen()
     db.rawQuery(query, null).use {
       while (it.moveToNext() ) {
@@ -51,9 +46,6 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
     values.put("author", recipe.author)
     values.put("imgurl", recipe.imgUrl)
     values.put("link", recipe.cookpadLink)
-
-    Log.d("TEST DB HELPER", "IN DB HELPER")
-
     this.writableOpen()
     db.insertOrThrow(TABLE_NAME, null, values)
     db.close()
@@ -74,9 +66,11 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
       }
     }
     db.close()
-
     return recipe
   }
+
+  private fun writableOpen() { db = dbHelper.writableDatabase }
+  private fun readableOpen() { db = dbHelper.readableDatabase }
 
   companion object {
     val TABLE_NAME = "favorite_recipe_table"

@@ -14,9 +14,7 @@ class Http(private val url: String) : AsyncTask<Void, Void, String>() {
   private var callback: Callback? = null
   private var errCode: ErrorCode? = null
 
-  fun setCallback(cb: Callback) {
-    callback = cb
-  }
+  fun setCallback(cb: Callback) { callback = cb }
 
   override fun doInBackground(vararg args: Void?): String {
     val url: URL = URL(this.url)
@@ -75,5 +73,4 @@ class Http(private val url: String) : AsyncTask<Void, Void, String>() {
     fun onSuccess(body: String)
     fun onError(code: ErrorCode)
   }
-
 }

@@ -40,9 +40,7 @@ class RecizoApi {
     http.execute()
   }
 
-  companion object {
-    val BASE_URL = "http://recizo.com/api/"
-  }
+  companion object { val BASE_URL = "http://recizo.com/api/" }
 
   interface Callback {
     fun onSuccess(response: Map<String, List<DairyData>>)

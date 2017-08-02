@@ -27,10 +27,6 @@ class FlyerFragment : Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     flyer_recyclerView.layoutManager = LinearLayoutManager(activity)
-//    flyer_recyclerView.addItemDecoration(DividerItemDecoration(
-//        flyer_recyclerView.context,
-//            LinearLayoutManager(activity).orientation)
-//    )
     val flyerPresenter = FlyerPresenter(
             activity,
             view!!,
@@ -38,12 +34,8 @@ class FlyerFragment : Fragment() {
     )
     searched_shufoo_progressBar.indeterminateDrawable.setColorFilter(resources.getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY)
     flyerPresenter.setProgressBar(object:FlyerPresenter.IProgressBar{
-      override fun showProgressBar() {
-        searched_shufoo_progressBar?.visibility = View.VISIBLE
-      }
-      override fun hideProgressBar() {
-        searched_shufoo_progressBar?.visibility = View.GONE
-      }
+      override fun showProgressBar() { searched_shufoo_progressBar?.visibility = View.VISIBLE }
+      override fun hideProgressBar() { searched_shufoo_progressBar?.visibility = View.GONE }
     })
     flyerPresenter.startFlyerListCreate()
     flyer_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
