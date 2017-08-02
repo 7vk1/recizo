@@ -47,21 +47,22 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
         }
 
         override fun failed(errorCode: ErrorCode) {
-          if(errorCode.name == ErrorCode.IO_ERROR.name) Toast.makeText(context, "ネットワークエラー", Toast.LENGTH_SHORT).show()
+          if(errorCode.name == ErrorCode.IO_ERROR.name) {
+            setErrorMesText(R.string.flyer_network_error_title, R.string.flyer_network_error_detail)
+            errorMes.visibility = View.VISIBLE
+          }
           else if(errorCode.name == ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR.name) {
             setErrorMesText(R.string.flyer_notfound_title, R.string.flyer_notfound_detail)
             errorMes.visibility = View.VISIBLE
           }
-          else Toast.makeText(context, "予期せぬエラー", Toast.LENGTH_SHORT).show()
+          else {
+            setErrorMesText(R.string.flyer_other_error_title, R.string.flyer_other_error_detail)
+            errorMes.visibility = View.VISIBLE
+          }
           progressBarCallback?.hideProgressBar()
         }
       })
     } else setErrorMesText(R.string.flyer_empty_text, R.string.flyer_empty_detail)
-  }
-
-  fun setErrorMesText(title: String, detail: String) {
-    view.findViewById<TextView>(R.id.flyer_error_mes_title).text = title
-    view.findViewById<TextView>(R.id.flyer_error_mes_detail).text = detail
   }
 
   fun setErrorMesText(title: Int, detail: Int) {
