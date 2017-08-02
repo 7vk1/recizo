@@ -11,74 +11,22 @@ import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.model.entity.IceboxItem
-import com.recizo.presenter.IceboxAdapter
 import kotlinx.android.synthetic.main.fragment_icebox.*
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import com.recizo.IceboxItemSetActivity
+import com.recizo.presenter.IceboxPresenter
 
-class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
-  var iceboxAdapter: IceboxAdapter? = null
+class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
+  var iceboxPresenter = IceboxPresenter(this)
   var isSortOpen = false
 
-  override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {
-    add_btn.visibility = if(add) View.VISIBLE else View.INVISIBLE
-    undo_btn.visibility = if(undo) View.VISIBLE else View.INVISIBLE
-    delete_btn.visibility = if(delete) View.VISIBLE else View.INVISIBLE
-    recipe_search_btn.visibility = if(search) View.VISIBLE else View.INVISIBLE
-  }
-
-  override fun toIceboxItemSetActivity(item: IceboxItem) {
-    val intent = Intent(activity, IceboxItemSetActivity::class.java)
-    intent.putExtra("item", item)
-    activity.startActivity(intent)
-  }
-
-  override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    super.onCreateView(inflater, container, savedInstanceState)
-    return inflater!!.inflate(R.layout.fragment_icebox, container, false)
-  }
-
-  override fun onResume() {
-    super.onResume()
-    iceboxAdapter?.updateDataSet()
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    iceboxAdapter = IceboxAdapter(this)
-    recyclerView.layoutManager = LinearLayoutManager(activity)
-    recyclerView.adapter = iceboxAdapter
-    sort_by_name.alpha = 0f
-
-    add_btn.setOnClickListener {
-      activity.startActivity(Intent(activity, IceboxItemSetActivity::class.java))
-    }
-    delete_btn.setOnClickListener {
-      AlertDialog.Builder(activity)
-          .setMessage("削除しておk？")//todo
-          .setPositiveButton("OK", { _, _ ->
-            iceboxAdapter?.onDeleteClicked()
-          })
-          .setNegativeButton("CANCEL", null)
-          .show()
-    }
-    recipe_search_btn.setOnClickListener {
-      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxAdapter!!.getSearchItemList())
-    }
-    undo_btn.setOnClickListener {
-      iceboxAdapter?.onUndoClicked()
-    }
-    sort_btn.setOnClickListener { toggleSortBtn() }
-    sort_by_name.setOnClickListener { onSortMethodClicked(IceboxAdapter.Sort.NAME) }
-    sort_by_date.setOnClickListener { onSortMethodClicked(IceboxAdapter.Sort.DATE) }
-    sort_by_category.setOnClickListener { onSortMethodClicked(IceboxAdapter.Sort.CATEGORY) }
-    //todo sort by item id いるか　デフォルトソート考える
-  }
-
-  private fun onSortMethodClicked(type: IceboxAdapter.Sort) {
+  private fun onSortMethodClicked(type: IceboxPresenter.Sort) {
     if(isSortOpen) {
-      iceboxAdapter?.sortItems(type)
+      iceboxPresenter.sortItems(type)
       toggleSortBtn()
     }
   }
@@ -95,15 +43,89 @@ class IceboxFragment : Fragment(), IceboxAdapter.IceboxButtons {
     }
     val set = AnimatorSet()
     set.playTogether(listOf(
-        createAnimation(sort_by_name, 0 - viewSize * 0.2f, 0 - viewSize * 1.2f, isSortOpen),
-        createAnimation(sort_by_date, viewSize, 0 - viewSize, isSortOpen),
-        createAnimation(sort_by_category, viewSize * 1.2f, viewSize * 0.2f, isSortOpen)))
+        createAnimation(sort_by_created, 0 - viewSize * 0.4f, 0 - viewSize * 1.3f, isSortOpen),
+        createAnimation(sort_by_name, viewSize * 0.6f, 0 - viewSize * 1.3f, isSortOpen),
+        createAnimation(sort_by_date, viewSize * 1.3f, 0 - viewSize * 0.6f, isSortOpen),
+        createAnimation(sort_by_category, viewSize * 1.3f, viewSize * 0.4f, isSortOpen)
+    ))
     isSortOpen = !isSortOpen
     set.start()
+  }
+
+  override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    super.onCreateView(inflater, container, savedInstanceState)
+    return inflater!!.inflate(R.layout.fragment_icebox, container, false)
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    iceboxPresenter.setRecyclerView(recyclerView)
+    recyclerView.layoutManager = LinearLayoutManager(activity)
+    sort_by_name.alpha = 0f
+
+    add_btn.setOnClickListener {
+      activity.startActivity(Intent(activity, IceboxItemSetActivity::class.java))
+    }
+    delete_btn.setOnClickListener {
+      AlertDialog.Builder(activity)
+          .setMessage("削除しておk？")//todo
+          .setPositiveButton("OK", { _, _ ->
+            iceboxPresenter.onDeleteClicked()
+          })
+          .setNegativeButton("CANCEL", null)
+          .show()
+    }
+    recipe_search_btn.setOnClickListener {
+      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter.getSearchItemList())
+    }
+    undo_btn.setOnClickListener {
+      iceboxPresenter.onUndoClicked()
+    }
+    sort_btn.setOnClickListener { toggleSortBtn() }
+    sort_by_name.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.NAME) }
+    sort_by_date.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.DATE) }
+    sort_by_category.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.CATEGORY) }
+    sort_by_created.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.CREATED) }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    iceboxPresenter.dataUpdated()
+  }
+
+  override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {
+    add_btn.visibility = if(add) View.VISIBLE else View.INVISIBLE
+    undo_btn.visibility = if(undo) View.VISIBLE else View.INVISIBLE
+    delete_btn.visibility = if(delete) View.VISIBLE else View.INVISIBLE
+    recipe_search_btn.visibility = if(search) View.VISIBLE else View.INVISIBLE
+  }
+
+  override fun toIceboxItemSetActivity(item: IceboxItem) {
+    val intent = Intent(activity, IceboxItemSetActivity::class.java)
+    intent.putExtra("item", item)
+    activity.startActivity(intent)
+  }
+
+  override fun toSearchActivity(set: Set<String>) {
+    (activity as MoveToSearchFragment).moveToSearchFragment(set)
+  }
+
+  override fun onSortMethodChange(type: IceboxPresenter.Sort) {
+    val colorPrimary = ContextCompat.getColor(activity, R.color.colorPrimary)
+    val defColor = Color.rgb(255, 204, 102)
+    sort_by_created.backgroundTintList = ColorStateList.valueOf(defColor)
+    sort_by_category.backgroundTintList = ColorStateList.valueOf(defColor)
+    sort_by_date.backgroundTintList = ColorStateList.valueOf(defColor)
+    sort_by_name.backgroundTintList = ColorStateList.valueOf(defColor)
+    when(type) {
+      IceboxPresenter.Sort.CREATED -> sort_by_created.backgroundTintList = ColorStateList.valueOf(colorPrimary)
+      IceboxPresenter.Sort.CATEGORY -> sort_by_category.backgroundTintList = ColorStateList.valueOf(colorPrimary)
+      IceboxPresenter.Sort.DATE -> sort_by_date.backgroundTintList = ColorStateList.valueOf(colorPrimary)
+      IceboxPresenter.Sort.NAME -> sort_by_name.backgroundTintList = ColorStateList.valueOf(colorPrimary)
+    }
   }
 
   interface MoveToSearchFragment {
     fun moveToSearchFragment(items: Set<String>)
   }
-
 }

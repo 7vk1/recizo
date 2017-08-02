@@ -18,16 +18,17 @@ abstract class Scraper {
   var isLoading = true
 
   fun scrapingHTML(callback: ScraperCallBack) = launch(UI) {
-    try{
+    try {
       sendHtmlToCallBack(getHTML(getSearchUrl(), nowPage).await(), callback)
       isLoading = false
       next()
-    }catch (e: IOException){ callback.failed(ErrorCode.IO_ERROR) }catch (e: Exception){
+    } catch (e: IOException) { callback.failed(ErrorCode.IO_ERROR)
+    } catch (e: IndexOutOfBoundsException){ callback.failed(ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR)
+    } catch (e: Exception) {
       e.printStackTrace()
       callback.failed(ErrorCode.GENERIC_ERROR)
     }
   }
-
 
   fun next():Boolean {
     if(nowPage > totalNumberOfPages) return true
@@ -37,9 +38,7 @@ abstract class Scraper {
     }
   }
 
-  fun idFinished() :Boolean{
-    return nowPage > totalNumberOfPages
-  }
+  fun idFinished() :Boolean { return nowPage > totalNumberOfPages }
 
   private fun getHTML(url: String, pageNum: Int = 1) = async(CommonPool) {
     // TODO ProgressSpinnerの追加

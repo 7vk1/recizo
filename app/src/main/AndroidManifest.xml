@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.recizo">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.recizo">
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_reci_0611_01_grate"
+  <application
+      android:allowBackup="true"
+      android:icon="@drawable/ic_reci_0611_01_grate"
+      android:label="@string/app_name"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:supportsRtl="true"
+      android:theme="@style/AppTheme">
+    <activity
+        android:name=".MainActivity"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".IceboxItemSetActivity">
-        </activity>
-        <activity android:name=".setting_avtivitys.AlertSettingActivity">
-        </activity>
-        <activity android:name=".setting_avtivitys.LicenceActivity">
-        </activity>
-        <activity android:name=".setting_avtivitys.AboutMeActivity">
-        </activity>
-    </application>
-
+        android:theme="@style/AppTheme.NoActionBar">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity android:name=".IceboxItemSetActivity" />
+    <activity android:name=".setting_activities.LicenceActivity" />
+    <activity android:name=".setting_activities.AboutMeActivity" />
+    <receiver android:name=".module.Notification$AlarmReceiver"
+              android:process=":remote"/>
+  </application>
 </manifest>

@@ -1,18 +1,25 @@
 package com.recizo.module
 
-
 import com.recizo.model.entity.CookpadRecipe
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-class CookpadScraper(val searchKeyWords: Set<String>): Scraper() {
-
-  companion object {
-    val BASE_URL = "https://cookpad.com"
-  }
-
+class CookpadScraper(private var searchKeyWords: Set<String>): Scraper() {
   init{
     this.queryString = "?order=date&page="
+  }
+
+  fun requestGetRecipeItem(html: Document?): List<CookpadRecipe> {
+    val recipes = html!!.select(".recipe-preview").filter{ !it.parent().hasClass("recommended_pro_recipe")}
+    return recipes.map {
+      CookpadRecipe(
+          title = it.select(".recipe-title")[0].text(),
+          description = it.select(".recipe_description")[0].text(),
+          cookpadLink = CookpadScraper.BASE_URL + it.select(".recipe-title")[0].attr("href"),
+          author = it.select(".recipe_author_name a")[0].text(),
+          imgUrl = it.select(".recipe-image img")[0].attr("src")
+      )
+    }
   }
 
   override fun parseNumberOfItem(html: Document): Int {
@@ -33,16 +40,7 @@ class CookpadScraper(val searchKeyWords: Set<String>): Scraper() {
     return Math.ceil((numberOfItem.toDouble() / 10)).toInt()
   }
 
-  fun requestGetRecipeItem(html: Document?): List<CookpadRecipe> {
-    val recipes = html!!.select(".recipe-preview").filter{ !it.parent().hasClass("recommended_pro_recipe")}
-    return recipes.map {
-      CookpadRecipe(
-              title = it.select(".recipe-title")[0].text(),
-              description = it.select(".recipe_description")[0].text(),
-              cookpadLink = CookpadScraper.BASE_URL + it.select(".recipe-title")[0].attr("href"),
-              author = it.select(".recipe_author_name a")[0].text(),
-              imgUrl = it.select(".recipe-image img")[0].attr("src")
-      )
-    }
+  companion object {
+    val BASE_URL = "https://cookpad.com"
   }
 }

@@ -1,11 +1,11 @@
 package com.recizo.view
 
 import android.app.Fragment
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +31,7 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
         , LinearLayoutManager(activity).orientation))
 
     val recipePresenter = RecipePresenter(activity, searched_recyclerView, items)
+    searched_recipe_progressBar.indeterminateDrawable.setColorFilter(resources.getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY)
     recipePresenter.setLoadEventListener(object : RecipePresenter.LoadEventListener {
       override fun onLoadStart() {
         searched_recipe_progressBar?.visibility = View.VISIBLE
@@ -40,6 +41,7 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
       }
     })
     recipePresenter.startRecipeListCreate()
+    recipePresenter.displaySearchedText(searche_result_keyword_flame)
 
     searched_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {

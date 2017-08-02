@@ -10,131 +10,78 @@ import android.widget.TextView
 import com.recizo.R
 import com.daimajia.swipe.*
 import com.recizo.model.entity.IceboxItem
-import com.recizo.module.IceboxDao
 
 
-class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
-  private var itemList = IceboxDao.getAll().toMutableList()
-  private var searchList = mutableSetOf<Long>()
-  private var garbageList = mutableSetOf<Long>()
-  private var recyclerView: RecyclerView? = null
-  private var sort = Sort.CATEGORY
-  init {
-    setHasStableIds(true)
-    itemList.add(IceboxItem(id = -1, memo = "", name = "empty", date = "", category = IceboxItem.Category.vegetable))
+class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
+  private var eventListener: EventListener? = null
+  private var itemList = mutableListOf(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
+  init { setHasStableIds(true) }
+
+  fun getItemList(): MutableList<IceboxItem> {
+    val ret = itemList.map { it }.toMutableList()
+    ret.removeAt(ret.size -1)
+    return ret
   }
 
-  fun removeItem(id: Long) {
-    IceboxDao.delete(id.toInt())
-    itemList = itemList.filter { it.id.toLong() != id }.toMutableList()
-    notifyDataSetChanged()
-  }
-
-  fun updateDataSet() {
-    itemList = IceboxDao.getAll().toMutableList()
+  fun setItemList(list: MutableList<IceboxItem>) {
+    itemList = list
     itemList.add(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
-    sortItems(sort)
-    this.notifyDataSetChanged()
-    fragment.changeBtnVisibility(add = true)
-  }
-
-  fun onDeleteClicked() {
-    garbageList.map {
-      removeItem(it)
-    }
-    garbageList.clear()
-    fragment.changeBtnVisibility(add = true)
-  }
-
-  fun sortItems(type: Sort) {
-    itemList.removeAt(itemList.size -1)
-    sort = type
-    when(type) {
-      Sort.NAME -> itemList.sortBy { it.name }
-      Sort.DATE -> itemList.sortBy { it.date }
-      Sort.CATEGORY -> itemList.sortBy { it.category }
-    }
-    itemList.add(IceboxItem(-1, "blank", "", "", IceboxItem.Category.vegetable))
     notifyDataSetChanged()
   }
 
-  fun getSearchItemList(): Set<String> {
-    return searchList.map { id -> itemList.first { it.id.toLong() == id }.name }.toSet()
+  fun removeItem(index: Int) {
+    this.itemList.removeAt(index)
+    notifyItemRemoved(index)
   }
 
-  fun onUndoClicked() {
-    searchList.plus(garbageList).map {
-      val item = recyclerView?.findViewHolderForItemId(it)
-      if(item != null) (item as IceboxViewHolder).swipeLayout.close()
-    }
-    fragment.changeBtnVisibility(add = true)
-  }
+  fun setEventListener(listener: EventListener) { eventListener = listener }
 
-  override fun getItemCount(): Int {
-    return itemList.size
-  }
-
-  override fun getItemId(position: Int): Long {
-    return itemList[position].id.toLong()
-  }
-
+  override fun getItemCount(): Int { return itemList.size }
+  override fun getItemId(position: Int): Long { return itemList[position].id.toLong() }
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IceboxViewHolder {
     val v: View = LayoutInflater.from(parent.context).inflate(R.layout.icebox_item, parent, false)
     return IceboxViewHolder(v)
   }
 
-  override fun onBindViewHolder(holder: IceboxViewHolder?, position: Int) {
+  override fun onViewAttachedToWindow(holder: IceboxViewHolder) {
+    super.onViewAttachedToWindow(holder)
+    eventListener?.onViewAttached(holder)
+  }
+
+  override fun onBindViewHolder(holder: IceboxViewHolder, position: Int) {
     val item = itemList[position]
     if(item.id == -1) {
-      holder!!.itemView.visibility = View.INVISIBLE
+      holder.itemView.visibility = View.INVISIBLE
       return
     }
-    holder!!.bindView(item)
+    holder.bindView(item)
+    holder.del.setOnClickListener { eventListener?.onDeleteClicked(holder.itemId) }
+    holder.search.setOnClickListener { eventListener?.onSearchClicked(item) }
+    eventListener?.onBindViewHolder(holder, position)
     holder.swipeLayout.addSwipeListener(object: SimpleSwipeListener() {
       override fun onOpen(layout: SwipeLayout?) {
         super.onOpen(layout)
-        when(layout!!.dragEdge) {
-          SwipeLayout.DragEdge.Left -> {
-            searchList.add(holder.itemId)
-            fragment.changeBtnVisibility(search = true, undo = true)
-          }
-          SwipeLayout.DragEdge.Right -> {
-            garbageList.add(holder.itemId)
-            fragment.changeBtnVisibility(delete = true, undo = true)
-          }
-          else -> return
-        }
+        eventListener?.onItemOpen(layout!!.dragEdge, holder.itemId)
       }
       override fun onClose(layout: SwipeLayout?) {
         super.onClose(layout)
-        garbageList.remove(holder.itemId)
-        searchList.remove(holder.itemId)
-        if(garbageList.size == 0 && searchList.size == 0) fragment.changeBtnVisibility(add = true)
+        eventListener?.onItemClosed(holder.itemId)
       }
     })
 
     holder.cardView.setOnClickListener {
-      fragment.toIceboxItemSetActivity(itemList.first { it.id.toLong() == holder.itemId })
+      this.eventListener?.onItemClicked(itemList.first { it.id.toLong() == holder.itemId })
     }
   }
 
-  override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
-    super.onAttachedToRecyclerView(recyclerView)
-    this.recyclerView = recyclerView
-  }
-
-  override fun onDetachedFromRecyclerView(recyclerView: RecyclerView?) {
-    super.onDetachedFromRecyclerView(recyclerView)
-    this.recyclerView = null
-  }
-
-  enum class Sort {
-    NAME, DATE, CATEGORY
-  }
-
-  interface IceboxButtons {
-    fun changeBtnVisibility(add: Boolean = false, undo: Boolean = false, search: Boolean = false, delete: Boolean = false)
-    fun toIceboxItemSetActivity(item: IceboxItem)
+  interface EventListener {
+    fun onItemClicked(item: IceboxItem)
+    fun onItemClosed(itemId: Long)
+    fun onItemOpen(dragEdge: SwipeLayout.DragEdge, itemId: Long)
+    fun onViewAttached(holder: IceboxViewHolder)
+    fun onBindViewHolder(holder: IceboxViewHolder, position: Int)
+    fun onDeleteClicked(itemId: Long)
+    fun onSearchClicked(item: IceboxItem)
   }
 
   class IceboxViewHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -144,6 +91,8 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
     val cardView: CardView = v.findViewById(R.id.icebox_item)
     val swipeLayout: SwipeLayout = v.findViewById(R.id.swipe_target)
     val categoryImg: ImageView = v.findViewById(R.id.category_img)
+    val del: CardView = v.findViewById(R.id.icebox_item_del)
+    val search: CardView = v.findViewById(R.id.icebox_item_search)
     fun bindView(item: IceboxItem) {
       this.title.text = item.name
       this.memo.text = item.memo
@@ -163,5 +112,4 @@ class IceboxAdapter(val fragment: IceboxButtons) : RecyclerView.Adapter<IceboxAd
       swipeLayout.addDrag(SwipeLayout.DragEdge.Left,swipeLayout.findViewById(R.id.icebox_item_search))
     }
   }
-
 }

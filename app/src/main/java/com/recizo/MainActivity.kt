@@ -11,9 +11,17 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import com.recizo.module.AppContextHolder
+import com.recizo.module.Notification
 import com.recizo.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.MoveToSearchFragment {
+  private fun changeFragment(fragment: Fragment) {
+    val transaction = fragmentManager.beginTransaction()
+    transaction.addToBackStack(null)
+    transaction.replace(R.id.fragment_frame, fragment)
+    transaction.commit()
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     AppContextHolder.context = applicationContext
@@ -30,10 +38,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     transaction.commit()
     val navigationView = findViewById(R.id.nav_view) as NavigationView
     navigationView.setNavigationItemSelectedListener(this)
+    Notification.set(this)
   }
 
   override fun onBackPressed() {//todo change nav selected item
-    print(fragmentManager.backStackEntryCount)
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
     if(drawer.isDrawerOpen(GravityCompat.START)) drawer.closeDrawer(GravityCompat.START)
     if(fragmentManager.backStackEntryCount != 0) super.onBackPressed()
@@ -63,12 +71,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
   override fun moveToSearchFragment(items: Set<String>) {
     changeFragment(RecipeFragment(items))
-  }
-
-  private fun changeFragment(fragment: Fragment) {
-    val transaction = fragmentManager.beginTransaction()
-    transaction.addToBackStack(null)
-    transaction.replace(R.id.fragment_frame, fragment)
-    transaction.commit()
   }
 }

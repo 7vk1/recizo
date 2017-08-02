@@ -10,25 +10,13 @@ import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-
-
 class Http(private val url: String) : AsyncTask<Void, Void, String>() {
-  enum class ErrorCode {
-    HTTP_ERROR,
-    EMPTY_BODY,
-    CONNECTION_ERROR,
-    UNSUPPORTED_ENCODING,
-  }
-  interface Callback {
-    fun onSuccess(body: String)
-    fun onError(code: ErrorCode)
-  }
   private var callback: Callback? = null
+  private var errCode: ErrorCode? = null
+
   fun setCallback(cb: Callback) {
     callback = cb
   }
-  private var errCode: ErrorCode? = null
-
 
   override fun doInBackground(vararg args: Void?): String {
     val url: URL = URL(this.url)
@@ -74,6 +62,18 @@ class Http(private val url: String) : AsyncTask<Void, Void, String>() {
       callback?.onError(this.errCode!!)
     }
     else callback?.onSuccess(result)
+  }
+
+  enum class ErrorCode {
+    HTTP_ERROR,
+    EMPTY_BODY,
+    CONNECTION_ERROR,
+    UNSUPPORTED_ENCODING,
+  }
+
+  interface Callback {
+    fun onSuccess(body: String)
+    fun onError(code: ErrorCode)
   }
 
 }
