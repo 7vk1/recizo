@@ -50,14 +50,8 @@ class IceboxItemSetActivity : AppCompatActivity() {
       val day = dates[2].toInt()
       date_picker.updateDate(year, month, day)
       nav_set_btn.text = "変更"
-      register_btn.text = "変更"
-    } else {
-      nav_set_btn.text = "登録"
-      register_btn.text = "登録"
-    }
+    } else nav_set_btn.text = "登録"
     nav_back_btn.setOnClickListener { finish() }
     nav_set_btn.setOnClickListener { onSetClicked() }
-    cancel_btn.setOnClickListener { finish() }
-    register_btn.setOnClickListener { onSetClicked() }
   }
 }
