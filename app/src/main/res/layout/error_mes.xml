@@ -2,7 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/flyer_error_mes_box"
+    android:id="@+id/error_mes_box"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -14,7 +14,7 @@
     android:gravity="center">
 
   <TextView
-      android:id="@+id/flyer_error_mes_title"
+      android:id="@+id/error_mes_title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="8dp"
@@ -27,7 +27,7 @@
       android:textSize="30sp"/>
 
   <TextView
-      android:id="@+id/flyer_error_mes_detail"
+      android:id="@+id/error_mes_detail"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="8dp"

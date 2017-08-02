@@ -23,7 +23,8 @@ abstract class Scraper {
       isLoading = false
       next()
     } catch (e: IOException) { callback.failed(ErrorCode.IO_ERROR)
-    } catch (e: IndexOutOfBoundsException){ callback.failed(ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR)
+    } catch (e: IndexOutOfBoundsException) { callback.failed(ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR)
+    } catch (e: UnsupportedOperationException){ callback.failed(ErrorCode.UNSUPPORTED_OPERATION_ERROR)
     } catch (e: Exception) {
       e.printStackTrace()
       callback.failed(ErrorCode.GENERIC_ERROR)

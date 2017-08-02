@@ -4,7 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.recizo.R
 import com.recizo.model.ErrorCode
 import com.recizo.model.entity.CookpadRecipe
@@ -13,7 +16,8 @@ import com.recizo.module.Scraper
 import com.recizo.view.RecipeFragment
 import com.recizo.view.SearchItemView
 
-class RecipePresenter (val context: Activity, recipeListView: RecyclerView, val keywords: Set<String>){
+class RecipePresenter (val context: Activity,val view: View, val keywords: Set<String>){
+  private val recipeListView: RecyclerView = view.findViewById(R.id.searched_recyclerView)
   private var scraper = CookpadScraper(keywords)
   private var loadEventListener: LoadEventListener? = null
   private val recipeListAdapter = RecipeListAdapter(recipeListView)
@@ -29,19 +33,33 @@ class RecipePresenter (val context: Activity, recipeListView: RecyclerView, val 
   fun setLoadEventListener(listener: LoadEventListener) { loadEventListener = listener }
 
   fun startRecipeListCreate() {
+    val errorMes = view.findViewById<LinearLayout>(R.id.error_mes_box)
     loadEventListener?.onLoadStart()
     scraper.scrapingHTML(object : Scraper.ScraperCallBack {
       override fun succeed(html: org.jsoup.nodes.Document?) {
         val recipes = scraper.requestGetRecipeItem(html)
+        if(recipes.isEmpty()) {
+          setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
+          errorMes.visibility = View.VISIBLE
+        }
         recipes.forEach {recipeListAdapter.addRecipe(it)}
         loadEventListener?.onLoadEnd()
       }
       override fun failed(errorCode: ErrorCode) {
         //todo impl
-        android.util.Log.d("ERROR CODE", errorCode.toString())
+        if(errorCode.name == ErrorCode.IO_ERROR.name) setErrorMesText(R.string.network_error_title, R.string.network_error_detail)
+        // 検索食材を全部削除した際に起きる
+        else if(errorCode.name == ErrorCode.UNSUPPORTED_OPERATION_ERROR.name) setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
+        else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
+        errorMes.visibility = View.VISIBLE
         loadEventListener?.onLoadEnd()
       }
     })
+  }
+
+  private fun setErrorMesText(title: Int, detail: Int) {
+    view.findViewById<TextView>(R.id.error_mes_title).text = context.resources.getString(title)
+    view.findViewById<TextView>(R.id.error_mes_detail).text = context.resources.getString(detail)
   }
 
   fun displaySearchedText(parent: LinearLayout) {

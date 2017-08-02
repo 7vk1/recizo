@@ -36,8 +36,7 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
 
   fun startFlyerListCreate() {
     if (keywords != "" && keywords.isNotEmpty() && keywords != "0") {
-      val errorMes = view.findViewById<LinearLayout>(R.id.flyer_error_mes_box)
-      errorMes.visibility = View.INVISIBLE
+      val errorMes = view.findViewById<LinearLayout>(R.id.error_mes_box)
       progressBarCallback?.showProgressBar()
       scraper.scrapingHTML(object : Scraper.ScraperCallBack {
         override fun succeed(html: Document?) {
@@ -47,27 +46,19 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
         }
 
         override fun failed(errorCode: ErrorCode) {
-          if(errorCode.name == ErrorCode.IO_ERROR.name) {
-            setErrorMesText(R.string.flyer_network_error_title, R.string.flyer_network_error_detail)
-            errorMes.visibility = View.VISIBLE
-          }
-          else if(errorCode.name == ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR.name) {
-            setErrorMesText(R.string.flyer_notfound_title, R.string.flyer_notfound_detail)
-            errorMes.visibility = View.VISIBLE
-          }
-          else {
-            setErrorMesText(R.string.flyer_other_error_title, R.string.flyer_other_error_detail)
-            errorMes.visibility = View.VISIBLE
-          }
+          if(errorCode.name == ErrorCode.IO_ERROR.name) setErrorMesText(R.string.network_error_title, R.string.network_error_detail)
+          else if(errorCode.name == ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR.name) setErrorMesText(R.string.flyer_notfound_title, R.string.flyer_notfound_detail)
+          else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
+          errorMes.visibility = View.VISIBLE
           progressBarCallback?.hideProgressBar()
         }
       })
     } else setErrorMesText(R.string.flyer_empty_text, R.string.flyer_empty_detail)
   }
 
-  fun setErrorMesText(title: Int, detail: Int) {
-    view.findViewById<TextView>(R.id.flyer_error_mes_title).text = context.resources.getString(title)
-    view.findViewById<TextView>(R.id.flyer_error_mes_detail).text = context.resources.getString(detail)
+  private fun setErrorMesText(title: Int, detail: Int) {
+    view.findViewById<TextView>(R.id.error_mes_title).text = context.resources.getString(title)
+    view.findViewById<TextView>(R.id.error_mes_detail).text = context.resources.getString(detail)
   }
 
   fun addFlyerList(recyclerView: RecyclerView?, dy: Int) {
