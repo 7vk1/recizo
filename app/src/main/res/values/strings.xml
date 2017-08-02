@@ -31,6 +31,7 @@
 
   <string name="empty_text">登録されていません</string>
   <string name="erase_btn">削除ボタン</string>
+  <string name="back">戻る</string>
 
   <!-- general error message -->
   <string name="network_error_title">インターネットに接続できませんでした</string>

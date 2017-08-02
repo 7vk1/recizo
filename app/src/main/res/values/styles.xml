@@ -24,7 +24,7 @@
   <style name="IceboxItemSetTitle">
     <item name="android:padding">10dp</item>
     <item name="android:textSize">20sp</item>
-    <item name="android:background">@color/colorAccent</item>
+    <item name="android:background">@drawable/bg_icebox_set_divider</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
