@@ -14,8 +14,7 @@ class SettingDialogPreference(context: Context, attr: AttributeSet) : Preference
       summary = value
     }
   var setDialog: Dialog? = null
-  init {
-    summary = value
-  }
+  init { summary = value }
+
   override fun onClick() { setDialog?.show() }
 }

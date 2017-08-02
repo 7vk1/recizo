@@ -20,9 +20,7 @@ class FlyerListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ada
   private var onItemClickListener: FlyerListAdapter.OnItemClickListener? = null
   val flyerList = mutableListOf<ShufooFlyer>()
 
-  fun setOnItemClickListener(listener: FlyerListAdapter.OnItemClickListener){
-    onItemClickListener = listener
-  }
+  fun setOnItemClickListener(listener: FlyerListAdapter.OnItemClickListener){ onItemClickListener = listener }
 
   fun addFlyer(flyer: ShufooFlyer) {
     flyerList.add(flyer)
@@ -40,9 +38,7 @@ class FlyerListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ada
     return@async Bitmap.createScaledBitmap(bitmapImage, width, height, false)
   }
 
-  override fun getItemCount(): Int {
-    return flyerList.size
-  }
+  override fun getItemCount(): Int { return flyerList.size }
 
   override fun onBindViewHolder(holder: FlyerViewHolder?, position: Int) {
     launch(UI) {
@@ -64,9 +60,7 @@ class FlyerListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ada
     onItemClickListener?.onItemClick(this.flyerList[position])
   }
 
-  interface OnItemClickListener {
-    fun onItemClick(flyer: ShufooFlyer)
-  }
+  interface OnItemClickListener { fun onItemClick(flyer: ShufooFlyer) }
 
   class FlyerViewHolder(v: View): RecyclerView.ViewHolder(v){
     val storeName: TextView = v.findViewById(R.id.shufoo_shopName)

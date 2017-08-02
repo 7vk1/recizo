@@ -5,9 +5,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class CookpadScraper(private var searchKeyWords: Set<String>): Scraper() {
-  init{
-    this.queryString = "?order=date&page="
-  }
+  init{ this.queryString = "?order=date&page=" }
 
   fun requestGetRecipeItem(html: Document?): List<CookpadRecipe> {
     val recipes = html!!.select(".recipe-preview").filter{ !it.parent().hasClass("recommended_pro_recipe")}
@@ -36,11 +34,7 @@ class CookpadScraper(private var searchKeyWords: Set<String>): Scraper() {
     return url
   }
 
-  override fun getTotalPage(): Int{
-    return Math.ceil((numberOfItem.toDouble() / 10)).toInt()
-  }
+  override fun getTotalPage(): Int{ return Math.ceil((numberOfItem.toDouble() / 10)).toInt() }
 
-  companion object {
-    val BASE_URL = "https://cookpad.com"
-  }
+  companion object { val BASE_URL = "https://cookpad.com" }
 }

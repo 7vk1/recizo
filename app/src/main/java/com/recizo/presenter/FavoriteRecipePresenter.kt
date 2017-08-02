@@ -47,12 +47,8 @@ class FavoriteRecipePresenter(context: Context, val view: View) {
   }
 
   fun setUpView() {
-    removeBtn.setOnClickListener {
-      favoriteRecipeAdapter.onDeleteClicked()
-    }
-    undoBtn.setOnClickListener {
-      favoriteRecipeAdapter.onUndoClicked()
-    }
+    removeBtn.setOnClickListener { favoriteRecipeAdapter.onDeleteClicked() }
+    undoBtn.setOnClickListener { favoriteRecipeAdapter.onUndoClicked() }
   }
 
   interface ChangeVisibility {

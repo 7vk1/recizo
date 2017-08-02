@@ -60,13 +60,9 @@ class SeasonAdapter(val context: Context,val seasonList: List<String>): Recycler
     return SeasonViewHolder(v)
   }
 
-  override fun getItemId(position: Int): Long {
-    return position.toLong()
-  }
+  override fun getItemId(position: Int): Long { return position.toLong() }
 
-  override fun getItemCount(): Int {
-    return seasonList.size
-  }
+  override fun getItemCount(): Int { return seasonList.size }
 
   override fun onBindViewHolder(holder: SeasonViewHolder?, position: Int) {
     val pos = holder!!.itemId.toInt()

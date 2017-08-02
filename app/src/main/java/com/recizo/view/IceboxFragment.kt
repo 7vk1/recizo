@@ -18,6 +18,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import com.recizo.IceboxItemSetActivity
+import com.recizo.MainActivity
 import com.recizo.presenter.IceboxPresenter
 
 class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
@@ -63,9 +64,6 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
     recyclerView.layoutManager = LinearLayoutManager(activity)
     sort_by_name.alpha = 0f
 
-    add_btn.setOnClickListener {
-      activity.startActivity(Intent(activity, IceboxItemSetActivity::class.java))
-    }
     delete_btn.setOnClickListener {
       AlertDialog.Builder(activity)
           .setMessage("削除しておk？")//todo
@@ -75,12 +73,9 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
           .setNegativeButton("CANCEL", null)
           .show()
     }
-    recipe_search_btn.setOnClickListener {
-      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter.getSearchItemList())
-    }
-    undo_btn.setOnClickListener {
-      iceboxPresenter.onUndoClicked()
-    }
+    recipe_search_btn.setOnClickListener { (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter.getSearchItemList()) }
+    add_btn.setOnClickListener { activity.startActivity(Intent(activity, IceboxItemSetActivity::class.java)) }
+    undo_btn.setOnClickListener { iceboxPresenter.onUndoClicked() }
     sort_btn.setOnClickListener { toggleSortBtn() }
     sort_by_name.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.NAME) }
     sort_by_date.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.DATE) }
@@ -91,6 +86,7 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
   override fun onResume() {
     super.onResume()
     iceboxPresenter.dataUpdated()
+    (activity as MainActivity).changeSelectedNavItem(MainActivity.NavMenuItems.icebox)
   }
 
   override fun changeBtnVisibility(add: Boolean, undo: Boolean, search: Boolean, delete: Boolean) {

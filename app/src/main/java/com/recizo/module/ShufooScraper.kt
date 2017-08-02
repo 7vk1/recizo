@@ -23,15 +23,9 @@ class ShufooScraper(postCode: String): Scraper(){
     return html.select(".result_count")[0].text().replace("枚","").replace(""".+/""".toRegex(), "").toInt()
   }
 
-  override fun getSearchUrl(): String {
-    return BASE_URL + this.queryString + nowPage
-  }
+  override fun getSearchUrl(): String { return BASE_URL + this.queryString + nowPage }
 
-  override fun getTotalPage(): Int{
-    return Math.ceil((numberOfItem.toDouble() / 32)).toInt()
-  }
+  override fun getTotalPage(): Int{ return Math.ceil((numberOfItem.toDouble() / 32)).toInt() }
 
-  companion object {
-    val BASE_URL = "http://www.shufoo.net/pntweb/chirashiList.php"
-  }
+  companion object { val BASE_URL = "http://www.shufoo.net/pntweb/chirashiList.php" }
 }

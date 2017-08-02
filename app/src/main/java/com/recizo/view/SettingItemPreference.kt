@@ -7,15 +7,9 @@ import android.util.AttributeSet
 class SettingItemPreference(context: Context, attr: AttributeSet) : ListPreference(context, attr){
   var onListClickListener: SettingItemPreference.OnListClickListener? = null
 
-  fun setListOnClickListener(listener: SettingItemPreference.OnListClickListener){
-    onListClickListener = listener
-  }
+  fun setListOnClickListener(listener: SettingItemPreference.OnListClickListener){ onListClickListener = listener }
 
-  override fun onClick() {
-    onListClickListener?.onListClick()
-  }
+  override fun onClick() { onListClickListener?.onListClick() }
 
-  interface OnListClickListener {
-    fun onListClick()
-  }
+  interface OnListClickListener { fun onListClick() }
 }

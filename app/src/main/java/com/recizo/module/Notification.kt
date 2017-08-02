@@ -55,7 +55,7 @@ object Notification {
   private fun notifyLargeIcon(context: Context, title: String, message: String) {
     val builder = NotificationCompat.Builder(context)
     builder.setSmallIcon(R.drawable.cat_fruit)
-    builder.setLargeIcon(getBitmapFromVectorDrawable(context, R.drawable.ic_reci_0611_01_grate))
+    builder.setLargeIcon(getBitmapFromVectorDrawable(context, R.drawable.ic_recizo))
     builder.setContentTitle(title)
     builder.setContentText(message)
     builder.setAutoCancel(true)
@@ -71,13 +71,10 @@ object Notification {
 
   private fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
     var drawable = ContextCompat.getDrawable(context, drawableId)
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-      drawable = DrawableCompat.wrap(drawable).mutate()
-    }
-    val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth,
-        drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+    if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) drawable = DrawableCompat.wrap(drawable).mutate()
+    val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(bitmap)
-    drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
+    drawable.setBounds(0, 0, canvas.width, canvas.height)
     drawable.draw(canvas)
     return bitmap
   }

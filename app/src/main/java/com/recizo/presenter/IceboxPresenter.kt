@@ -16,11 +16,8 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   private val iceboxAdapter = IceboxAdapter()
   init {
     iceboxAdapter.setEventListener(object : IceboxAdapter.EventListener {
-      override fun onViewAttached(holder: IceboxAdapter.IceboxViewHolder) {
-        checkHolder(holder)
-      }
-      override fun onBindViewHolder(holder: IceboxAdapter.IceboxViewHolder, position: Int) {
-      }
+      override fun onViewAttached(holder: IceboxAdapter.IceboxViewHolder) { checkHolder(holder) }
+      override fun onBindViewHolder(holder: IceboxAdapter.IceboxViewHolder, position: Int) {}
       override fun onItemOpen(dragEdge: SwipeLayout.DragEdge, itemId: Long) {
         when(dragEdge) {
           SwipeLayout.DragEdge.Left -> {
@@ -39,15 +36,9 @@ class IceboxPresenter(val fragment: IceboxButtons) {
         searchList.remove(itemId)
         if (garbageList.size == 0 && searchList.size == 0) fragment.changeBtnVisibility(add = true)
       }
-      override fun onItemClicked(item: IceboxItem) {
-        fragment.toIceboxItemSetActivity(item)
-      }
-      override fun onDeleteClicked(itemId: Long) {
-        removeItem(itemId)
-      }
-      override fun onSearchClicked(item: IceboxItem) {
-        fragment.toSearchActivity(getSearchItemList()) // todo アイテム１つで検索？
-      }
+      override fun onItemClicked(item: IceboxItem) { fragment.toIceboxItemSetActivity(item) }
+      override fun onDeleteClicked(itemId: Long) { removeItem(itemId) }
+      override fun onSearchClicked(item: IceboxItem) { fragment.toSearchActivity(getSearchItemList()) } // todo アイテム１つで検索？
     })
   }
 

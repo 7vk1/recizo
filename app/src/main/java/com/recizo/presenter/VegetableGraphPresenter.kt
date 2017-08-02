@@ -13,6 +13,7 @@ import com.recizo.module.RecizoApi
 class VegetableGraphPresenter(private val chart: LineChart) {
   var dataSet: LineDataSet? = null
   var isTheOtherFinished = false
+  var listener: EventListener? = null
   val colors = HashMap<RecizoApi.Vegetables, Int>()
   init {
     chart.description.text = "野菜の卸売価格"
@@ -21,24 +22,26 @@ class VegetableGraphPresenter(private val chart: LineChart) {
     chart.xAxis.axisMinimum = 0f
     chart.xAxis.axisMaximum = 366f
     chart.xAxis.labelCount = 7
-    colors.put(RecizoApi.Vegetables.burokkori, Color.rgb(19,107,64))
-    colors.put(RecizoApi.Vegetables.daikon, Color.rgb(236,254,76))
-    colors.put(RecizoApi.Vegetables.hakusai, Color.rgb(211,244,65))
+
+    colors.put(RecizoApi.Vegetables.burokkori, Color.rgb(19,107,0))
+    colors.put(RecizoApi.Vegetables.daikon, Color.rgb(170,200,150))
+    colors.put(RecizoApi.Vegetables.hakusai, Color.rgb(140,250,70))
     colors.put(RecizoApi.Vegetables.hourensou, Color.rgb(31,145,31))
     colors.put(RecizoApi.Vegetables.jagaimo, Color.rgb(160,106,20))
-    colors.put(RecizoApi.Vegetables.kyabetsu, Color.rgb(194,255,153))
+    colors.put(RecizoApi.Vegetables.kyabetsu, Color.rgb(50,240,50))
     colors.put(RecizoApi.Vegetables.kyuri, Color.rgb(28,130,29))
     colors.put(RecizoApi.Vegetables.nasu, Color.rgb(142,24,221))
     colors.put(RecizoApi.Vegetables.negi, Color.rgb(153,199,100))
     colors.put(RecizoApi.Vegetables.ninjin, Color.rgb(252,128,5))
     colors.put(RecizoApi.Vegetables.piman, Color.rgb(24,112,61))
-    colors.put(RecizoApi.Vegetables.retasu, Color.rgb(219,255,77))
+    colors.put(RecizoApi.Vegetables.retasu, Color.rgb(100,255,77))
     colors.put(RecizoApi.Vegetables.satoimo, Color.rgb(221,197,148))
     colors.put(RecizoApi.Vegetables.tamanegi, Color.rgb(255,181,63))
     colors.put(RecizoApi.Vegetables.tomato, Color.rgb(255,99,71))
   }
 
   fun onItemChange(v: String) {
+    listener?.onStart()
     val vegetable = RecizoApi.Vegetables.values().find { it.name_jp == v }!!
     chart.data = LineData()
     chart.data.setDrawValues(false)
@@ -64,6 +67,7 @@ class VegetableGraphPresenter(private val chart: LineChart) {
   }
 
   private fun onResponseAll(response: Map<String, List<RecizoApi.DairyData>>){
+    listener?.onEnd()
     val lists: List<LineDataSet> = response.keys.map {
       val data = (0..response[it]!!.size -1)
           .asSequence()
@@ -85,6 +89,7 @@ class VegetableGraphPresenter(private val chart: LineChart) {
   }
 
   private fun onResponse(response: Map<String, List<RecizoApi.DairyData>>, isRecent: Boolean){
+    listener?.onEnd()
     val key = response.keys.first()
     val vegetableData = response[key]!!
     val list = mutableListOf<Entry>()
@@ -108,7 +113,12 @@ class VegetableGraphPresenter(private val chart: LineChart) {
     }
   }
 
-  private fun handleError(code: Http.ErrorCode) {//TODO IMPL
+  private fun handleError(code: Http.ErrorCode) { listener?.onError(code) }
+
+  interface EventListener {
+    fun onStart()
+    fun onEnd()
+    fun onError(code: Http.ErrorCode)
   }
 
   private class XAxisValueFormatter(private val mValues: Array<String>) : IAxisValueFormatter {

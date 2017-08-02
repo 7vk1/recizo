@@ -1,15 +1,14 @@
 package com.recizo.view
 
 import android.app.Fragment
-import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.recizo.MainActivity
 import com.recizo.presenter.FlyerPresenter
 import com.recizo.R
 import com.recizo.module.AppContextHolder
@@ -28,10 +27,6 @@ class FlyerFragment : Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     flyer_recyclerView.layoutManager = LinearLayoutManager(activity)
-//    flyer_recyclerView.addItemDecoration(DividerItemDecoration(
-//        flyer_recyclerView.context,
-//            LinearLayoutManager(activity).orientation)
-//    )
     val flyerPresenter = FlyerPresenter(
             activity,
             view!!,
@@ -39,12 +34,8 @@ class FlyerFragment : Fragment() {
     )
     searched_shufoo_progressBar.indeterminateDrawable.setColorFilter(resources.getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY)
     flyerPresenter.setProgressBar(object:FlyerPresenter.IProgressBar{
-      override fun showProgressBar() {
-        searched_shufoo_progressBar?.visibility = View.VISIBLE
-      }
-      override fun hideProgressBar() {
-        searched_shufoo_progressBar?.visibility = View.GONE
-      }
+      override fun showProgressBar() { searched_shufoo_progressBar?.visibility = View.VISIBLE }
+      override fun hideProgressBar() { searched_shufoo_progressBar?.visibility = View.GONE }
     })
     flyerPresenter.startFlyerListCreate()
     flyer_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -53,5 +44,10 @@ class FlyerFragment : Fragment() {
         flyerPresenter.addFlyerList(recyclerView, dy)
       }
     })
+  }
+
+  override fun onResume() {
+    super.onResume()
+    (activity as MainActivity).changeSelectedNavItem(MainActivity.NavMenuItems.flyer)
   }
 }
