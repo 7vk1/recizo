@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.recizo.MainActivity
 import com.recizo.R
 import com.recizo.presenter.RecipePresenter
 import kotlinx.android.synthetic.main.searched_recipe_list.*
@@ -49,5 +50,10 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
         recipePresenter.addRecipeList(recyclerView, dy)
       }
     })
+  }
+
+  override fun onResume() {
+    super.onResume()
+    (activity as MainActivity).changeSelectedNavItem(MainActivity.NavMenuItems.icebox) // todo is ok
   }
 }

@@ -6,9 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import com.recizo.MainActivity
 import com.recizo.R
-import com.recizo.module.RecizoApi
 import com.recizo.presenter.VegetableAdapter
 import kotlinx.android.synthetic.main.fragment_vegetable_graph.*
 import com.recizo.presenter.VegetableGraphPresenter
@@ -30,5 +29,10 @@ class VegetableGraphFragment : Fragment() {
       }
       override fun onNothingSelected(p0: AdapterView<*>?) {}
     }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    (activity as MainActivity).changeSelectedNavItem(MainActivity.NavMenuItems.market_price)
   }
 }

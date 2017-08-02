@@ -15,6 +15,11 @@ import com.recizo.module.Notification
 import com.recizo.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.MoveToSearchFragment {
+  fun changeSelectedNavItem(v: NavMenuItems) {
+    val navigationView = findViewById(R.id.nav_view) as NavigationView
+    navigationView.menu.getItem(v.ordinal).isChecked = true
+  }
+
   private fun changeFragment(fragment: Fragment) {
     val transaction = fragmentManager.beginTransaction()
     transaction.addToBackStack(null)
@@ -58,11 +63,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val id = item.itemId
     when (id) {
       R.id.nav_icebox_list -> changeFragment(IceboxFragment())
-      R.id.nav_season -> changeFragment(SeasonsFragment())
+      R.id.nav_favorite_recipe -> changeFragment(FavoriteRecipeFragment())
       R.id.nav_flyer -> changeFragment(FlyerFragment())
+      R.id.nav_season -> changeFragment(SeasonsFragment())
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
       R.id.nav_settings -> changeFragment(SettingFragment())
-      R.id.nav_favorite_recipe -> changeFragment(FavoriteRecipeFragment())
     }
     val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
     drawer.closeDrawer(GravityCompat.START)
@@ -71,5 +76,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
   override fun moveToSearchFragment(items: Set<String>) {
     changeFragment(RecipeFragment(items))
+  }
+
+  enum class NavMenuItems {
+    icebox, favorite_recipe, flyer, season, market_price, setting,
   }
 }
