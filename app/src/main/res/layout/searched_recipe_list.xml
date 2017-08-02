@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent">
 
   <ProgressBar
       android:id="@+id/searched_recipe_progressBar"
@@ -54,6 +55,7 @@
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:padding="8dp"
+      android:background="@color/colorAccent"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
