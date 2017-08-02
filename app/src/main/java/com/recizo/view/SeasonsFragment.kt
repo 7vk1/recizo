@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.recizo.MainActivity
 import com.recizo.R
 import com.recizo.presenter.TabAdapter
 import kotlinx.android.synthetic.main.fragment_seasons.*
@@ -31,6 +32,11 @@ class SeasonsFragment : Fragment(){
     seasons_viewpager.adapter = TabAdapter(fa.supportFragmentManager)
     seasons_viewpager.setCurrentItem(month, true)
     season_tab.setupWithViewPager(seasons_viewpager)
+  }
+
+  override fun onResume() {
+    super.onResume()
+    (activity as MainActivity).changeSelectedNavItem(MainActivity.NavMenuItems.season)
   }
 
   override fun onDestroyView() {
