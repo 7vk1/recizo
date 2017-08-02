@@ -26,11 +26,8 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     searched_recyclerView.layoutManager = LinearLayoutManager(activity)
-//    searched_recyclerView.addItemDecoration(
-//        DividerItemDecoration(searched_recyclerView.context
-//        , LinearLayoutManager(activity).orientation))
 
-    val recipePresenter = RecipePresenter(activity, searched_recyclerView, items)
+    val recipePresenter = RecipePresenter(activity, view!!, items)
     searched_recipe_progressBar.indeterminateDrawable.setColorFilter(resources.getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY)
     recipePresenter.setLoadEventListener(object : RecipePresenter.LoadEventListener {
       override fun onLoadStart() {
