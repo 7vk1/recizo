@@ -21,7 +21,8 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".IceboxItemSetActivity" />
+    <activity android:name=".IceboxItemSetActivity"
+              android:theme="@style/AppTheme.NoActionBar"/>
     <activity android:name=".setting_activities.LicenceActivity" />
     <activity android:name=".setting_activities.AboutMeActivity" />
     <receiver android:name=".module.Notification$AlarmReceiver"
