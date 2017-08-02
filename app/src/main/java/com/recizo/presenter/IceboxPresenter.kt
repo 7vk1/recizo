@@ -117,7 +117,9 @@ class IceboxPresenter(val fragment: IceboxButtons) {
     iceboxAdapter.removeItem(index)
   }
 
-  enum class Sort {NAME, DATE, CATEGORY, CREATED }
+  enum class Sort {
+    NAME, DATE, CATEGORY, CREATED
+  }
 
   interface IceboxButtons {
     fun changeBtnVisibility(add: Boolean = false, undo: Boolean = false, search: Boolean = false, delete: Boolean = false)
