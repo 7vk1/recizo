@@ -2,11 +2,14 @@ package com.recizo.presenter
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.recizo.R
 import com.recizo.model.ErrorCode
@@ -20,12 +23,38 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
   private val recipeListView: RecyclerView = view.findViewById(R.id.searched_recyclerView)
   private var scraper = CookpadScraper(keywords)
   private var loadEventListener: LoadEventListener? = null
+  private val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.searched_swipe_refresh_layout)
   private val recipeListAdapter = RecipeListAdapter(recipeListView)
   init {
     recipeListView.adapter = recipeListAdapter
+    swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#FF9137"))
+    swipeRefreshLayout.setOnRefreshListener(recipeListAdapter)
     recipeListAdapter.setOnItemClickListener(object: RecipeListAdapter.OnItemClickListener {
       override fun onItemClick(recipe: CookpadRecipe) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(recipe.cookpadLink)))
+      }
+    })
+    recipeListAdapter.setOnRefreshPullListener(object: RecipeListAdapter.OnRefreshPullListner {
+      override fun onRefreshPull() {
+        fun prepareRefreshProgressBar() {
+          setLoadEventListener(object: RecipePresenter.LoadEventListener {
+            override fun onLoadEnd() {
+              fun restoreProgressBar() {
+                setLoadEventListener(object: RecipePresenter.LoadEventListener {
+                  override fun onLoadEnd() { view.findViewById<ProgressBar>(R.id.searched_recipe_progressBar).visibility = View.GONE }
+                  override fun onLoadStart() { view.findViewById<ProgressBar>(R.id.searched_recipe_progressBar).visibility = View.VISIBLE }
+                })
+              }
+              swipeRefreshLayout.isRefreshing = false
+              restoreProgressBar()
+            }
+            override fun onLoadStart() {}
+          })
+        }
+
+        prepareRefreshProgressBar()
+        scraper.pageInit()
+        startRecipeListCreate()
       }
     })
   }
@@ -34,6 +63,7 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
 
   fun startRecipeListCreate() {
     val errorMes = view.findViewById<LinearLayout>(R.id.error_mes_box)
+    errorMes.visibility = View.INVISIBLE
     loadEventListener?.onLoadStart()
     scraper.scrapingHTML(object : Scraper.ScraperCallBack {
       override fun succeed(html: org.jsoup.nodes.Document?) {
@@ -51,6 +81,7 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
         // 検索食材を全部削除した際に起きる
         else if(errorCode.name == ErrorCode.UNSUPPORTED_OPERATION_ERROR.name) setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
         else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
+        recipeListAdapter.clearRecipe()
         errorMes.visibility = View.VISIBLE
         loadEventListener?.onLoadEnd()
       }
