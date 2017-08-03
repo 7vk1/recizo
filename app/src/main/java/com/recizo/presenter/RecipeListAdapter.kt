@@ -2,6 +2,7 @@ package com.recizo.presenter
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,19 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
-class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Adapter<RecipeViewHolder>(), View.OnClickListener {
+class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Adapter<RecipeViewHolder>(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
   private var onItemClickListener: OnItemClickListener? = null
+  private var onRefreshPullListener: RecipeListAdapter.OnRefreshPullListner? = null
   val recipeList = mutableListOf<CookpadRecipe>()
 
   fun setOnItemClickListener(listener: OnItemClickListener){ onItemClickListener = listener }
+  fun setOnRefreshPullListener(listener: RecipeListAdapter.OnRefreshPullListner) { onRefreshPullListener = listener }
+
+  fun clearRecipe() {
+    val size = recipeList.size
+    recipeList.clear()
+    notifyItemRangeRemoved(0, size)
+  }
 
   fun addRecipe(recipe: CookpadRecipe) {
     recipeList.add(recipe)
@@ -75,5 +84,8 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
     onItemClickListener?.onItemClick(this.recipeList[position])
   }
 
+  override fun onRefresh() { onRefreshPullListener?.onRefreshPull() }
+
   interface OnItemClickListener { fun onItemClick(recipe: CookpadRecipe) }
+  interface OnRefreshPullListner { fun onRefreshPull() }
 }

@@ -41,10 +41,10 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
     })
     flyerListAdapter.setOnRefreshPullListener(object: FlyerListAdapter.OnRefreshPullListner {
       override fun onRefreshPull() {
-        fun preparRefreshProgressBar() {
+        fun prepareRefreshProgressBar() {
           setProgressBar(object: IProgressBar {
             override fun hideProgressBar() {
-              fun restorProgressBar() {
+              fun restoreProgressBar() {
                 setProgressBar(object: IProgressBar {
                   override fun hideProgressBar() { view.findViewById<ProgressBar>(R.id.searched_shufoo_progressBar).visibility = View.GONE }
                   override fun showProgressBar() { view.findViewById<ProgressBar>(R.id.searched_shufoo_progressBar).visibility = View.VISIBLE }
@@ -52,12 +52,12 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
               }
 
               swipeRefreshLayout.isRefreshing = false
-              restorProgressBar()
+              restoreProgressBar()
             }
             override fun showProgressBar() {}
           })
         }
-        preparRefreshProgressBar()
+        prepareRefreshProgressBar()
         scraper.pageInit()
         startFlyerListCreate()
       }
