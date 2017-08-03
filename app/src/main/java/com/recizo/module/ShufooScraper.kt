@@ -8,6 +8,8 @@ class ShufooScraper(postCode: String): Scraper(){
     this.queryString = "?keyword=$postCode&sort=distance&categoryId=101&page="
   }
 
+  fun pageInit() { this.nowPage = 1 }
+
   fun requestGetShufooItem(html: Document?): List<ShufooFlyer> {
     val flyers = html!!.select(".chirashi_list_item")
     return flyers.map {

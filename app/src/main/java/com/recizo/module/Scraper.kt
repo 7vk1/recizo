@@ -43,6 +43,7 @@ abstract class Scraper {
 
   private fun getHTML(url: String, pageNum: Int = 1) = async(CommonPool) {
     // TODO ProgressSpinnerの追加
+    System.out.println("SCRAPING URL: $url")
     val result = try {Jsoup.connect(url + queryString + pageNum).get()} catch (e: IOException) {throw e} catch (e:Exception){throw e}
     return@async result
   }
