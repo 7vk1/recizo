@@ -31,14 +31,19 @@ class SettingFragment : PreferenceFragment() {
     }
     val editTextPostCode = editTextPreference.editText
     editTextPostCode.addTextChangedListener(object : TextWatcher{
-      override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+      override fun beforeTextChanged(s: CharSequence?, start: Int, delCount: Int, addCount: Int) {}
       override fun onTextChanged(s: CharSequence?, start: Int, delCount: Int, addCount: Int) {
         if(s?.length == 3 && addCount == 1){
           editTextPostCode.setText("$s-", TextView.BufferType.EDITABLE)
           editTextPostCode.setSelection(editTextPostCode.length())
         }
       }
-      override fun afterTextChanged(e: Editable?) {}
+      override fun afterTextChanged(e: Editable?) {
+        if(e?.length == 4 && e[3].toString() != "-"){
+          editTextPostCode.setText("${e.subSequence(0,3)}-${e.subSequence(3,4)}", TextView.BufferType.EDITABLE)
+          editTextPostCode.setSelection(editTextPostCode.length())
+        }
+      }
     })
 
 
