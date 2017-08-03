@@ -32,8 +32,6 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
   private val scraper: ShufooScraper = ShufooScraper(keywords)
   init {
     view.findViewById<RecyclerView>(R.id.flyer_recyclerView).adapter = flyerListAdapter
-    if(swipeRefreshLayout == null) Log.d("REFRESH TEST", "NULL")
-    else Log.d("REFRESH TEST", "NOT NULL")
     swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#FF9137"))
     swipeRefreshLayout.setOnRefreshListener(flyerListAdapter)
     flyerListAdapter.setOnItemClickListener(object: FlyerListAdapter.OnItemClickListener{
