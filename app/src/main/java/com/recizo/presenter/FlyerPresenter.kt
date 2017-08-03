@@ -73,10 +73,7 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
       progressBarCallback?.showProgressBar()
       scraper.scrapingHTML(object : Scraper.ScraperCallBack {
         override fun succeed(html: Document?) {
-          System.out.println("SUCCEED")
           val flyers = scraper.requestGetShufooItem(html)
-          System.out.println("SUCCEED OK SCRAP")
-          System.out.println("SIZE: ${flyers.size}")
           flyers.forEach { flyerListAdapter.addFlyer(it) }
           progressBarCallback?.hideProgressBar()
         }
