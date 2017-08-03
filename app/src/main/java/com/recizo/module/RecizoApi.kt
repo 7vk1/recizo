@@ -2,6 +2,7 @@ package com.recizo.module
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.recizo.R
 
 class RecizoApi {
   private var isRecent = true
@@ -49,22 +50,22 @@ class RecizoApi {
 
   data class DairyData(val date: String, val price: Int)
 
-  enum class Vegetables(val name_jp: String) {
-    kyabetsu("キャベツ"),
-    kyuri("きゅうり"),
-    satoimo("里芋"),
-    jagaimo("ジャガイモ"),
-    tamanegi("玉ねぎ"),
-    daikon("大根"),
-    tomato("トマト"),
-    nasu("ナス"),
-    ninjin("にんじん"),
-    negi("ネギ"),
-    hakusai("白菜"),
-    piman("ピーマン"),
-    burokkori("ブロッコリー"),
-    hourensou("ほうれん草"),
-    retasu("レタス"),
-    all("全て"),
+  enum class Vegetables(val name_jp: String, val resource: Int) {
+    kyabetsu("キャベツ", R.drawable.cat_vegetable),
+    kyuri("きゅうり", R.drawable.vege_kyuuri),
+    satoimo("里芋", R.drawable.vege_satoimo),
+    jagaimo("ジャガイモ", R.drawable.vege_jagaimo),
+    tamanegi("玉ねぎ", R.drawable.vege_tamanegi),
+    daikon("大根", R.drawable.vege_daikon),
+    tomato("トマト", R.drawable.ic_cancel),
+    nasu("ナス", R.drawable.ic_cancel),
+    ninjin("にんじん", R.drawable.ic_cancel),
+    negi("ネギ", R.drawable.ic_cancel),
+    hakusai("白菜", R.drawable.ic_cancel),
+    piman("ピーマン", R.drawable.ic_cancel),
+    burokkori("ブロッコリー", R.drawable.ic_cancel),
+    hourensou("ほうれん草", R.drawable.ic_cancel),
+    retasu("レタス", R.drawable.ic_cancel),
+    all("全て", R.drawable.ic_cancel),
   }
 }
