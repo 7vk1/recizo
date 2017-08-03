@@ -29,7 +29,7 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
   private var flyerListAdapter = FlyerListAdapter(view.findViewById(R.id.flyer_recyclerView))
   private var progressBarCallback: IProgressBar? = null
   private val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.flyer_swipe_refresh_layout)
-  private val scraper: ShufooScraper = ShufooScraper(keywords)
+  private val scraper: ShufooScraper = ShufooScraper(keywords.replace("-",""))
   init {
     view.findViewById<RecyclerView>(R.id.flyer_recyclerView).adapter = flyerListAdapter
     swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#FF9137"))

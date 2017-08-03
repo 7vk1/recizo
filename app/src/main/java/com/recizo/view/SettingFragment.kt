@@ -4,11 +4,15 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.preference.*
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.TextView
 import com.recizo.MainActivity
 import com.recizo.R
 import com.recizo.module.Notification
 import com.recizo.setting_activities.AboutMeActivity
 import com.recizo.setting_activities.LicenceActivity
+import kotlin.coroutines.experimental.EmptyCoroutineContext.plus
 
 class SettingFragment : PreferenceFragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,11 +24,23 @@ class SettingFragment : PreferenceFragment() {
 
     editTextPreference.summary = editTextPreference.text
     editTextPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-      if (v.toString().matches("""^\d{7}$""".toRegex())) {
+      if (v.toString().matches("""^\d{3}-\d{4}$""".toRegex())) {
         editTextPreference.summary = v.toString()
         true
       } else false //todo impl
     }
+    val editTextPostCode = editTextPreference.editText
+    editTextPostCode.addTextChangedListener(object : TextWatcher{
+      override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+      override fun onTextChanged(s: CharSequence?, start: Int, delCount: Int, addCount: Int) {
+        if(s?.length == 3 && addCount == 1){
+          editTextPostCode.setText("$s-", TextView.BufferType.EDITABLE)
+          editTextPostCode.setSelection(editTextPostCode.length())
+        }
+      }
+      override fun afterTextChanged(e: Editable?) {}
+    })
+
 
     // alert settings
     val isAlert = findPreference("isAlert") as CheckBoxPreference

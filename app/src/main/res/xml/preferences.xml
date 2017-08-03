@@ -12,6 +12,8 @@
         android:key="edit_postcode_key"
         android:selectAllOnFocus="true"
         android:singleLine="true"
+        android:inputType="number"
+        android:maxLength="8"
         android:title="@string/checkbox_postcode_title"/>
   </PreferenceCategory>
 
