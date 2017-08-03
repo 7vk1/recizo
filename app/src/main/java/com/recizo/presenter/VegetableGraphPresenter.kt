@@ -78,6 +78,7 @@ class VegetableGraphPresenter(private val chart: LineChart) {
       dataSet.color = colors[RecizoApi.Vegetables.valueOf(it)]!!
       dataSet.valueTextColor = colors[RecizoApi.Vegetables.valueOf(it)]!!
       dataSet.setDrawCircles(false)
+      dataSet.lineWidth = 3f
       dataSet
     }
     val dateList = response[response.keys.first()]!!.map { it.date }
@@ -100,6 +101,7 @@ class VegetableGraphPresenter(private val chart: LineChart) {
     }
     val dataSet = LineDataSet(list, if(isRecent) "直近１年" else "過去５年平均")
     val color = if(isRecent)colors[RecizoApi.Vegetables.valueOf(key)]!! else Color.BLACK
+    dataSet.lineWidth = 3f
     dataSet.color = color
     dataSet.valueTextColor = color
     dataSet.setDrawCircles(false)
