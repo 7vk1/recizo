@@ -113,6 +113,7 @@ class IceboxPresenter(val fragment: IceboxButtons) {
 
   private fun removeItem(id: Long) {
     IceboxDao.delete(id.toInt())
+    garbageList.remove(id)
     val index: Int = iceboxAdapter.getItemList().indexOfFirst { it.id.toLong() == id }
     iceboxAdapter.removeItem(index)
   }
