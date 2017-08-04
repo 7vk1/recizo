@@ -51,8 +51,7 @@ class IceboxPresenter(val fragment: IceboxButtons) {
 
   fun dataUpdated() {
     val list = IceboxDao.getAll().toMutableList()
-    iceboxAdapter.setItemList(list)
-    sortItems(sort)
+    iceboxAdapter.setItemList(sortList(list, sort))
     fragment.changeBtnVisibility(add = true)
     checkHolders()
     onLengthChangeListener?.onChange(iceboxAdapter.itemCount -1)
@@ -110,13 +109,13 @@ class IceboxPresenter(val fragment: IceboxButtons) {
     }
   }
 
-  private fun sortList(list: MutableList<IceboxItem>, type: Sort): MutableList<IceboxItem> {
+  private fun sortList(list: List<IceboxItem>, type: Sort): List<IceboxItem> {
     return when(type) {
       Sort.NAME -> list.sortedBy { it.name }
       Sort.DATE -> list.sortedBy { it.date }
       Sort.CATEGORY -> list.sortedBy { it.category }
       Sort.CREATED -> list.sortedBy { it.id }
-    }.toMutableList()
+    }
   }
 
   private fun removeItem(id: Long) {
