@@ -11,7 +11,7 @@ import com.recizo.R
 import com.recizo.module.RecizoApi
 
 class VegetableAdapter(val context: Context) : BaseAdapter() {
-  private var dataList = RecizoApi.Vegetables.values()
+  private var dataList = RecizoApi.Vegetables.values().filterNot { it == RecizoApi.Vegetables.all }
 
   override fun getCount(): Int { return dataList.size }
   override fun getItem(position: Int): RecizoApi.Vegetables { return dataList[position] }
