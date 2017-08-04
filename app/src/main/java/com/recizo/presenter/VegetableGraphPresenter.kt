@@ -13,7 +13,7 @@ import com.recizo.module.RecizoApi
 class VegetableGraphPresenter(private val chart: LineChart) {
   var dataSet: LineDataSet? = null
   var isTheOtherFinished = false
-  var listener: EventListener? = null
+  var listener: LoadEventListener? = null
   val colors = HashMap<RecizoApi.Vegetables, Int>()
   init {
     chart.description.text = "野菜の卸売価格"
@@ -41,7 +41,7 @@ class VegetableGraphPresenter(private val chart: LineChart) {
   }
 
   fun onItemChange(v: String) {
-    listener?.onStart()
+    listener?.onLoadStart()
     val vegetable = RecizoApi.Vegetables.values().find { it.name_jp == v }!!
     chart.data = LineData()
     chart.data.setDrawValues(false)
@@ -67,7 +67,6 @@ class VegetableGraphPresenter(private val chart: LineChart) {
   }
 
   private fun onResponseAll(response: Map<String, List<RecizoApi.DairyData>>){
-    listener?.onEnd()
     val lists: List<LineDataSet> = response.keys.map {
       val data = (0..response[it]!!.size -1)
           .asSequence()
@@ -87,10 +86,10 @@ class VegetableGraphPresenter(private val chart: LineChart) {
     chart.xAxis.valueFormatter = XAxisValueFormatter(dateList.toTypedArray())
     chart.data = lineData
     chart.invalidate()
+    listener?.onLoadEnd()
   }
 
   private fun onResponse(response: Map<String, List<RecizoApi.DairyData>>, isRecent: Boolean){
-    listener?.onEnd()
     val key = response.keys.first()
     val vegetableData = response[key]!!
     val list = mutableListOf<Entry>()
@@ -113,13 +112,14 @@ class VegetableGraphPresenter(private val chart: LineChart) {
       this.dataSet = dataSet
       this.isTheOtherFinished = true
     }
+    listener?.onLoadEnd()
   }
 
   private fun handleError(code: Http.ErrorCode) { listener?.onError(code) }
 
-  interface EventListener {
-    fun onStart()
-    fun onEnd()
+  interface LoadEventListener {
+    fun onLoadStart()
+    fun onLoadEnd()
     fun onError(code: Http.ErrorCode)
   }
 

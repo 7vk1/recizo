@@ -27,7 +27,8 @@ class VegetableGraphFragment : Fragment() {
     val graphPresenter = VegetableGraphPresenter(chart)
     val adapter = VegetableAdapter(activity)
     async_wrap.retryMessage = "再接続"
-    async_wrap.onRetryClick = object : AsyncWrapLayout.RetryClickListener {
+    async_wrap.setOnClickListener {  }
+    async_wrap.onRetryClickListener = object : AsyncWrapLayout.RetryClickListener {
       override fun onRetryClicked() {
         graphPresenter.onItemChange(adapter.getItem(spinner.selectedItemPosition).name_jp)
       }
@@ -39,8 +40,8 @@ class VegetableGraphFragment : Fragment() {
       }
       override fun onEnd() { async_wrap?.hideProgressbar() }
       override fun onError(code: Http.ErrorCode) {
-        async_wrap.hideProgressbar()
-        async_wrap.onError(ErrorMessageCreator.create(code))
+        async_wrap?.hideProgressbar()
+        async_wrap?.onError(ErrorMessageCreator.create(code))
       }
     }
     spinner.adapter = adapter

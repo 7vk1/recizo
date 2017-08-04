@@ -21,7 +21,7 @@ class AsyncWrapLayout : ConstraintLayout {
       field = value
       retry?.text = value
     }
-  var onRetryClick: RetryClickListener? = null
+  var onRetryClickListener: RetryClickListener? = null
   private var progressbar: ProgressBar? = null
   private var textView: TextView? = null
   private var retry: TextView? = null
@@ -31,7 +31,9 @@ class AsyncWrapLayout : ConstraintLayout {
     if(progressbar == null) createProgressbar()
     else progressbar!!.visibility = View.VISIBLE
   }
+
   fun hideProgressbar() { progressbar?.visibility = View.INVISIBLE }
+
   fun onError(message: String) {
     showErrorView()
     textView!!.text = message
@@ -84,7 +86,7 @@ class AsyncWrapLayout : ConstraintLayout {
     retry!!.paintFlags = Paint.UNDERLINE_TEXT_FLAG
     retry!!.text = retryMessage
     retry!!.textSize = 20f
-    retry!!.setOnClickListener { onRetryClick?.onRetryClicked() }
+    retry!!.setOnClickListener { onRetryClickListener?.onRetryClicked() }
     val fillerParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT)
     filler!!.layoutParams = fillerParams
     filler!!.setBackgroundColor(onErrorFillBackgroundColor)
