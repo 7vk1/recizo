@@ -24,20 +24,40 @@ class SeasonsItemFragment(val position: Int = 0): Fragment() {
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    recycleView = view?.findViewById(R.id.season_list_view)
+    recycleView = view!!.findViewById(R.id.season_list_view)
   }
 
   override fun onResume() {
     super.onResume()
+    fun isCategory(name: String): Boolean {
+      when(name) {
+        "野菜" -> return true
+        "魚貝" -> return true
+        "キノコ" -> return true
+        "果物" -> return true
+        "その他" -> return true
+        else -> return false
+      }
+    }
+
     val parse = XMLSeasonParser(resources)
     val seasonsList = parse.parseSeason()
-    val monthList = seasonsList[position]
+    val seasonMonthList: MutableList<SeasonItem> = mutableListOf()
+    var categoryCount: Int = -1
+    seasonsList[position].map {
+      if(isCategory(it)) {
+        seasonMonthList.add(SeasonItem(category = it, item = mutableListOf()))
+        categoryCount++
+      } else seasonMonthList[categoryCount].item.add(it)
+    }
 
     season_list_view.layoutManager = LinearLayoutManager(activity)
-    season_list_view.addItemDecoration(DividerItemDecoration(
-        season_list_view.context,
-        LinearLayoutManager(activity).orientation)
-    )
-    recycleView!!.adapter = SeasonAdapter(AppContextHolder.context!!, monthList)
+//    season_list_view.addItemDecoration(DividerItemDecoration(
+//        season_list_view.context,
+//        LinearLayoutManager(activity).orientation)
+//    )
+    recycleView!!.adapter = SeasonAdapter(AppContextHolder.context!!, seasonMonthList)
   }
+
+  class SeasonItem(val category: String, val item: MutableList<String>)
 }
