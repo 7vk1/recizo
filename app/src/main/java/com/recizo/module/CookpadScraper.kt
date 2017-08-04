@@ -30,7 +30,8 @@ class CookpadScraper(private var searchKeyWords: Set<String>): Scraper() {
 
   override fun getSearchUrl(): String {
     var url = BASE_URL + "/search/"
-    url += searchKeyWords.map { keyword -> "材料：$keyword "}.reduce { acc, s -> "$acc $s" }
+    //url += searchKeyWords.map { keyword -> "材料：$keyword "}.reduce { acc, s -> "$acc $s" }
+    url += searchKeyWords.map { keyword -> "$keyword "}.reduce { acc, s -> "$acc $s" }
     url += this.queryString + nowPage
     //Log.d("url",url)
     return url
