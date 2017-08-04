@@ -9,6 +9,7 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
 class IceboxPresenter(val fragment: IceboxButtons) {
+  var onLengthChangeListener: ListLengthChangeListener? = null
   private var searchList = mutableSetOf<Long>()
   private var garbageList = mutableSetOf<Long>()
   private var recyclerView: RecyclerView? = null
@@ -54,6 +55,7 @@ class IceboxPresenter(val fragment: IceboxButtons) {
     sortItems(sort)
     fragment.changeBtnVisibility(add = true)
     checkHolders()
+    onLengthChangeListener?.onChange(iceboxAdapter.itemCount -1)
   }
 
   fun sortItems(type: Sort) {
@@ -113,12 +115,18 @@ class IceboxPresenter(val fragment: IceboxButtons) {
 
   private fun removeItem(id: Long) {
     IceboxDao.delete(id.toInt())
+    garbageList.remove(id)
     val index: Int = iceboxAdapter.getItemList().indexOfFirst { it.id.toLong() == id }
     iceboxAdapter.removeItem(index)
+    onLengthChangeListener?.onChange(iceboxAdapter.itemCount -1)
   }
 
   enum class Sort {
     NAME, DATE, CATEGORY, CREATED
+  }
+
+  interface ListLengthChangeListener {
+    fun onChange(len: Int)
   }
 
   interface IceboxButtons {

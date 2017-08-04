@@ -25,6 +25,10 @@
   <string name="register_view_register_button">登録</string>
   <string name="cancel_button">キャンセル</string>
   <string name="change_view_change_button">変更</string>
+  <string name="empty_title">冷蔵庫が空っぽです!</string>
+  <string name="empty_text1">右下の</string>
+  <string name="empty_text2">を押して冷蔵庫に</string>
+  <string name="empty_text3">食材を登録しましょう！</string>
 
   <!-- Searched recipe -->
   <string name="searched_keyword">検索食材</string>
