@@ -43,6 +43,10 @@
   <string name="other_error_title">予期せぬエラーが発生しました</string>
   <string name="other_error_detail">時間を空けて再度試してください\n改善しない場合は以下のアドレスまでお知らせください\nteam.item.19@gmail.com</string>
 
+  <!-- favorite error message -->
+  <string name="favorite_not_register_error_title">お気に入りのレシピが登録されていません</string>
+  <string name="favorite_not_register_error_detail">お気に入りのレシピを探して登録してみましょう</string>
+
   <!-- searched error message -->
   <string name="searched_notfound_title">レシピが見つかりませんでした</string>
   <string name="searched_notfound_detail">食材の組み合わせを変えて再度試してください</string>
