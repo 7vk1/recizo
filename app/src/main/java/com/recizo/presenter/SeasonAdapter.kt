@@ -41,14 +41,24 @@ class SeasonAdapter(val context: Context,val seasonList: List<SeasonsItemFragmen
   override fun onBindViewHolder(holder: SeasonViewHolder?, position: Int) {
     val pos = holder!!.itemId.toInt()
     holder.category.text = seasonList[pos].category
-    holder.image.setImageResource(R.drawable.cat_vegetable)
-    seasonList[pos].item.map { holder.itemFrame.addView(createItem(it)) }
+    holder.image.setImageResource(getImageId(seasonList[pos].category))
+    seasonList[pos].item.map { holder.itemFrame.addView(createItem(it, holder.itemFrame)) }
   }
 
-  private fun createItem(text: String): TextView {
-    val textView = TextView(context)
-    textView.text = text
-    return textView
+  private fun createItem(text: String, viewGroup: ViewGroup): View {
+    val item = LayoutInflater.from(context).inflate(R.layout.season_list_card_item, viewGroup, false)
+    item.findViewById<TextView>(R.id.season_card_item_name).text = text
+    return item
+  }
+
+  private fun getImageId(categoryName: String): Int {
+    when(categoryName) {
+      "野菜" -> return R.drawable.cat_vegetable
+      "魚貝" -> return R.drawable.cat_seafood
+      "キノコ" -> return R.drawable.cat_mushroom
+      "果物" -> return R.drawable.cat_fruit
+      else -> return R.drawable.cat_other
+    }
   }
   
   class SeasonViewHolder(v: View): RecyclerView.ViewHolder(v) {
