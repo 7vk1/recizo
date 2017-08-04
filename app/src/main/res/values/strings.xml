@@ -33,6 +33,9 @@
   <string name="erase_btn">削除ボタン</string>
   <string name="back">戻る</string>
 
+  <string name="graph_now">今日</string>
+  <string name="graph_past">1年前</string>
+
   <!-- general error message -->
   <string name="network_error_title">インターネットに接続できませんでした</string>
   <string name="network_error_detail">Wifiまたはデータ通信がオフになっていませんか？</string>

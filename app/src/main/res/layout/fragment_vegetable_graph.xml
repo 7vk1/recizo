@@ -18,8 +18,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
   </FrameLayout>
+  <com.recizo.view.AsyncWrapLayout
+      android:background="#fff"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+  </com.recizo.view.AsyncWrapLayout>
 
   <android.support.constraint.ConstraintLayout
+      android:alpha="0"
       android:layout_marginBottom="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
@@ -28,14 +35,14 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
     <TextView
-        android:text="一年前"
+        android:text="@string/graph_past"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:id="@+id/textView13"/>
     <TextView
-        android:text="今日"
+        android:text="@string/graph_now"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
