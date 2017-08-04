@@ -12,7 +12,7 @@ import com.daimajia.swipe.*
 import com.recizo.model.entity.IceboxItem
 
 
-class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
+class IceboxAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var eventListener: EventListener? = null
   private var itemList = listOf(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
   init { setHasStableIds(true) }
@@ -32,22 +32,28 @@ class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
 
   override fun getItemCount(): Int { return itemList.size }
   override fun getItemId(position: Int): Long { return itemList[position].id.toLong() }
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IceboxViewHolder {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val v: View = LayoutInflater.from(parent.context).inflate(R.layout.icebox_item, parent, false)
-    return IceboxViewHolder(v)
+    if(viewType == EMPTY_VIEW) return EmptyViewHolder(v)
+    else return IceboxViewHolder(v)
   }
 
-  override fun onViewAttachedToWindow(holder: IceboxViewHolder) {
+  override fun getItemViewType(position: Int): Int {
+    if(position == itemCount - 1) return EMPTY_VIEW
+    else return ITEM_VIEW
+  }
+
+  override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
     super.onViewAttachedToWindow(holder)
-    eventListener?.onViewAttached(holder)
+    if(holder is IceboxViewHolder)eventListener?.onViewAttached(holder)
   }
 
-  override fun onBindViewHolder(holder: IceboxViewHolder, position: Int) {
-    val item = itemList[position]
-    if(item.id == -1) {
+  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    if(holder !is IceboxViewHolder) {
       holder.itemView.visibility = View.INVISIBLE
       return
     }
+    val item = itemList[position]
     holder.bindView(item)
     holder.del.setOnClickListener { eventListener?.onDeleteClicked(holder.itemId) }
     holder.search.setOnClickListener { eventListener?.onSearchClicked(item) }
@@ -68,6 +74,12 @@ class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
     }
   }
 
+  companion object {
+    val EMPTY_VIEW = 0
+    val ITEM_VIEW = 1
+
+  }
+
   interface EventListener {
     fun onItemClicked(item: IceboxItem)
     fun onItemClosed(itemId: Long)
@@ -78,7 +90,9 @@ class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
     fun onSearchClicked(item: IceboxItem)
   }
 
-  class IceboxViewHolder(v: View): RecyclerView.ViewHolder(v) {
+
+  class EmptyViewHolder(v: View) : RecyclerView.ViewHolder(v)
+  class IceboxViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     val title: TextView = v.findViewById(R.id._icebox_item_title)
     val memo: TextView = v.findViewById(R.id._icebox_item_memo)
     val date: TextView = v.findViewById(R.id._icebox_item_date)
