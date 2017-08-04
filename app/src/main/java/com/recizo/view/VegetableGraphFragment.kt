@@ -25,17 +25,24 @@ class VegetableGraphFragment : Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     val graphPresenter = VegetableGraphPresenter(chart)
-    graphPresenter.listener = object : VegetableGraphPresenter.EventListener {
-      override fun onStart() {
-        error_text?.visibility = View.INVISIBLE
-        progressBar?.visibility = View.VISIBLE }
-      override fun onEnd() { progressBar?.visibility = View.INVISIBLE }
-      override fun onError(code: Http.ErrorCode) {
-        error_text?.text = ErrorMessageCreator.create(code)
-        error_text.visibility = View.VISIBLE
+    val adapter = VegetableAdapter(activity)
+    async_wrap.retryMessage = "再接続"
+    async_wrap.onRetryClick = object : AsyncWrapLayout.RetryClickListener {
+      override fun onRetryClicked() {
+        graphPresenter.onItemChange(adapter.getItem(spinner.selectedItemPosition).name_jp)
       }
     }
-    val adapter = VegetableAdapter(activity)
+    graphPresenter.listener = object : VegetableGraphPresenter.EventListener {
+      override fun onStart() {
+        async_wrap?.hideError()
+        async_wrap?.showProgressbar()
+      }
+      override fun onEnd() { async_wrap?.hideProgressbar() }
+      override fun onError(code: Http.ErrorCode) {
+        async_wrap.hideProgressbar()
+        async_wrap.onError(ErrorMessageCreator.create(code))
+      }
+    }
     spinner.adapter = adapter
     spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
       override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
