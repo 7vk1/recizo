@@ -2,8 +2,6 @@ package com.recizo.view
 
 import android.app.Fragment
 import android.os.Bundle
-import android.text.Html
-import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,12 +31,12 @@ class VegetableGraphFragment : Fragment() {
         graphPresenter.onItemChange(adapter.getItem(spinner.selectedItemPosition).name_jp)
       }
     }
-    graphPresenter.listener = object : VegetableGraphPresenter.EventListener {
-      override fun onStart() {
+    graphPresenter.listener = object : VegetableGraphPresenter.LoadEventListener {
+      override fun onLoadStart() {
         async_wrap?.hideError()
         async_wrap?.showProgressbar()
       }
-      override fun onEnd() { async_wrap?.hideProgressbar() }
+      override fun onLoadEnd() { async_wrap?.hideProgressbar() }
       override fun onError(code: Http.ErrorCode) {
         async_wrap?.hideProgressbar()
         async_wrap?.onError(ErrorMessageCreator.create(code))
