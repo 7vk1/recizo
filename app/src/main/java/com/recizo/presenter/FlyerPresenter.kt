@@ -1,5 +1,7 @@
 package com.recizo.presenter
 
+import android.app.Activity
+import android.app.Fragment
 import android.content.Context
 import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
@@ -13,17 +15,17 @@ import org.jsoup.nodes.Document
 import android.content.Intent
 import android.graphics.Color
 import android.support.v4.widget.SwipeRefreshLayout
+import android.text.SpannableString
+import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import com.recizo.R
-import kotlinx.android.synthetic.main.fragment_flyer.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import com.recizo.view.SettingFragment
+
 
 class FlyerPresenter (val context: Context,val view: View,val keywords: String){
   private var flyerListAdapter = FlyerListAdapter(view.findViewById(R.id.flyer_recyclerView))
@@ -80,19 +82,52 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
 
         override fun failed(errorCode: ErrorCode) {
           if(errorCode.name == ErrorCode.IO_ERROR.name) setErrorMesText(R.string.network_error_title, R.string.network_error_detail)
-          else if(errorCode.name == ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR.name) setErrorMesText(R.string.flyer_notfound_title, R.string.flyer_notfound_detail)
+          else if(errorCode.name == ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR.name) {
+            setErrorMesText(R.string.flyer_notfound_title, "郵便番号の設定は", createSpannableString("「設定」"), "から行えます")
+            view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
+          }
           else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
           clearFlyerList()
           errorMes.visibility = View.VISIBLE
           progressBarCallback?.hideProgressBar()
         }
       })
-    } else setErrorMesText(R.string.flyer_empty_text, R.string.flyer_empty_detail)
+    } else {
+      setErrorMesText(R.string.flyer_empty_text, "郵便番号の設定は", createSpannableString("「設定」"), "から行えます")
+      view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
+    }
+  }
+
+  private fun changeFragment(fragment: Fragment) {
+    context as Activity
+    val transaction = context.fragmentManager.beginTransaction()
+    transaction.addToBackStack(null)
+    transaction.replace(R.id.fragment_frame, fragment)
+    transaction.commit()
+  }
+
+  private fun createSpannableString(text: String): SpannableString {
+    val link = SpannableString(text)
+
+    link.setSpan(object : ClickableSpan() {
+      override fun onClick(textView: View) {
+        changeFragment(SettingFragment())
+      }
+    }, 1, 3, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+    return link
   }
 
   private fun setErrorMesText(title: Int, detail: Int) {
     view.findViewById<TextView>(R.id.error_mes_title).text = context.resources.getString(title)
     view.findViewById<TextView>(R.id.error_mes_detail).text = context.resources.getString(detail)
+  }
+
+  private fun setErrorMesText(title: Int, detailBefore: String, link: SpannableString, detailAfter: String) {
+    view.findViewById<TextView>(R.id.error_mes_title).text = context.resources.getString(title)
+    val errorDetail = view.findViewById<TextView>(R.id.error_mes_detail)
+    errorDetail.text = detailBefore
+    errorDetail.append(link)
+    errorDetail.append(detailAfter)
   }
 
   fun addFlyerList(recyclerView: RecyclerView?, dy: Int) {
