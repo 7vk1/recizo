@@ -12,6 +12,7 @@ import com.recizo.R
 import com.recizo.module.Notification
 import com.recizo.setting_activities.AboutMeActivity
 import com.recizo.setting_activities.LicenceActivity
+import kotlinx.android.synthetic.main.activity_icebox_item_set.*
 import kotlin.coroutines.experimental.EmptyCoroutineContext.plus
 
 class SettingFragment : PreferenceFragment() {
@@ -34,16 +35,11 @@ class SettingFragment : PreferenceFragment() {
       override fun beforeTextChanged(s: CharSequence?, start: Int, delCount: Int, addCount: Int) {}
       override fun onTextChanged(s: CharSequence?, start: Int, delCount: Int, addCount: Int) {
         if(s?.length == 3 && addCount == 1){
-          editTextPostCode.setText("$s-", TextView.BufferType.EDITABLE)
+          editTextPostCode.append("-")
           editTextPostCode.setSelection(editTextPostCode.length())
         }
       }
-      override fun afterTextChanged(e: Editable?) {
-        if(e?.length == 4 && e[3].toString() != "-"){
-          editTextPostCode.setText("${e.subSequence(0,3)}-${e.subSequence(3,4)}", TextView.BufferType.EDITABLE)
-          editTextPostCode.setSelection(editTextPostCode.length())
-        }
-      }
+      override fun afterTextChanged(e: Editable?) {}
     })
 
 
