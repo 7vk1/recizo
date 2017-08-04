@@ -75,8 +75,14 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   }
 
   fun onDeleteClicked() {
-    garbageList.map { removeItem(it) }
+    garbageList.map {
+      val id = it
+      IceboxDao.delete(id.toInt())
+      val index: Int = iceboxAdapter.getItemList().indexOfFirst { it.id.toLong() == id }
+      iceboxAdapter.removeItem(index)
+    }
     garbageList.clear()
+    onLengthChangeListener?.onChange(iceboxAdapter.itemCount -1)
     if(searchList.size != 0) fragment.changeBtnVisibility(search = true)
     else fragment.changeBtnVisibility(add = true)
   }
