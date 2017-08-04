@@ -39,7 +39,7 @@
 
   <!-- general error message -->
   <string name="network_error_title">インターネットに接続できませんでした</string>
-  <string name="network_error_detail">Wifiまたはデータ通信がオフになっていませんか？\n画面を下にひっぱって更新</string>
+  <string name="network_error_detail">Wifiまたはデータ通信がオフになっていませんか？</string>
   <string name="other_error_title">予期せぬエラーが発生しました</string>
   <string name="other_error_detail">時間を空けて再度試してください\n改善しない場合は以下のアドレスまでお知らせください\nteam.item.19@gmail.com</string>
 

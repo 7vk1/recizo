@@ -66,7 +66,7 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
 
     delete_btn.setOnClickListener {
       AlertDialog.Builder(activity)
-          .setMessage("削除しておk？")//todo
+          .setMessage("削除してもよろしいですか？")
           .setPositiveButton("OK", { _, _ ->
             iceboxPresenter.onDeleteClicked()
           })
