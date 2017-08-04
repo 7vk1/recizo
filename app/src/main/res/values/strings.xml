@@ -29,6 +29,7 @@
   <string name="empty_text1">右下の</string>
   <string name="empty_text2">を押して冷蔵庫に</string>
   <string name="empty_text3">食材を登録しましょう！</string>
+  <string name="plus_btn">プラスボタン</string>
 
   <!-- Searched recipe -->
   <string name="searched_keyword">検索食材</string>
