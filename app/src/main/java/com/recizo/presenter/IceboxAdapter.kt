@@ -14,23 +14,17 @@ import com.recizo.model.entity.IceboxItem
 
 class IceboxAdapter : RecyclerView.Adapter<IceboxAdapter.IceboxViewHolder>() {
   private var eventListener: EventListener? = null
-  private var itemList = mutableListOf(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
+  private var itemList = listOf(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
   init { setHasStableIds(true) }
 
-  fun getItemList(): MutableList<IceboxItem> {
-    val ret = itemList.map { it }.toMutableList()
-    ret.removeAt(ret.size -1)
-    return ret
-  }
-
-  fun setItemList(list: MutableList<IceboxItem>) {
-    itemList = list
-    itemList.add(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
+  fun getItemList(): List<IceboxItem> { return itemList.filter { it.id != -1 } }
+  fun setItemList(list: List<IceboxItem>) {
+    itemList = list.plus(IceboxItem(-1, "empty", "", "", IceboxItem.Category.vegetable))
     notifyDataSetChanged()
   }
 
   fun removeItem(index: Int) {
-    this.itemList.removeAt(index)
+    this.itemList = this.itemList.filterIndexed { i, _ -> index != i }
     notifyItemRemoved(index)
   }
 
