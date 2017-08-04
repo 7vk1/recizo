@@ -28,6 +28,7 @@
   <string name="searched_keyword">検索食材</string>
 
   <string name="recipe_image">完成イメージ</string>
+  <string name="season_category_image">カテゴリイメージ</string>
 
   <string name="empty_text">登録されていません</string>
   <string name="erase_btn">削除ボタン</string>
