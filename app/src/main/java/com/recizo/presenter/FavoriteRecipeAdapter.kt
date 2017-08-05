@@ -18,6 +18,7 @@ import com.recizo.module.FavoriteRecipeDao
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
@@ -138,6 +139,16 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): FavoriteRecipeViewHolder {
     val v = LayoutInflater.from(parent!!.context).inflate(R.layout.favorite_recipe_item, parent, false)
     return FavoriteRecipeViewHolder(v)
+  }
+
+  override fun onViewAttachedToWindow(holder: FavoriteRecipeViewHolder?) {
+    super.onViewAttachedToWindow(holder)
+    launch(UI) {
+      delay(100)
+      if (garbageList.contains(holder?.itemId)) holder?.swipeLayout?.open(true, false, SwipeLayout.DragEdge.Right)
+      else if (undoList.contains(holder?.itemId)) holder?.swipeLayout?.open(true, false, SwipeLayout.DragEdge.Left)
+      else holder?.swipeLayout?.close(false)
+    }
   }
 
   override fun getItemId(position: Int): Long { return position.toLong() }

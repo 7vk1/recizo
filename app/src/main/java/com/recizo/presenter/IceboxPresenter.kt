@@ -9,6 +9,7 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
 class IceboxPresenter(val fragment: IceboxButtons) {
+  var onLengthChangeListener: ListLengthChangeListener? = null
   private var searchList = mutableSetOf<Long>()
   private var garbageList = mutableSetOf<Long>()
   private var recyclerView: RecyclerView? = null
@@ -50,10 +51,10 @@ class IceboxPresenter(val fragment: IceboxButtons) {
 
   fun dataUpdated() {
     val list = IceboxDao.getAll().toMutableList()
-    iceboxAdapter.setItemList(list)
-    sortItems(sort)
+    iceboxAdapter.setItemList(sortList(list, sort))
     fragment.changeBtnVisibility(add = true)
     checkHolders()
+    onLengthChangeListener?.onChange(iceboxAdapter.itemCount -1)
   }
 
   fun sortItems(type: Sort) {
@@ -73,8 +74,14 @@ class IceboxPresenter(val fragment: IceboxButtons) {
   }
 
   fun onDeleteClicked() {
-    garbageList.map { removeItem(it) }
+    garbageList.map {
+      val id = it
+      IceboxDao.delete(id.toInt())
+      val index: Int = iceboxAdapter.getItemList().indexOfFirst { it.id.toLong() == id }
+      iceboxAdapter.removeItem(index)
+    }
     garbageList.clear()
+    onLengthChangeListener?.onChange(iceboxAdapter.itemCount -1)
     if(searchList.size != 0) fragment.changeBtnVisibility(search = true)
     else fragment.changeBtnVisibility(add = true)
   }
@@ -102,23 +109,29 @@ class IceboxPresenter(val fragment: IceboxButtons) {
     }
   }
 
-  private fun sortList(list: MutableList<IceboxItem>, type: Sort): MutableList<IceboxItem> {
+  private fun sortList(list: List<IceboxItem>, type: Sort): List<IceboxItem> {
     return when(type) {
       Sort.NAME -> list.sortedBy { it.name }
       Sort.DATE -> list.sortedBy { it.date }
       Sort.CATEGORY -> list.sortedBy { it.category }
       Sort.CREATED -> list.sortedBy { it.id }
-    }.toMutableList()
+    }
   }
 
   private fun removeItem(id: Long) {
     IceboxDao.delete(id.toInt())
+    garbageList.remove(id)
     val index: Int = iceboxAdapter.getItemList().indexOfFirst { it.id.toLong() == id }
     iceboxAdapter.removeItem(index)
+    onLengthChangeListener?.onChange(iceboxAdapter.itemCount -1)
   }
 
   enum class Sort {
     NAME, DATE, CATEGORY, CREATED
+  }
+
+  interface ListLengthChangeListener {
+    fun onChange(len: Int)
   }
 
   interface IceboxButtons {

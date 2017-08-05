@@ -34,8 +34,8 @@
 
         <ImageView
             android:id="@+id/recipe_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="141dp"
             android:src="@drawable/ic_imagenotfound"
             android:contentDescription="@string/recipe_image"/>
 

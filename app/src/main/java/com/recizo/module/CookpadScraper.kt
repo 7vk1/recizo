@@ -7,6 +7,8 @@ import org.jsoup.nodes.Document
 class CookpadScraper(private var searchKeyWords: Set<String>): Scraper() {
   init{ this.queryString = "?order=date&page=" }
 
+  fun pageInit() { this.nowPage = 1 }
+
   fun requestGetRecipeItem(html: Document?): List<CookpadRecipe> {
     val recipes = html!!.select(".recipe-preview").filter{ !it.parent().hasClass("recommended_pro_recipe")}
     return recipes.map {
@@ -28,7 +30,8 @@ class CookpadScraper(private var searchKeyWords: Set<String>): Scraper() {
 
   override fun getSearchUrl(): String {
     var url = BASE_URL + "/search/"
-    url += searchKeyWords.map { keyword -> "材料：$keyword "}.reduce { acc, s -> "$acc $s" }
+    //url += searchKeyWords.map { keyword -> "材料：$keyword "}.reduce { acc, s -> "$acc $s" }
+    url += searchKeyWords.map { keyword -> "$keyword "}.reduce { acc, s -> "$acc $s" }
     url += this.queryString + nowPage
     //Log.d("url",url)
     return url

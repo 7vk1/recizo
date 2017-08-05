@@ -61,12 +61,17 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     iceboxPresenter.setRecyclerView(recyclerView)
+    iceboxPresenter.onLengthChangeListener = object : IceboxPresenter.ListLengthChangeListener {
+      override fun onChange(len: Int) {
+        empty_text.visibility = if(len == 0) View.VISIBLE else View.INVISIBLE
+      }
+    }
     recyclerView.layoutManager = LinearLayoutManager(activity)
     sort_by_name.alpha = 0f
 
     delete_btn.setOnClickListener {
       AlertDialog.Builder(activity)
-          .setMessage("削除しておk？")//todo
+          .setMessage("削除してもよろしいですか？")
           .setPositiveButton("OK", { _, _ ->
             iceboxPresenter.onDeleteClicked()
           })

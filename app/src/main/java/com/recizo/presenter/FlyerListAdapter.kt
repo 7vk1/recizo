@@ -2,6 +2,7 @@ package com.recizo.presenter
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,15 +17,23 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
-class FlyerListAdapter(private val recyclerView: RecyclerView): RecyclerView.Adapter<FlyerListAdapter.FlyerViewHolder>() , View.OnClickListener {
+class FlyerListAdapter(private val recyclerView: RecyclerView): RecyclerView.Adapter<FlyerListAdapter.FlyerViewHolder>() , View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
   private var onItemClickListener: FlyerListAdapter.OnItemClickListener? = null
+  private var onRefreshPullListener: FlyerListAdapter.OnRefreshPullListner? = null
   val flyerList = mutableListOf<ShufooFlyer>()
 
   fun setOnItemClickListener(listener: FlyerListAdapter.OnItemClickListener){ onItemClickListener = listener }
+  fun setOnRefreshPullListener(listener: FlyerListAdapter.OnRefreshPullListner) { onRefreshPullListener = listener }
 
   fun addFlyer(flyer: ShufooFlyer) {
     flyerList.add(flyer)
     notifyItemInserted(flyerList.size)
+  }
+
+  fun clearFlyer() {
+    val size = flyerList.size
+    flyerList.clear()
+    notifyItemRangeRemoved(0, size)
   }
 
   private fun getImageStream(imageUrl: String) = async(CommonPool) {
@@ -60,7 +69,12 @@ class FlyerListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ada
     onItemClickListener?.onItemClick(this.flyerList[position])
   }
 
+  override fun onRefresh() {
+    onRefreshPullListener?.onRefreshPull()
+  }
+
   interface OnItemClickListener { fun onItemClick(flyer: ShufooFlyer) }
+  interface OnRefreshPullListner { fun onRefreshPull() }
 
   class FlyerViewHolder(v: View): RecyclerView.ViewHolder(v){
     val storeName: TextView = v.findViewById(R.id.shufoo_shopName)

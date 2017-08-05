@@ -1,10 +1,10 @@
 <resources>
+  <!-- App name -->
   <string name="app_name">Recizo</string>
 
+  <!-- Navigation Drawer -->
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
-
-
   <string name="logo_img">ロゴ画像</string>
   <string name="action_settings">Settings</string>
   <string name="navigation_drawer_icebox">冷蔵庫</string>
@@ -15,6 +15,7 @@
   <string name="navigation_drawer_season">食材の旬</string>
   <string name="settings">設定</string>
 
+  <!-- Icebox register and change -->
   <string name="category">カテゴリー</string>
   <string name="category_icon">カテゴリーアイコン</string>
   <string name="name">名前</string>
@@ -24,30 +25,27 @@
   <string name="register_view_register_button">登録</string>
   <string name="cancel_button">キャンセル</string>
   <string name="change_view_change_button">変更</string>
+  <string name="empty_title">冷蔵庫が空っぽです!</string>
+  <string name="empty_text1">右下の</string>
+  <string name="empty_text2">を押して冷蔵庫に</string>
+  <string name="empty_text3">食材を登録しましょう！</string>
+  <string name="plus_btn">プラスボタン</string>
 
+  <!-- Searched recipe -->
   <string name="searched_keyword">検索食材</string>
-
   <string name="recipe_image">完成イメージ</string>
 
+  <!-- Season -->
+  <string name="season_category_image">カテゴリイメージ</string>
+
+  <!-- Favorite recipe -->
   <string name="empty_text">登録されていません</string>
   <string name="erase_btn">削除ボタン</string>
   <string name="back">戻る</string>
 
-  <!-- general error message -->
-  <string name="network_error_title">インターネットに接続できませんでした</string>
-  <string name="network_error_detail">Wifiまたはデータ通信がオフになっていませんか？</string>
-  <string name="other_error_title">予期せぬエラーが発生しました</string>
-  <string name="other_error_detail">時間を空けて再度試してください\n改善しない場合は以下のアドレスまでお知らせください\nteam.item.19@gmail.com</string>
-
-  <!-- searched error message -->
-  <string name="searched_notfound_title">レシピが見つかりませんでした</string>
-  <string name="searched_notfound_detail">食材の組み合わせを変えて再度試してください</string>
-
-  <!-- flyer error message -->
-  <string name="flyer_empty_text">郵便番号が登録されていません</string>
-  <string name="flyer_empty_detail">郵便番号の設定は「メニュー」の「設定」から行えます</string>
-  <string name="flyer_notfound_title">チラシを発見できませんでした</string>
-  <string name="flyer_notfound_detail">郵便番号を間違って設定していませんか？\n郵便番号の設定は「メニュー」の「設定」から行えます</string>
+  <!-- Vegetable graph -->
+  <string name="graph_now">今日</string>
+  <string name="graph_past">1年前</string>
 
   <!-- preference strings -->
   <string name="preference_network_title">ネットワーク設定</string>
@@ -69,12 +67,32 @@
   <string name="about_me_title5">5. コピーライト</string>
 
   <!-- ライセンス -->
-    <string name="about_me_content1">RECIZOは、冷蔵庫の情報を登録してもらい、レシピを検索したり、食材についての様々な情報を提供するサービスです。</string>
-    <string name="about_me_content2">http://recizo.com</string>
-    <string name="about_me_content3">team.item.19@gmail.com</string>
-    <string name="about_me_content4_1">ベジ探（野菜の卸売価格）\n http://vegetan.alic.go.jp</string>
-    <string name="about_me_content4_2">クックパッド（レシピ検索）\n https://cookpad.com</string>
-    <string name="about_me_content4_3">Shufoo!（チラシ検索）\n http://www.shufoo.net</string>
-    <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
+  <string name="about_me_content1">RECIZOは、冷蔵庫の情報を登録してもらい、レシピを検索したり、食材についての様々な情報を提供するサービスです。</string>
+  <string name="about_me_content2">http://recizo.com</string>
+  <string name="about_me_content3">team.item.19@gmail.com</string>
+  <string name="about_me_content4_1">ベジ探（野菜の卸売価格）\n http://vegetan.alic.go.jp</string>
+  <string name="about_me_content4_2">クックパッド（レシピ検索）\n https://cookpad.com</string>
+  <string name="about_me_content4_3">Shufoo!（チラシ検索）\n http://www.shufoo.net</string>
+  <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
+
+  <!-- general error message -->
+  <string name="network_error_title">インターネットに接続できませんでした</string>
+  <string name="network_error_detail">Wifiまたはデータ通信がオフになっていませんか？</string>
+  <string name="other_error_title">予期せぬエラーが発生しました</string>
+  <string name="other_error_detail">時間を空けて再度試してください\n改善しない場合は以下のアドレスまでお知らせください\nteam.item.19@gmail.com</string>
+
+  <!-- favorite error message -->
+  <string name="favorite_not_register_error_title">お気に入りのレシピが登録されていません</string>
+  <string name="favorite_not_register_error_detail">お気に入りのレシピを探して登録してみましょう</string>
+
+  <!-- searched error message -->
+  <string name="searched_notfound_title">レシピが見つかりませんでした</string>
+  <string name="searched_notfound_detail">食材の組み合わせを変えて再度試してください</string>
+
+  <!-- flyer error message -->
+  <string name="flyer_empty_text">郵便番号が登録されていません</string>
+  <string name="flyer_empty_detail">郵便番号の設定は「メニュー」の「設定」から行えます</string>
+  <string name="flyer_notfound_title">チラシを発見できませんでした</string>
+  <string name="flyer_notfound_detail">郵便番号を間違って設定していませんか？\n郵便番号の設定は「メニュー」の「設定」から行えます</string>
 
 </resources>
