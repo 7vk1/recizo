@@ -54,7 +54,6 @@ class VegetableGraphFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
-    Notification.set(activity) // TODO testになってたのをsetに勝手に変更した合ってるのかわからない
     (activity as MainActivity).changeSelectedNavItem(MainActivity.NavMenuItems.market_price)
   }
 }
