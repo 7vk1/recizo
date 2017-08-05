@@ -52,6 +52,7 @@ class FavoriteRecipePresenter(val context: Context, val view: View) {
   fun setUpView() {
     removeBtn.setOnClickListener { favoriteRecipeAdapter.onDeleteClicked() }
     undoBtn.setOnClickListener { favoriteRecipeAdapter.onUndoClicked() }
+
   }
 
   private fun setErrorMesText(title: Int, detail: Int) {
