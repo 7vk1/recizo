@@ -98,4 +98,10 @@ object Notification {
       Notification.set(context)
     }
   }
+
+  class StartupReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+      Notification.set(context)
+    }
+  }
 }

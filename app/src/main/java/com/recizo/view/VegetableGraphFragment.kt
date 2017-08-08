@@ -10,7 +10,6 @@ import com.recizo.MainActivity
 import com.recizo.R
 import com.recizo.module.ErrorMessageCreator
 import com.recizo.module.Http
-import com.recizo.module.Notification
 import com.recizo.presenter.VegetableAdapter
 import kotlinx.android.synthetic.main.fragment_vegetable_graph.*
 import com.recizo.presenter.VegetableGraphPresenter
