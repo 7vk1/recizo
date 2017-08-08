@@ -65,16 +65,7 @@ class SettingFragment : PreferenceFragment() {
       true
     }
 
-    val alertTime = findPreference("alert_time") as SettingDialogPreference
-    alertTime.defaultValue = this.resources.getString(R.string.default_time)
-    alertTime.summary = alertTime.value + "に通知"
-    val time = alertTime.value.split(":")
-    alertTime.setDialog = TimePickerDialog(activity,
-            TimePickerDialog.OnTimeSetListener { _, hour, min ->
-              alertTime.value = "$hour:${if (min < 10) "0$min" else "$min"}"
-              alertTime.summary = alertTime.value + "に通知"
-              Notification.change(activity, hour, min)
-            }, time[0].toInt(), time[1].toInt(), false)
+    val alertTime = findPreference("alert_time") as NotificationTimePreference
 
     if (!isAlert.isChecked) {
       alertDay.isEnabled = false

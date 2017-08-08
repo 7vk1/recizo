@@ -27,7 +27,7 @@
     <com.recizo.view.SettingItemPreference
         android:defaultValue="1"
         android:key="alert_day"/>
-    <com.recizo.view.SettingDialogPreference
+    <com.recizo.view.NotificationTimePreference
         android:key="alert_time"/>
   </PreferenceCategory>
 
