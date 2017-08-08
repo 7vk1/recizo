@@ -1,19 +1,15 @@
 package com.recizo.view
 
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.preference.*
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.TextView
 import com.recizo.MainActivity
 import com.recizo.R
 import com.recizo.module.Notification
 import com.recizo.setting_activities.AboutMeActivity
 import com.recizo.setting_activities.LicenceActivity
-import kotlinx.android.synthetic.main.activity_icebox_item_set.*
-import kotlin.coroutines.experimental.EmptyCoroutineContext.plus
 
 class SettingFragment : PreferenceFragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
