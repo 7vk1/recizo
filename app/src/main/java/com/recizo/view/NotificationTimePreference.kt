@@ -9,10 +9,7 @@ import com.recizo.module.Notification
 class NotificationTimePreference(context: Context, attr: AttributeSet) : Preference(context, attr) {
   var value: String
     get() = getPersistedString("18:00")
-    set(value) {
-      persistString(value)
-      summary = value
-    }
+    set(value) { persistString(value) }
   init { summary = value + "に通知" }
 
   override fun onClick() {

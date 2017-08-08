@@ -58,15 +58,12 @@ class SettingFragment : PreferenceFragment() {
                   alertDay.value = number.toString()
                   alertDay.summary = "賞味期限の${number}日前"
                 }
-
                 override fun onNegative() {}
               })
               .show(fragmentManager, "set_alert_day")
       true
     }
-
     val alertTime = findPreference("alert_time") as NotificationTimePreference
-
     if (!isAlert.isChecked) {
       alertDay.isEnabled = false
       alertTime.isEnabled = false
