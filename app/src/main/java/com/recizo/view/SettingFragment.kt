@@ -21,6 +21,9 @@ class SettingFragment : PreferenceFragment() {
     addPreferencesFromResource(R.xml.preferences)
 
     // postcode setting
+    val test = findPreference("postal_code") as PostalCodePreference
+    test.summary = test.value
+
     val editTextPreference = findPreference("edit_postcode_key") as EditTextPreference
 
     editTextPreference.summary = editTextPreference.text
@@ -64,6 +67,7 @@ class SettingFragment : PreferenceFragment() {
       true
     }
     val alertTime = findPreference("alert_time") as NotificationTimePreference
+    alertTime.changeSummary()
     if (!isAlert.isChecked) {
       alertDay.isEnabled = false
       alertTime.isEnabled = false

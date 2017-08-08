@@ -48,10 +48,7 @@
   <string name="graph_past">1年前</string>
 
   <!-- preference strings -->
-  <string name="preference_network_title">ネットワーク設定</string>
-  <string name="checkbox_network_title">ネットワーク通信許可</string>
-  <string name="checkbox_network_summary">ネットワーク通信を有効にします</string>
-
+  <string name="postal_code">郵便番号</string>
   <string name="preference_postcode_title">住所設定</string>
   <string name="checkbox_postcode_title">郵便番号</string>
 
