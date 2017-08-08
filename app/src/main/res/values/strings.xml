@@ -49,6 +49,7 @@
 
   <!-- preference strings -->
   <string name="postal_code">郵便番号</string>
+  <string name="postal_error">エラー：文字数が足りません</string>
   <string name="preference_postcode_title">住所設定</string>
   <string name="checkbox_postcode_title">郵便番号</string>
 

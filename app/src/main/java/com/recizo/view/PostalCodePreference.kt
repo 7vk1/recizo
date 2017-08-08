@@ -8,8 +8,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import com.recizo.R
 import com.recizo.module.AppContextHolder
 
@@ -59,6 +61,8 @@ class PostalCodePreference(context: Context, attr: AttributeSet) : Preference(co
       if(ret.length == 8) {
         value = "${ret.substring(0..2)}-${ret.substring(4..7)}"
         dialog.dismiss()
+      } else {
+        content.findViewById<TextView>(R.id.postal_error).visibility = View.VISIBLE
       }
     }
   }
