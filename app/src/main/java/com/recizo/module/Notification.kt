@@ -19,6 +19,7 @@ import com.recizo.MainActivity
 
 object Notification {
   fun set(context: Context) {
+    if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("isAlert", true)) return
     val time = PreferenceManager.getDefaultSharedPreferences(context).getString("alert_time", context.resources.getString(R.string.default_time)).split(":")
     setNotification(context, time[0].toInt(), time[1].toInt())
   }
