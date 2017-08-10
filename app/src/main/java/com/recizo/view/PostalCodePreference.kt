@@ -41,7 +41,7 @@ class PostalCodePreference(context: Context, attr: AttributeSet) : Preference(co
         } else if(s.length == 3 && delCount == 1) {
           et.setText(et.text.substring(0..et.text.length - 2))
           et.setSelection(et.length())
-        }
+        } else if(s.length == 8) content.findViewById<TextView>(R.id.postal_error).visibility = View.GONE
       }
       override fun afterTextChanged(e: Editable?) {}
     })
