@@ -6,6 +6,10 @@ import android.graphics.Color
 import android.net.Uri
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -77,7 +81,10 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
       }
       override fun failed(errorCode: ErrorCode) {
         //todo impl
-        if(errorCode.name == ErrorCode.IO_ERROR.name) setErrorMesText(R.string.network_error_title, R.string.network_error_detail)
+        if(errorCode.name == ErrorCode.IO_ERROR.name) {
+          setErrorMesText(R.string.network_error_title, "Wifiまたはデータ通信がオフになっていませんか？\nオンになっている場合は", createSpannableStringToReload(" リロード "), "を試してください")
+          view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
+        }
         // 検索食材を全部削除した際に起きる
         else if(errorCode.name == ErrorCode.UNSUPPORTED_OPERATION_ERROR.name) setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
         else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
@@ -88,9 +95,28 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
     })
   }
 
+  private fun createSpannableStringToReload(text: String): SpannableString {
+    val link = SpannableString(text)
+
+    link.setSpan(object : ClickableSpan() {
+      override fun onClick(textView: View) {
+        startRecipeListCreate()
+      }
+    }, 1, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+    return link
+  }
+
   private fun setErrorMesText(title: Int, detail: Int) {
     view.findViewById<TextView>(R.id.error_mes_title).text = context.resources.getString(title)
     view.findViewById<TextView>(R.id.error_mes_detail).text = context.resources.getString(detail)
+  }
+
+  private fun setErrorMesText(title: Int, detailBefore: String, link: SpannableString, detailAfter: String) {
+    view.findViewById<TextView>(R.id.error_mes_title).text = context.resources.getString(title)
+    val errorDetail = view.findViewById<TextView>(R.id.error_mes_detail)
+    errorDetail.text = detailBefore
+    errorDetail.append(link)
+    errorDetail.append(detailAfter)
   }
 
   fun displaySearchedText(parent: LinearLayout) {
