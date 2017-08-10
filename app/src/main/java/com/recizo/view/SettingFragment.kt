@@ -3,8 +3,6 @@ package com.recizo.view
 import android.content.Intent
 import android.os.Bundle
 import android.preference.*
-import android.text.Editable
-import android.text.TextWatcher
 import com.recizo.MainActivity
 import com.recizo.R
 import com.recizo.module.Notification
@@ -17,30 +15,8 @@ class SettingFragment : PreferenceFragment() {
     addPreferencesFromResource(R.xml.preferences)
 
     // postcode setting
-    val test = findPreference("postal_code") as PostalCodePreference
-    test.summary = test.value
-
-    val editTextPreference = findPreference("edit_postcode_key") as EditTextPreference
-
-    editTextPreference.summary = editTextPreference.text
-    editTextPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-      if (v.toString().matches("""^\d{3}-\d{4}$""".toRegex())) {
-        editTextPreference.summary = v.toString()
-        true
-      } else false //todo impl
-    }
-    val editTextPostCode = editTextPreference.editText
-    editTextPostCode.addTextChangedListener(object : TextWatcher{
-      override fun beforeTextChanged(s: CharSequence?, start: Int, delCount: Int, addCount: Int) {}
-      override fun onTextChanged(s: CharSequence?, start: Int, delCount: Int, addCount: Int) {
-        if(s?.length == 3 && addCount == 1){
-          editTextPostCode.append("-")
-          editTextPostCode.setSelection(editTextPostCode.length())
-        }
-      }
-      override fun afterTextChanged(e: Editable?) {}
-    })
-
+    val postalCode = findPreference("edit_postcode_key") as PostalCodePreference
+    postalCode.summary = postalCode.value
 
     // alert settings
     val isAlert = findPreference("isAlert") as CheckBoxPreference
