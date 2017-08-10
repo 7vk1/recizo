@@ -19,6 +19,7 @@ import com.recizo.MainActivity
 
 object Notification {
   fun set(context: Context) {
+    if(!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("isAlert", true)) return
     val time = PreferenceManager.getDefaultSharedPreferences(context).getString("alert_time", context.resources.getString(R.string.default_time)).split(":")
     setNotification(context, time[0].toInt(), time[1].toInt())
   }
@@ -95,6 +96,12 @@ object Notification {
         cal.timeInMillis < now
       }
       if(items.isNotEmpty()) Notification.notifyLargeIcon(context, "賞味期限通知", "${items.size}つの素材の賞味期限が切れそうです！！")//TODO MESSAGE
+      Notification.set(context)
+    }
+  }
+
+  class StartupReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
       Notification.set(context)
     }
   }
