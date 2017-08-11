@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val id = item.itemId
     when (id) {
       R.id.nav_icebox_list -> changeFragment(IceboxFragment())
-      R.id.nav_favorite_recipe -> changeFragment(FavoriteRecipeFragment())
       R.id.nav_flyer -> changeFragment(FlyerFragment())
       R.id.nav_season -> changeFragment(SeasonsFragment())
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
