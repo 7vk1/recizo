@@ -75,6 +75,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   override fun moveToSearchFragment(items: Set<String>) { changeFragment(RecipeFragment(items)) }
 
   enum class NavMenuItems {
-    icebox, favorite_recipe, flyer, season, market_price, setting,
+    icebox, flyer, season, market_price, setting,
   }
 }
