@@ -2,6 +2,8 @@
   <!-- App name -->
   <string name="app_name">Recizo</string>
 
+  <string name="about_this_app_title">このアプリについて</string>
+
   <!-- Navigation Drawer -->
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -70,7 +72,7 @@
   <string name="about_me_content3">team.item.19@gmail.com</string>
   <string name="about_me_content4_1">ベジ探（野菜の卸売価格）\n http://vegetan.alic.go.jp</string>
   <string name="about_me_content4_2">クックパッド（レシピ検索）\n https://cookpad.com</string>
-  <string name="about_me_content4_3">Shufoo!（チラシ検索）\n http://www.shufoo.net</string>
+  <!--<string name="about_me_content4_3">Shufoo!（チラシ検索）\n http://www.shufoo.net</string>-->
   <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
 
   <!-- general error message -->
