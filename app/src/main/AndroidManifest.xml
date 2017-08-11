@@ -27,7 +27,8 @@
               android:theme="@style/AppTheme.NoActionBar"
               android:screenOrientation="portrait"/>
     <activity android:name=".setting_activities.LicenceActivity"
-              android:screenOrientation="portrait"/>
+              android:screenOrientation="portrait"
+              android:label="@string/licence_title"/>
     <activity android:name=".setting_activities.AboutMeActivity"
               android:screenOrientation="portrait"
               android:label="@string/about_this_app_title"/>

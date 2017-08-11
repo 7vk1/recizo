@@ -3,6 +3,7 @@
   <string name="app_name">Recizo</string>
 
   <string name="about_this_app_title">このアプリについて</string>
+  <string name="licence_title">ライセンス</string>
 
   <!-- Navigation Drawer -->
   <string name="navigation_drawer_open">Open navigation drawer</string>
