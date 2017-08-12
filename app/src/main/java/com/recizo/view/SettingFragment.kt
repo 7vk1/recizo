@@ -1,19 +1,13 @@
 package com.recizo.view
 
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.preference.*
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.TextView
 import com.recizo.MainActivity
 import com.recizo.R
 import com.recizo.module.Notification
 import com.recizo.setting_activities.AboutMeActivity
 import com.recizo.setting_activities.LicenceActivity
-import kotlinx.android.synthetic.main.activity_icebox_item_set.*
-import kotlin.coroutines.experimental.EmptyCoroutineContext.plus
 
 class SettingFragment : PreferenceFragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,27 +15,8 @@ class SettingFragment : PreferenceFragment() {
     addPreferencesFromResource(R.xml.preferences)
 
     // postcode setting
-    val editTextPreference = findPreference("edit_postcode_key") as EditTextPreference
-
-    editTextPreference.summary = editTextPreference.text
-    editTextPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, v ->
-      if (v.toString().matches("""^\d{3}-\d{4}$""".toRegex())) {
-        editTextPreference.summary = v.toString()
-        true
-      } else false //todo impl
-    }
-    val editTextPostCode = editTextPreference.editText
-    editTextPostCode.addTextChangedListener(object : TextWatcher{
-      override fun beforeTextChanged(s: CharSequence?, start: Int, delCount: Int, addCount: Int) {}
-      override fun onTextChanged(s: CharSequence?, start: Int, delCount: Int, addCount: Int) {
-        if(s?.length == 3 && addCount == 1){
-          editTextPostCode.append("-")
-          editTextPostCode.setSelection(editTextPostCode.length())
-        }
-      }
-      override fun afterTextChanged(e: Editable?) {}
-    })
-
+    val postalCode = findPreference("edit_postcode_key") as PostalCodePreference
+    postalCode.summary = postalCode.value
 
     // alert settings
     val isAlert = findPreference("isAlert") as CheckBoxPreference
@@ -58,24 +33,13 @@ class SettingFragment : PreferenceFragment() {
                   alertDay.value = number.toString()
                   alertDay.summary = "賞味期限の${number}日前"
                 }
-
                 override fun onNegative() {}
               })
               .show(fragmentManager, "set_alert_day")
       true
     }
-
-    val alertTime = findPreference("alert_time") as SettingDialogPreference
-    alertTime.defaultValue = this.resources.getString(R.string.default_time)
-    alertTime.summary = alertTime.value + "に通知"
-    val time = alertTime.value.split(":")
-    alertTime.setDialog = TimePickerDialog(activity,
-            TimePickerDialog.OnTimeSetListener { _, hour, min ->
-              alertTime.value = "$hour:${if (min < 10) "0$min" else "$min"}"
-              alertTime.summary = alertTime.value + "に通知"
-              Notification.change(activity, hour, min)
-            }, time[0].toInt(), time[1].toInt(), false)
-
+    val alertTime = findPreference("alert_time") as NotificationTimePreference
+    alertTime.changeSummary()
     if (!isAlert.isChecked) {
       alertDay.isEnabled = false
       alertTime.isEnabled = false

@@ -69,25 +69,24 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
   fun setProgressBar(progressBar: IProgressBar) { progressBarCallback = progressBar }
 
   fun startFlyerListCreate() {
-    System.out.println("POSTCODE CREATE")
     val errorMes = view.findViewById<LinearLayout>(R.id.error_mes_box)
     if (keywords != "" && keywords.isNotEmpty() && keywords != "0") {
-      System.out.println("POSTCODE INPUT OK")
       errorMes.visibility = View.INVISIBLE
       progressBarCallback?.showProgressBar()
       scraper.scrapingHTML(object : Scraper.ScraperCallBack {
         override fun succeed(html: Document?) {
-          System.out.println("POSTCODE SUCCEED")
           val flyers = scraper.requestGetShufooItem(html)
           flyers.forEach { flyerListAdapter.addFlyer(it) }
           progressBarCallback?.hideProgressBar()
         }
 
         override fun failed(errorCode: ErrorCode) {
-          System.out.println("POSTCODE FAILED")
-          if(errorCode.name == ErrorCode.IO_ERROR.name) setErrorMesText(R.string.network_error_title, R.string.network_error_detail)
+          if(errorCode.name == ErrorCode.IO_ERROR.name) {
+            setErrorMesText(R.string.network_error_title, "Wifiまたはデータ通信がオフになっていませんか？\nオンになっている場合は", createSpannableStringToReload(" リロード "), "を試してください")
+            view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
+          }
           else if(errorCode.name == ErrorCode.INDEX_OUT_OF_BOUNDS_ERROR.name) {
-            setErrorMesText(R.string.flyer_notfound_title, "郵便番号の設定は", createSpannableString("「設定」"), "から行えます")
+            setErrorMesText(R.string.flyer_notfound_title, "郵便番号の設定を間違っていませんか？\n郵便番号の設定は", createSpannableStringToSetting("「設定」"), "から行えます")
             view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
           }
           else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
@@ -97,7 +96,7 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
         }
       })
     } else {
-      setErrorMesText(R.string.flyer_empty_text, "郵便番号の設定は", createSpannableString("「設定」"), "から行えます")
+      setErrorMesText(R.string.flyer_empty_text, "郵便番号の設定を間違っていませんか？\n郵便番号の設定は", createSpannableStringToSetting("「設定」"), "から行えます")
       view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
       errorMes.visibility = View.VISIBLE
     }
@@ -111,7 +110,18 @@ class FlyerPresenter (val context: Context,val view: View,val keywords: String){
     transaction.commit()
   }
 
-  private fun createSpannableString(text: String): SpannableString {
+  private fun createSpannableStringToReload(text: String): SpannableString {
+    val link = SpannableString(text)
+
+    link.setSpan(object : ClickableSpan() {
+      override fun onClick(textView: View) {
+        startFlyerListCreate()
+      }
+    }, 1, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+    return link
+  }
+
+  private fun createSpannableStringToSetting(text: String): SpannableString {
     val link = SpannableString(text)
 
     link.setSpan(object : ClickableSpan() {

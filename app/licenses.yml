@@ -1,0 +1,178 @@
+- artifact: com.android.support.constraint:constraint-layout-solver:+
+  name: constraint-layout-solver
+  skip: true
+- artifact: com.android.support.constraint:constraint-layout:+
+  name: constraint-layout
+  skip: true
+- artifact: com.android.support:animated-vector-drawable:+
+  name: animated-vector-drawable
+  skip: true
+- artifact: com.android.support:appcompat-v7:+
+  name: appcompat-v7
+  skip: true
+- artifact: com.android.support:cardview-v7:+
+  name: cardview-v7
+  skip: true
+- artifact: com.android.support:design:+
+  name: design
+  skip: true
+- artifact: com.android.support:recyclerview-v7:+
+  name: recyclerview-v7
+  skip: true
+- artifact: com.android.support:support-annotations:+
+  name: support-annotations
+  skip: true
+- artifact: com.android.support:support-compat:+
+  name: support-compat
+  skip: true
+- artifact: com.android.support:support-core-ui:+
+  name: support-core-ui
+  skip: true
+- artifact: com.android.support:support-core-utils:+
+  name: support-core-utils
+  skip: true
+- artifact: com.android.support:support-fragment:+
+  name: support-fragment
+  skip: true
+- artifact: com.android.support:support-media-compat:+
+  name: support-media-compat
+  skip: true
+- artifact: com.android.support:support-v4:+
+  name: support-v4
+  skip: true
+- artifact: com.android.support:support-vector-drawable:+
+  name: support-vector-drawable
+  skip: true
+- artifact: com.android.support:transition:+
+  name: transition
+  skip: true
+
+
+- artifact: com.daimajia.swipelayout:library:+
+  name: Android SwipeLayout Library
+  copyrightHolder: Copyright (c) 2014 代码家
+  license: MIT
+  licenseUrl: http://opensource.org/licenses/MIT
+  url: https://github.com/daimajia/AndroidSwipeLayout
+
+
+- artifact: com.github.PhilJay:MPAndroidChart:+
+  name: MPAndroidChart
+  copyrightHolder: Copyright 2016 Philipp Jahoda
+  license: Apache 2.0
+
+
+
+- artifact: com.google.android:android:+
+  name: Google Android Library
+  copyrightHolder: Copyright (C) The Android Open Source Project All rights reserved.
+  license: Apache 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0
+  url: http://source.android.com/
+
+
+- artifact: com.google.code.gson:gson:+
+  name: Gson
+  copyrightHolder: Copyright 2008 Google Inc.
+  license: Apache 2.0 license
+
+
+- artifact: commons-codec:commons-codec:+
+  name: Codec
+  copyrightHolder: Copyright © 2017 The Apache Software Foundation. All Rights Reserved.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0
+  url: http://jakarta.apache.org/commons/codec/
+  skip: true
+
+
+- artifact: commons-logging:commons-logging:+
+  name: Commons Logging
+  skip: true
+
+
+
+- artifact: org.apache.httpcomponents:httpclient:+
+  name: HttpClient
+  copyrightHolder: Copyright © The Apache Software Foundation. All Rights Reserved.
+  license: Apache License
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
+  url: http://www.apache.org/licenses/
+  skip: true
+- artifact: org.apache.httpcomponents:httpcore:+
+  name: HttpCore
+  copyrightHolder: Copyright © The Apache Software Foundation. All Rights Reserved.
+  license: Apache License
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
+  url: http://hc.apache.org/httpcomponents-core/
+  skip: true
+
+
+
+- artifact: org.jetbrains.kotlin:kotlin-stdlib-jre7:+
+  name: org.jetbrains.kotlin:kotlin-stdlib-jre7
+  copyrightHolder: Copyright 2010-2017 JetBrains s.r.o.
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+
+
+- artifact: org.jetbrains.kotlin:kotlin-stdlib:+
+  name: org.jetbrains.kotlin:kotlin-stdlib
+  copyrightHolder: Copyright 2010-2017 JetBrains s.r.o.
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+  skip: true
+
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-android:+
+  name: kotlinx-coroutines-android
+  copyrightHolder: Copyright 2016-2017 JetBrains s.r.o.
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-core:+
+  name: kotlinx-coroutines-core
+  copyrightHolder: Copyright 2016-2017 JetBrains s.r.o.
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+
+
+- artifact: org.jetbrains:annotations:+
+  name: IntelliJ IDEA Annotations
+  copyrightHolder: Copyright 2010-2017 JetBrains s.r.o.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://www.jetbrains.org
+  skip: true
+
+
+- artifact: org.json:json:+
+  name: JSON (JavaScript Object Notation)
+  copyrightHolder: Copyright (c) 2002 JSON.org
+  license: provided without support or warranty
+  licenseUrl: http://www.json.org/license.html
+  url: http://www.json.org/java/index.html
+  skip: true
+
+
+- artifact: org.jsoup:jsoup:+
+  name: jsoup Java HTML Parser
+  copyrightHolder: Copyright © 2009 - 2017 Jonathan Hedley (jonathan@hedley.net)
+  license: The MIT License
+  licenseUrl: https://jsoup.org/license
+  url: https://jsoup.org/
+
+
+
+- artifact: org.khronos:opengl-api:+
+  name: Google Android Java ME Library (Khronos)
+  skip: true
+- artifact: xerces:xmlParserAPIs:+
+  name: xmlParserAPIs
+  skip: true
+- artifact: xpp3:xpp3:+
+  name: MXP1 Xml Pull Parser 3rd Edition (XPP3)
+  skip: true
