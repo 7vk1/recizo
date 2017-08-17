@@ -85,7 +85,6 @@ object Notification {
       val prefManager = PreferenceManager.getDefaultSharedPreferences(context)
       val day = prefManager.getString("alert_day", context.resources.getString(R.string.default_day)).toInt()
       val cal = Calendar.getInstance()
-      cal.add(Calendar.DAY_OF_MONTH, day)
       val now = cal.timeInMillis
       IceboxDao.context = context
       val items = IceboxDao.getAllFromRemote(context).filter {
@@ -95,7 +94,7 @@ object Notification {
         cal.set(Calendar.DAY_OF_MONTH, date[2].toInt())
         cal.timeInMillis < now
       }
-      if(items.isNotEmpty()) Notification.notifyLargeIcon(context, "賞味期限通知", "${items.size}つの素材の賞味期限が切れそうです！！")//TODO MESSAGE
+      if(items.isNotEmpty()) Notification.notifyLargeIcon(context, "賞味期限通知", "${items.size}の素材の賞味期限が切れそうです！！")//TODO MESSAGE
       Notification.set(context)
     }
   }
