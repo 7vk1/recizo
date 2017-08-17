@@ -29,7 +29,7 @@ class RecizoApi {
 
   fun get(callback: Callback) {
     val url = "$BASE_URL${if(this.isRecent) "recent" else "past"}/${if(this.vegetable == Vegetables.all) "" else this.vegetable.name}"
-    val http = Http(url)
+    val http = Http(url, API_KEY)
     val cb = object : Http.Callback {
       override fun onSuccess(body: String) {
         val typeToken = object : TypeToken<Map<String, Collection<DairyData>>>() {}
@@ -41,7 +41,10 @@ class RecizoApi {
     http.execute()
   }
 
-  companion object { val BASE_URL = "http://recizo.com/api/" }
+  companion object {
+    val BASE_URL = "http://recizo.com/api/"
+    val API_KEY = "7500ae50c452593029a999f067cd6e699745c6a2a6702b9ba888d59ffbf02e37f84db6312e139ed684db36a7764d73610f1db63ecedd9fe0bc766b70e69d4f13"
+  }
 
   interface Callback {
     fun onSuccess(response: Map<String, List<DairyData>>)

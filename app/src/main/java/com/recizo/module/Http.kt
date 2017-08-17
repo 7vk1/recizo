@@ -10,7 +10,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class Http(private val url: String) : AsyncTask<Void, Void, String>() {
+class Http(private val url: String, private val key: String? = null) : AsyncTask<Void, Void, String>() {
   private var callback: Callback? = null
   private var errCode: ErrorCode? = null
 
@@ -22,6 +22,7 @@ class Http(private val url: String) : AsyncTask<Void, Void, String>() {
       val connection = url.openConnection() as HttpURLConnection
       connection.connectTimeout = 10000
       connection.readTimeout = 10000
+      if(key != null)connection.addRequestProperty("Authorization", key)
       connection.connect()
       val status = connection.responseCode
       if(status == HttpsURLConnection.HTTP_OK) {
