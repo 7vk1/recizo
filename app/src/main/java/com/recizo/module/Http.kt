@@ -22,15 +22,11 @@ class Http(private val url: String, private val key: String? = null) : AsyncTask
       val connection = url.openConnection() as HttpURLConnection
       connection.connectTimeout = 10000
       connection.readTimeout = 10000
-      if(key != null)connection.addRequestProperty("Authorization", key)
+      if(key != null)connection.setRequestProperty("Authorization", key)
       connection.connect()
       val status = connection.responseCode
       if(status == HttpsURLConnection.HTTP_OK) {
-        Log.d("http", "ok")
-        var encoding = connection.contentEncoding
-        if (encoding == null) {
-          encoding = "UTF-8"
-        }
+        val encoding = connection.contentEncoding ?: "UTF-8"
         val streamReader = InputStreamReader(connection.inputStream, encoding)
         val buff = BufferedReader(streamReader)
         val sb = StringBuffer()
