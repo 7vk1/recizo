@@ -43,7 +43,7 @@ class RecizoApi {
 
   companion object {
     val BASE_URL = "http://recizo.com/api/"
-    val API_KEY = "7500ae50c452593029a999f067cd6e699745c6a2a6702b9ba888d59ffbf02e37f84db6312e139ed684db36a7764d73610f1db63ecedd9fe0bc766b70e69d4f13"
+    val API_KEY = "Token 7500ae50c452593029a999f067cd6e699745c6a2a6702b9ba888d59ffbf02e37f84db6312e139ed684db36a7764d73610f1db63ecedd9fe0bc766b70e69d4f13"
   }
 
   interface Callback {
