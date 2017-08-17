@@ -95,8 +95,7 @@ object Notification {
         cal.set(Calendar.DAY_OF_MONTH, date[2].toInt())
         cal.timeInMillis < now
       }
-      println(items.size)
-      if(items.isNotEmpty()) Notification.notifyLargeIcon(context, "賞味期限通知", "${items.size}つの素材の賞味期限が切れそうです！！")//TODO MESSAGE
+      if(items.isNotEmpty()) Notification.notifyLargeIcon(context, "賞味期限通知", "${items.size}個の素材の賞味期限が切れそうです！！")
       Notification.set(context)
     }
   }

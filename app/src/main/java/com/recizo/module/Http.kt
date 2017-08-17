@@ -17,7 +17,7 @@ class Http(private val url: String, private val key: String? = null) : AsyncTask
   fun setCallback(cb: Callback) { callback = cb }
 
   override fun doInBackground(vararg args: Void?): String {
-    val url: URL = URL(this.url)
+    val url = URL(this.url)
     try {
       val connection = url.openConnection() as HttpURLConnection
       connection.connectTimeout = 10000
