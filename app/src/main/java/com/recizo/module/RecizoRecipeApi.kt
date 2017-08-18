@@ -4,11 +4,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
 
-class CookpadScraper(private var searchCategory: MutableList<String>) {
-  fun get(callback: CookpadScraper.Callback) {
-    if(searchCategory.isEmpty()) {return}
-    val url = "${BASE_URL}recipe?category=なす"
-    println(url)
+class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
+  fun get(callback: RecizoRecipeApi.Callback) {
+    // リストが空の場合にEMPTY_BODYを起こすために空を入れる
+    if(searchCategory.isEmpty()) {searchCategory.add("")}
+    val url = "${BASE_URL}recipe?category=${searchCategory[0]}"
     searchCategory = searchCategory.drop(1).toMutableList()
     val http = Http(url, API_KEY)
     val cb = object : Http.Callback {

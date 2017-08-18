@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.model.entity.CookpadRecipe
 import com.recizo.model.viewholder.RecipeViewHolder
+import com.recizo.module.FavoriteRecipeDao
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -57,6 +58,19 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
     holder.author.text = recipeList[position].author
     holder.description.text = recipeList[position].description
     holder.linkUrl = recipeList[position].cookpadLink
+    holder.starButton.isChecked = false
+    if(FavoriteRecipeDao.getRecipe(holder.title.text.toString() ) != null ) holder.starButton.isChecked = true
+    holder.starButton.setOnClickListener {
+      if(holder.starButton.isChecked) {
+        FavoriteRecipeDao.add(
+            CookpadRecipe(title = holder.title.text.toString(),
+                author = holder.author.text.toString(),
+                description = holder.description.text.toString(),
+                imgUrl = recipeList[position].imgUrl,
+                cookpadLink = recipeList[position].cookpadLink)
+        )
+      } else FavoriteRecipeDao.remove(holder.title.text.toString() )
+    }
   }
 
   override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecipeViewHolder {
