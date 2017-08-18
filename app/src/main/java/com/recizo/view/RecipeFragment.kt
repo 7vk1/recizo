@@ -39,7 +39,7 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
     searched_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-        recipePresenter.addRecipeList(recyclerView, dy)
+//        recipePresenter.addRecipeList(recyclerView, dy)
       }
     })
   }
