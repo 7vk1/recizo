@@ -87,38 +87,10 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
 
         }
         recipeListMaster = recipeListMaster.plus(recipeList).toMutableList()
-        recipeListMaster.map { println(it.title) }
         recipeList.forEach { recipeListAdapter.addRecipe(it) }
         loadEventListener?.onLoadEnd()
       }
     })
-
-
-
-
-//    scraper.scrapingHTML(object : Scraper.ScraperCallBack {
-//      override fun succeed(html: org.jsoup.nodes.Document?) {
-//        val recipes = scraper.requestGetRecipeItem(html)
-//        if(recipes.isEmpty()) {
-//          setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
-//          errorMes.visibility = View.VISIBLE
-//        }
-//        recipes.forEach {recipeListAdapter.addRecipe(it)}
-//        loadEventListener?.onLoadEnd()
-//      }
-//      override fun failed(errorCode: ErrorCode) {
-//        if(errorCode.name == ErrorCode.IO_ERROR.name) {
-//          setErrorMesText(R.string.network_error_title, "Wifiまたはデータ通信がオフになっていませんか？\nオンになっている場合は", createSpannableStringToReload(" リロード "), "を試してください")
-//          view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
-//        }
-//        // 検索食材を全部削除した際に起きる
-//        else if(errorCode.name == ErrorCode.UNSUPPORTED_OPERATION_ERROR.name) setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
-//        else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
-//        recipeListAdapter.clearRecipe()
-//        errorMes.visibility = View.VISIBLE
-//        loadEventListener?.onLoadEnd()
-//      }
-//    })
   }
 
   private fun createSpannableStringToReload(text: String): SpannableString {
@@ -166,7 +138,6 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
   }
 
   private fun eraseKeyword(v: String) {
-    // TODO keywordをすべて削除された時のメッセージを出す
     val transaction = context.fragmentManager.beginTransaction()
     transaction.addToBackStack(null)
     transaction.replace(R.id.fragment_frame, RecipeFragment(keywords.filter { it != v }.toSet()))

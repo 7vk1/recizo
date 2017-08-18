@@ -13,7 +13,6 @@ class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
     val http = Http(url, API_KEY)
     val cb = object : Http.Callback {
       override fun onSuccess(body: String) {
-        println(body)
         val typeToken = object : TypeToken<Map<String, Collection<Recipe>>>() {}
         val res: Map<String, ArrayList<Recipe>> = Gson().fromJson(body, typeToken.type)
         callback.onSuccess(res)
