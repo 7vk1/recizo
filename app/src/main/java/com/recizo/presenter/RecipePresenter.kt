@@ -2,65 +2,44 @@ package com.recizo.presenter
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import com.recizo.R
-import com.recizo.model.ErrorCode
-import com.recizo.model.entity.CookpadRecipe
-import com.recizo.module.CookpadScraper
-import com.recizo.module.Scraper
+import com.recizo.model.database.CategoryDatabaseHelper
+import com.recizo.model.entity.RecizoRecipe
+import com.recizo.module.RecizoRecipeApi
+import com.recizo.module.Http
 import com.recizo.view.RecipeFragment
 import com.recizo.view.SearchItemView
 
 class RecipePresenter (val context: Activity,val view: View, val keywords: Set<String>){
   private val recipeListView: RecyclerView = view.findViewById(R.id.searched_recyclerView)
-  private var scraper = CookpadScraper(keywords)
+  private var recizoRecipe: RecizoRecipeApi? = null
   private var loadEventListener: LoadEventListener? = null
-  private val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.searched_swipe_refresh_layout)
   private val recipeListAdapter = RecipeListAdapter(recipeListView)
+  private var recipeListMaster = mutableListOf<RecizoRecipe>()
   init {
     recipeListView.adapter = recipeListAdapter
-    swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#FF9137"))
-    swipeRefreshLayout.setOnRefreshListener(recipeListAdapter)
     recipeListAdapter.setOnItemClickListener(object: RecipeListAdapter.OnItemClickListener {
-      override fun onItemClick(recipe: CookpadRecipe) {
+      override fun onItemClick(recipe: RecizoRecipe) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(recipe.cookpadLink)))
       }
     })
-    recipeListAdapter.setOnRefreshPullListener(object: RecipeListAdapter.OnRefreshPullListner {
-      override fun onRefreshPull() {
-        fun prepareRefreshProgressBar() {
-          setLoadEventListener(object: RecipePresenter.LoadEventListener {
-            override fun onLoadEnd() {
-              fun restoreProgressBar() {
-                setLoadEventListener(object: RecipePresenter.LoadEventListener {
-                  override fun onLoadEnd() { view.findViewById<ProgressBar>(R.id.searched_recipe_progressBar).visibility = View.GONE }
-                  override fun onLoadStart() { view.findViewById<ProgressBar>(R.id.searched_recipe_progressBar).visibility = View.VISIBLE }
-                })
-              }
-              swipeRefreshLayout.isRefreshing = false
-              restoreProgressBar()
-            }
-            override fun onLoadStart() {}
-          })
-        }
 
-        prepareRefreshProgressBar()
-        scraper.pageInit()
-        startRecipeListCreate()
-      }
-    })
+    val categoryList = mutableListOf<String>()
+    val categoryDbHelper = CategoryDatabaseHelper(context)
+    keywords.map {
+      val list = categoryDbHelper.getItem(it)
+      list.map { categoryList.add(it) }
+    }
+    recizoRecipe = RecizoRecipeApi(categoryList)
   }
 
   fun setLoadEventListener(listener: LoadEventListener) { loadEventListener = listener }
@@ -69,30 +48,77 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
     val errorMes = view.findViewById<LinearLayout>(R.id.error_mes_box)
     errorMes.visibility = View.INVISIBLE
     loadEventListener?.onLoadStart()
-    scraper.scrapingHTML(object : Scraper.ScraperCallBack {
-      override fun succeed(html: org.jsoup.nodes.Document?) {
-        val recipes = scraper.requestGetRecipeItem(html)
-        if(recipes.isEmpty()) {
-          setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
-          errorMes.visibility = View.VISIBLE
-        }
-        recipes.forEach {recipeListAdapter.addRecipe(it)}
-        loadEventListener?.onLoadEnd()
-      }
-      override fun failed(errorCode: ErrorCode) {
-        //todo impl
-        if(errorCode.name == ErrorCode.IO_ERROR.name) {
+    recizoRecipe!!.get(object: RecizoRecipeApi.Callback {
+      override fun onError(errCode: Http.ErrorCode) {
+        if(errCode == Http.ErrorCode.CONNECTION_ERROR) {
           setErrorMesText(R.string.network_error_title, "Wifiまたはデータ通信がオフになっていませんか？\nオンになっている場合は", createSpannableStringToReload(" リロード "), "を試してください")
           view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
-        }
-        // 検索食材を全部削除した際に起きる
-        else if(errorCode.name == ErrorCode.UNSUPPORTED_OPERATION_ERROR.name) setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
-        else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
+        } else if(errCode == Http.ErrorCode.EMPTY_BODY) {
+          setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
+          errorMes.visibility = View.VISIBLE
+        } else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
         recipeListAdapter.clearRecipe()
         errorMes.visibility = View.VISIBLE
         loadEventListener?.onLoadEnd()
       }
+
+      override fun onSuccess(response: Map<String, List<RecizoRecipeApi.Recipe>>) {
+        val SIZE_FORMAT = "?thum=51"
+        val recipeList: MutableList<RecizoRecipe> = mutableListOf()
+
+        if(recizoRecipe!!.isFinished() && response.get("result")!!.isEmpty()) {
+          setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
+          recipeListAdapter.clearRecipe()
+          errorMes.visibility = View.VISIBLE
+          loadEventListener?.onLoadEnd()
+        }
+
+        response.get("result")?.map {
+          val recipe = RecizoRecipe(
+              title = it.recipeTitle,
+              imgUrl = it.foodImageUrl + SIZE_FORMAT,
+              description = it.recipeDescription,
+              author = it.nickname,
+              cookpadLink = it.recipeUrl
+          )
+          var isDuplicate = false
+          recipeListMaster.forEach { if(it.title == recipe.title) isDuplicate = true }
+          if(!isDuplicate) recipeList.add(recipe)
+
+        }
+        recipeListMaster = recipeListMaster.plus(recipeList).toMutableList()
+        recipeListMaster.map { println(it.title) }
+        recipeList.forEach { recipeListAdapter.addRecipe(it) }
+        loadEventListener?.onLoadEnd()
+      }
     })
+
+
+
+
+//    scraper.scrapingHTML(object : Scraper.ScraperCallBack {
+//      override fun succeed(html: org.jsoup.nodes.Document?) {
+//        val recipes = scraper.requestGetRecipeItem(html)
+//        if(recipes.isEmpty()) {
+//          setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
+//          errorMes.visibility = View.VISIBLE
+//        }
+//        recipes.forEach {recipeListAdapter.addRecipe(it)}
+//        loadEventListener?.onLoadEnd()
+//      }
+//      override fun failed(errorCode: ErrorCode) {
+//        if(errorCode.name == ErrorCode.IO_ERROR.name) {
+//          setErrorMesText(R.string.network_error_title, "Wifiまたはデータ通信がオフになっていませんか？\nオンになっている場合は", createSpannableStringToReload(" リロード "), "を試してください")
+//          view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
+//        }
+//        // 検索食材を全部削除した際に起きる
+//        else if(errorCode.name == ErrorCode.UNSUPPORTED_OPERATION_ERROR.name) setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
+//        else setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
+//        recipeListAdapter.clearRecipe()
+//        errorMes.visibility = View.VISIBLE
+//        loadEventListener?.onLoadEnd()
+//      }
+//    })
   }
 
   private fun createSpannableStringToReload(text: String): SpannableString {
@@ -130,17 +156,17 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
   }
 
   fun addRecipeList(recyclerView: RecyclerView?, dy: Int){
-    if (dy == 0 || scraper.isLoading || scraper.idFinished()) return
+    if (dy == 0 || recizoRecipe!!.isFinished()) return
     val layoutManager = recyclerView!!.layoutManager as android.support.v7.widget.LinearLayoutManager
     val totalItemCount = layoutManager.itemCount
     val lastVisibleItem = layoutManager.findLastVisibleItemPosition() + 1
     if (totalItemCount < lastVisibleItem + 5) {
-      scraper.isLoading = true
       startRecipeListCreate()
     }
   }
 
   private fun eraseKeyword(v: String) {
+    // TODO keywordをすべて削除された時のメッセージを出す
     val transaction = context.fragmentManager.beginTransaction()
     transaction.addToBackStack(null)
     transaction.replace(R.id.fragment_frame, RecipeFragment(keywords.filter { it != v }.toSet()))

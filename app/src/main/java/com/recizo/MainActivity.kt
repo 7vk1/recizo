@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val id = item.itemId
     when (id) {
       R.id.nav_icebox_list -> changeFragment(IceboxFragment())
+      R.id.nav_favorite_recipe -> changeFragment(FavoriteRecipeFragment())
       R.id.nav_flyer -> onFlyerInNavDrawer()
       R.id.nav_season -> changeFragment(SeasonsFragment())
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
@@ -88,6 +89,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   override fun moveToSearchFragment(items: Set<String>) { changeFragment(RecipeFragment(items)) }
 
   enum class NavMenuItems {
-    icebox, flyer, season, market_price, setting,
+    icebox,favorite_recipe, flyer, season, market_price, setting,
   }
 }

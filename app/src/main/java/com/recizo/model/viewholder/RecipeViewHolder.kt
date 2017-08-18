@@ -12,6 +12,7 @@ class RecipeViewHolder(v: View): RecyclerView.ViewHolder(v) {
   val author: TextView = v.findViewById(R.id.recipe_author)
   val description: TextView = v.findViewById(R.id.recipe_description)
   val imageUrl: ImageView = v.findViewById(R.id.recipe_image)
+  val starButton: ToggleButton = v.findViewById(R.id.recipe_favorite_button)
   var linkUrl: String = ""
   val layout: View = v.findViewById(R.id.search_recipe_item_frame)
 }
