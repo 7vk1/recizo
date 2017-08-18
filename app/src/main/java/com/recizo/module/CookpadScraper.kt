@@ -2,10 +2,14 @@ package com.recizo.module
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.*
 
-class CookpadScraper(private var searchCategory: String) {
+class CookpadScraper(private var searchCategory: MutableList<String>) {
   fun get(callback: CookpadScraper.Callback) {
-    val url = "$BASE_URL/recipe?category=$searchCategory"
+    if(searchCategory.isEmpty()) {return}
+    val url = "${BASE_URL}recipe?category=なす"
+    println(url)
+    searchCategory = searchCategory.drop(1).toMutableList()
     val http = Http(url, API_KEY)
     val cb = object : Http.Callback {
       override fun onSuccess(body: String) {
@@ -16,8 +20,14 @@ class CookpadScraper(private var searchCategory: String) {
       }
       override fun onError(code: Http.ErrorCode) { callback.onError(code) }
     }
+
     http.setCallback(cb)
     http.execute()
+  }
+
+  fun isFinished(): Boolean {
+    if(searchCategory.isEmpty()) return true
+    return false
   }
 
   class Recipe(

@@ -17,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.recizo.R
 import com.recizo.model.ErrorCode
+import com.recizo.model.database.CategoryDatabaseHelper
 import com.recizo.model.entity.CookpadRecipe
 import com.recizo.module.CookpadScraper
 import com.recizo.module.Http
@@ -27,7 +28,7 @@ import com.recizo.view.SearchItemView
 class RecipePresenter (val context: Activity,val view: View, val keywords: Set<String>){
   private val recipeListView: RecyclerView = view.findViewById(R.id.searched_recyclerView)
   // TODO 食材選択方法が決まるまで借り置き
-  private var scraper = CookpadScraper("なす")
+  private var scraper: CookpadScraper? = null
   private var loadEventListener: LoadEventListener? = null
   private val recipeListAdapter = RecipeListAdapter(recipeListView)
   init {
@@ -37,6 +38,14 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(recipe.cookpadLink)))
       }
     })
+
+    val categoryList = mutableListOf<String>()
+    val categoryDbHelper = CategoryDatabaseHelper(context)
+    keywords.map {
+      val list = categoryDbHelper.getItem(it)
+      list.map { categoryList.add(it) }
+    }
+    scraper = CookpadScraper(categoryList)
   }
 
   fun setLoadEventListener(listener: LoadEventListener) { loadEventListener = listener }
@@ -45,20 +54,20 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
     val errorMes = view.findViewById<LinearLayout>(R.id.error_mes_box)
     errorMes.visibility = View.INVISIBLE
     loadEventListener?.onLoadStart()
-
-    scraper.get(object: CookpadScraper.Callback {
+    scraper!!.get(object: CookpadScraper.Callback {
       override fun onError(errCode: Http.ErrorCode) {
         println("$errCode")
+//        startRecipeListCreate()
       }
 
       override fun onSuccess(response: Map<String, List<CookpadScraper.Recipe>>) {
-        println("SUCCESS")
+        val SIZE_FORMAT = "?thum=51"
         val recipeList: MutableList<CookpadRecipe> = mutableListOf()
 
         response.get("result")?.map {
           recipeList.add(CookpadRecipe(
               title = it.recipeTitle,
-              imgUrl = it.foodImageUrl,
+              imgUrl = it.foodImageUrl + SIZE_FORMAT,
               description = it.recipeDescription,
               author = it.nickname,
               cookpadLink = it.recipeUrl
@@ -131,16 +140,15 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
     }
   }
 
-//  fun addRecipeList(recyclerView: RecyclerView?, dy: Int){
-//    if (dy == 0 || scraper.isLoading || scraper.idFinished()) return
-//    val layoutManager = recyclerView!!.layoutManager as android.support.v7.widget.LinearLayoutManager
-//    val totalItemCount = layoutManager.itemCount
-//    val lastVisibleItem = layoutManager.findLastVisibleItemPosition() + 1
-//    if (totalItemCount < lastVisibleItem + 5) {
-//      scraper.isLoading = true
-//      startRecipeListCreate()
-//    }
-//  }
+  fun addRecipeList(recyclerView: RecyclerView?, dy: Int){
+    if (dy == 0 || scraper!!.isFinished()) return
+    val layoutManager = recyclerView!!.layoutManager as android.support.v7.widget.LinearLayoutManager
+    val totalItemCount = layoutManager.itemCount
+    val lastVisibleItem = layoutManager.findLastVisibleItemPosition() + 1
+    if (totalItemCount < lastVisibleItem + 5) {
+      startRecipeListCreate()
+    }
+  }
 
   private fun eraseKeyword(v: String) {
     val transaction = context.fragmentManager.beginTransaction()
