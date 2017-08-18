@@ -9,8 +9,9 @@ class CookpadScraper(private var searchCategory: String) {
     val http = Http(url, API_KEY)
     val cb = object : Http.Callback {
       override fun onSuccess(body: String) {
-        val typeToken = object : TypeToken<Collection<Collection<Recipe>>>() {}
-        val res: ArrayList<ArrayList<Recipe>> = Gson().fromJson(body, typeToken.type)
+        println(body)
+        val typeToken = object : TypeToken<Map<String, Collection<Recipe>>>() {}
+        val res: Map<String, ArrayList<Recipe>> = Gson().fromJson(body, typeToken.type)
         callback.onSuccess(res)
       }
       override fun onError(code: Http.ErrorCode) { callback.onError(code) }
@@ -25,10 +26,10 @@ class CookpadScraper(private var searchCategory: String) {
       val recipeDescription: String,
       val recipeTitle: String,
       val recipeUrl: String
-      ) {}
+      )
 
   interface Callback {
-    fun onSuccess(response: List<List<Recipe>>)
+    fun onSuccess(response: Map<String, List<Recipe>>)
     fun onError(errCode: Http.ErrorCode)
   }
 

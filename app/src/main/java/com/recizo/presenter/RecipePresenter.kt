@@ -29,39 +29,14 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
   // TODO 食材選択方法が決まるまで借り置き
   private var scraper = CookpadScraper("なす")
   private var loadEventListener: LoadEventListener? = null
-//  private val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.searched_swipe_refresh_layout)
   private val recipeListAdapter = RecipeListAdapter(recipeListView)
   init {
     recipeListView.adapter = recipeListAdapter
-//    swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#FF9137"))
-//    swipeRefreshLayout.setOnRefreshListener(recipeListAdapter)
     recipeListAdapter.setOnItemClickListener(object: RecipeListAdapter.OnItemClickListener {
       override fun onItemClick(recipe: CookpadRecipe) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(recipe.cookpadLink)))
       }
     })
-//    recipeListAdapter.setOnRefreshPullListener(object: RecipeListAdapter.OnRefreshPullListner {
-//      override fun onRefreshPull() {
-//        fun prepareRefreshProgressBar() {
-//          setLoadEventListener(object: RecipePresenter.LoadEventListener {
-//            override fun onLoadEnd() {
-//              fun restoreProgressBar() {
-//                setLoadEventListener(object: RecipePresenter.LoadEventListener {
-//                  override fun onLoadEnd() { view.findViewById<ProgressBar>(R.id.searched_recipe_progressBar).visibility = View.GONE }
-//                  override fun onLoadStart() { view.findViewById<ProgressBar>(R.id.searched_recipe_progressBar).visibility = View.VISIBLE }
-//                })
-//              }
-//              swipeRefreshLayout.isRefreshing = false
-//              restoreProgressBar()
-//            }
-//            override fun onLoadStart() {}
-//          })
-//        }
-//
-//        prepareRefreshProgressBar()
-//        startRecipeListCreate()
-//      }
-//    })
   }
 
   fun setLoadEventListener(listener: LoadEventListener) { loadEventListener = listener }
@@ -76,10 +51,11 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
         println("$errCode")
       }
 
-      override fun onSuccess(response: List<List<CookpadScraper.Recipe>>) {
+      override fun onSuccess(response: Map<String, List<CookpadScraper.Recipe>>) {
         println("SUCCESS")
         val recipeList: MutableList<CookpadRecipe> = mutableListOf()
-        response.map { it.map {
+
+        response.get("result")?.map {
           recipeList.add(CookpadRecipe(
               title = it.recipeTitle,
               imgUrl = it.foodImageUrl,
@@ -87,7 +63,7 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
               author = it.nickname,
               cookpadLink = it.recipeUrl
           ))
-        } }
+        }
         recipeList.forEach { recipeListAdapter.addRecipe(it) }
         loadEventListener?.onLoadEnd()
       }
