@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.recizo.R
-import com.recizo.model.entity.CookpadRecipe
+import com.recizo.model.entity.RecizoRecipe
 import com.recizo.model.viewholder.RecipeViewHolder
 import com.recizo.module.FavoriteRecipeDao
 import kotlinx.coroutines.experimental.CommonPool
@@ -20,7 +20,7 @@ import java.net.URL
 class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Adapter<RecipeViewHolder>(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
   private var onItemClickListener: OnItemClickListener? = null
   private var onRefreshPullListener: RecipeListAdapter.OnRefreshPullListner? = null
-  val recipeList = mutableListOf<CookpadRecipe>()
+  val recipeList = mutableListOf<RecizoRecipe>()
 
   fun setOnItemClickListener(listener: OnItemClickListener){ onItemClickListener = listener }
   fun setOnRefreshPullListener(listener: RecipeListAdapter.OnRefreshPullListner) { onRefreshPullListener = listener }
@@ -31,7 +31,7 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
     notifyItemRangeRemoved(0, size)
   }
 
-  fun addRecipe(recipe: CookpadRecipe) {
+  fun addRecipe(recipe: RecizoRecipe) {
     recipeList.add(recipe)
     notifyItemInserted(recipeList.size)
   }
@@ -63,7 +63,7 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
     holder.starButton.setOnClickListener {
       if(holder.starButton.isChecked) {
         FavoriteRecipeDao.add(
-            CookpadRecipe(title = holder.title.text.toString(),
+            RecizoRecipe(title = holder.title.text.toString(),
                 author = holder.author.text.toString(),
                 description = holder.description.text.toString(),
                 imgUrl = recipeList[position].imgUrl,
@@ -86,6 +86,6 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
 
   override fun onRefresh() { onRefreshPullListener?.onRefreshPull() }
 
-  interface OnItemClickListener { fun onItemClick(recipe: CookpadRecipe) }
+  interface OnItemClickListener { fun onItemClick(recipe: RecizoRecipe) }
   interface OnRefreshPullListner { fun onRefreshPull() }
 }

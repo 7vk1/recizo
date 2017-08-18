@@ -2,7 +2,7 @@ package com.recizo.module
 
 import android.content.Context
 import com.recizo.model.database.FavoriteRecipeDatabaseHelper
-import com.recizo.model.entity.CookpadRecipe
+import com.recizo.model.entity.RecizoRecipe
 
 object FavoriteRecipeDao {
   var context: Context? = null
@@ -12,7 +12,7 @@ object FavoriteRecipeDao {
     }
   private var favoriteRecipeDatabaseHelper: FavoriteRecipeDatabaseHelper? = null
 
-  fun add(recipe: CookpadRecipe) {
+  fun add(recipe: RecizoRecipe) {
     this.access()
     favoriteRecipeDatabaseHelper!!.addRecipe(recipe)
     this.close()
@@ -24,14 +24,14 @@ object FavoriteRecipeDao {
     close()
   }
 
-  fun getAll(): List<CookpadRecipe>? {
+  fun getAll(): List<RecizoRecipe>? {
     access()
     val ret = favoriteRecipeDatabaseHelper?.getRecipeAll()
     close()
     return ret
   }
 
-  fun getRecipe(recipeTitle: String): CookpadRecipe? {
+  fun getRecipe(recipeTitle: String): RecizoRecipe? {
     access()
     try { return favoriteRecipeDatabaseHelper?.getRecipe(recipeTitle) }
     catch (e: Exception) { return null }

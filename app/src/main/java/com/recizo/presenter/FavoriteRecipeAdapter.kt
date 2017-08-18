@@ -13,7 +13,7 @@ import android.widget.TextView
 import com.daimajia.swipe.SimpleSwipeListener
 import com.daimajia.swipe.SwipeLayout
 import com.recizo.R
-import com.recizo.model.entity.CookpadRecipe
+import com.recizo.model.entity.RecizoRecipe
 import com.recizo.module.FavoriteRecipeDao
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
@@ -28,7 +28,7 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
   : RecyclerView.Adapter<FavoriteRecipeAdapter.FavoriteRecipeViewHolder>() {
 
   var recycleView: RecyclerView? = null
-  val favoriteRecipeList = mutableListOf<CookpadRecipe>()
+  val favoriteRecipeList = mutableListOf<RecizoRecipe>()
   val garbageList = mutableSetOf<Long>()
   val undoList: MutableList<Long> = mutableListOf()
   init {
@@ -59,7 +59,7 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
   fun viewFavoriteList() {
     FavoriteRecipeDao.getAll()!!.forEach {
       favoriteRecipeList.add(
-          CookpadRecipe(title = it.title,
+          RecizoRecipe(title = it.title,
               cookpadLink = it.cookpadLink,
               author = it.author,
               description = it.description,

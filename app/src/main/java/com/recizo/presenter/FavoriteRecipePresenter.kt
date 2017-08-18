@@ -5,17 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.recizo.R
-import com.recizo.model.entity.CookpadRecipe
-import com.recizo.module.AppContextHolder
-import java.net.URI
-import java.net.URL
-import java.util.concurrent.BlockingDeque
 
 class FavoriteRecipePresenter(val context: Context, val view: View) {
   val removeBtn: FloatingActionButton = view.findViewById(R.id.favorite_recipe_remove_btn)

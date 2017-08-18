@@ -4,8 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
-import com.recizo.model.entity.CookpadRecipe
+import com.recizo.model.entity.RecizoRecipe
 
 // TODO Operation check
 class FavoriteRecipeDatabaseHelper(context: Context) {
@@ -13,13 +12,13 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
   lateinit var db: SQLiteDatabase
   init { this.dbHelper = DatabaseHelper(context) }
 
-  fun getRecipeAll(): MutableList<CookpadRecipe> {
+  fun getRecipeAll(): MutableList<RecizoRecipe> {
     val query = "SELECT title, description, author, imgurl, link FROM ${TABLE_NAME}"
-    val list = mutableListOf<CookpadRecipe>()
+    val list = mutableListOf<RecizoRecipe>()
     this.readableOpen()
     db.rawQuery(query, null).use {
       while (it.moveToNext() ) {
-        list.add(CookpadRecipe(
+        list.add(RecizoRecipe(
             title = it.getString(it.getColumnIndex("title")),
             description = it.getString(it.getColumnIndex("description")),
             author = it.getString(it.getColumnIndex("author")),
@@ -39,7 +38,7 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
     db.close()
   }
 
-  fun addRecipe(recipe: CookpadRecipe) {
+  fun addRecipe(recipe: RecizoRecipe) {
     val values = ContentValues()
     values.put("title", recipe.title)
     values.put("description", recipe.description)
@@ -51,13 +50,13 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
     db.close()
   }
 
-  fun getRecipe(recipeTitle: String): CookpadRecipe? {
+  fun getRecipe(recipeTitle: String): RecizoRecipe? {
     this.readableOpen()
     val query = "SELECT title, description, author, imgurl, link FROM $TABLE_NAME WHERE title=?"
-    var recipe: CookpadRecipe? = null
+    var recipe: RecizoRecipe? = null
     db.rawQuery(query, arrayOf(recipeTitle) ).use {
       while(it.moveToNext() ) {
-        recipe = CookpadRecipe(
+        recipe = RecizoRecipe(
             title = it.getString(it.getColumnIndex("title")),
             description = it.getString(it.getColumnIndex("description")),
             author = it.getString(it.getColumnIndex("author")),
