@@ -5,10 +5,13 @@ import com.google.gson.reflect.TypeToken
 import java.util.*
 
 class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
+  init { Collections.shuffle(searchCategory) }
+
   fun get(callback: RecizoRecipeApi.Callback) {
     // リストが空の場合にEMPTY_BODYを起こすために空を入れる
     if(searchCategory.isEmpty()) {searchCategory.add("")}
     val url = "${BASE_URL}recipe?category=${searchCategory[0]}"
+    println("URL:$url")
     searchCategory = searchCategory.drop(1).toMutableList()
     val http = Http(url, API_KEY)
     val cb = object : Http.Callback {

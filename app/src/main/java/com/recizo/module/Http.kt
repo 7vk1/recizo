@@ -8,6 +8,7 @@ import java.io.InputStreamReader
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.UnknownHostException
 import javax.net.ssl.HttpsURLConnection
 
 class Http(private val url: String, private val key: String? = null) : AsyncTask<Void, Void, String>() {
