@@ -88,7 +88,7 @@
 
   <!-- searched error message -->
   <string name="searched_notfound_title">レシピが見つかりませんでした</string>
-  <string name="searched_notfound_detail">食材の組み合わせを変えて再度試してください</string>
+  <string name="searched_notfound_detail">食材の組み合わせを変えるか時間を空けてから再度試してください</string>
 
   <!-- flyer error message -->
   <string name="flyer_empty_text">郵便番号が登録されていません</string>
