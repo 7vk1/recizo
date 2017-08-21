@@ -64,15 +64,15 @@
   <string name="about_me_title1">1. サービスの内容について</string>
   <string name="about_me_title2">2. 関連サイト</string>
   <string name="about_me_title3">3. 連絡先</string>
-  <string name="about_me_title4">4. 引用させていただいたサービス</string>
-  <string name="about_me_title5">5. コピーライト</string>
+  <string name="about_me_title4">4. Supported by</string>
+  <string name="about_me_title5">5. Copyright</string>
 
   <!-- ライセンス -->
   <string name="about_me_content1">RECIZOは、冷蔵庫の情報を登録してもらい、レシピを検索したり、食材についての様々な情報を提供するサービスです。</string>
   <string name="about_me_content2">http://recizo.com</string>
   <string name="about_me_content3">team.item.19@gmail.com</string>
-  <string name="about_me_content4_1">ベジ探（野菜の卸売価格）\n http://vegetan.alic.go.jp</string>
-  <string name="about_me_content4_2">クックパッド（レシピ検索）\n https://cookpad.com</string>
+  <string name="about_me_content4_1">ベジ探\n http://vegetan.alic.go.jp</string>
+  <string name="about_me_content4_2">楽天ウェブサービス\n https://webservice.rakuten.co.jp/</string>
   <!--<string name="about_me_content4_3">Shufoo!（チラシ検索）\n http://www.shufoo.net</string>-->
   <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
 
@@ -88,7 +88,7 @@
 
   <!-- searched error message -->
   <string name="searched_notfound_title">レシピが見つかりませんでした</string>
-  <string name="searched_notfound_detail">食材の組み合わせを変えて再度試してください</string>
+  <string name="searched_notfound_detail">食材の組み合わせを変えるか時間を空けてから再度試してください</string>
 
   <!-- flyer error message -->
   <string name="flyer_empty_text">郵便番号が登録されていません</string>

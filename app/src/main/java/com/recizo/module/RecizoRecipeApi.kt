@@ -5,6 +5,8 @@ import com.google.gson.reflect.TypeToken
 import java.util.*
 
 class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
+  init { Collections.shuffle(searchCategory) }
+
   fun get(callback: RecizoRecipeApi.Callback) {
     // リストが空の場合にEMPTY_BODYを起こすために空を入れる
     if(searchCategory.isEmpty()) {searchCategory.add("")}
@@ -14,7 +16,12 @@ class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
     val cb = object : Http.Callback {
       override fun onSuccess(body: String) {
         val typeToken = object : TypeToken<Map<String, Collection<Recipe>>>() {}
-        val res: Map<String, ArrayList<Recipe>> = Gson().fromJson(body, typeToken.type)
+        var res: Map<String, ArrayList<Recipe>>?
+        try { res = Gson().fromJson(body, typeToken.type)
+        } catch (e: Exception) {
+          e.printStackTrace()
+          res = null
+        }
         callback.onSuccess(res)
       }
       override fun onError(code: Http.ErrorCode) { callback.onError(code) }
@@ -38,7 +45,7 @@ class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
       )
 
   interface Callback {
-    fun onSuccess(response: Map<String, List<Recipe>>)
+    fun onSuccess(response: Map<String, List<Recipe>>?)
     fun onError(errCode: Http.ErrorCode)
   }
 

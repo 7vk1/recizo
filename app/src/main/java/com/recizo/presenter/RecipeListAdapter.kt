@@ -1,7 +1,10 @@
 package com.recizo.presenter
 
+import android.app.Activity
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -17,13 +20,12 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import java.net.URL
 
-class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Adapter<RecipeViewHolder>(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+class RecipeListAdapter(private val recyclerView: RecyclerView, private val view: View): RecyclerView.Adapter<RecipeViewHolder>(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
   private var onItemClickListener: OnItemClickListener? = null
   private var onRefreshPullListener: RecipeListAdapter.OnRefreshPullListner? = null
   val recipeList = mutableListOf<RecizoRecipe>()
 
   fun setOnItemClickListener(listener: OnItemClickListener){ onItemClickListener = listener }
-  fun setOnRefreshPullListener(listener: RecipeListAdapter.OnRefreshPullListner) { onRefreshPullListener = listener }
 
   fun clearRecipe() {
     val size = recipeList.size
@@ -43,7 +45,6 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
     val bitmapImage = BitmapFactory.decodeStream(url.openConnection().getInputStream())
     val width = bitmapImage.width * scale
     val height = bitmapImage.height * scale
-    // TODO 画像取得失敗時のエラーハンドリング
     return@async Bitmap.createScaledBitmap(bitmapImage, width, height, false)
   }
 
@@ -51,8 +52,13 @@ class RecipeListAdapter(private val recyclerView: RecyclerView): RecyclerView.Ad
 
   override fun onBindViewHolder(holder: RecipeViewHolder?, position: Int) {
     launch(UI) {
-      val image = getImageStream(recipeList[position].imgUrl).await()
-      holder!!.imageUrl.setImageBitmap(image)
+      try {
+        val image = getImageStream(recipeList[position].imgUrl).await()
+        holder!!.imageUrl.setImageBitmap(image)
+      }catch (e: Exception) {
+        holder!!.imageUrl.setImageResource(R.drawable.ic_imagenotfound)
+        e.printStackTrace()
+      }
     }
     holder!!.title.text = recipeList[position].title
     holder.author.text = recipeList[position].author
