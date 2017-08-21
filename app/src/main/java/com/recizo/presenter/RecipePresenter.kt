@@ -161,7 +161,7 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
         }
       }
 
-      if (!loading && (totalItemCount - lastVisibleItem) <= 1) {
+      if (!loading && (totalItemCount - lastVisibleItem) <= 0) {
         startRecipeListCreate()
         loading = true
       }
