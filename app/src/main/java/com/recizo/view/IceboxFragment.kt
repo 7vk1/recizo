@@ -78,7 +78,10 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
           .setNegativeButton("CANCEL", null)
           .show()
     }
-    recipe_search_btn.setOnClickListener { (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter.getSearchItemList()) }
+    recipe_search_btn.setOnClickListener {
+      activity.fragmentManager.beginTransaction().addToBackStack("icebox").commit()
+      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter.getSearchItemList())
+    }
     add_btn.setOnClickListener { activity.startActivity(Intent(activity, IceboxItemSetActivity::class.java)) }
     undo_btn.setOnClickListener { iceboxPresenter.onUndoClicked() }
     sort_btn.setOnClickListener { toggleSortBtn() }

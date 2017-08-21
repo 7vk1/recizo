@@ -1,7 +1,9 @@
 package com.recizo.view
 
+import android.app.Activity
 import android.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -25,9 +27,13 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    val recipePresenter = RecipePresenter(activity, view!!, items)
+
+    (activity as MainActivity).onBackPressedListener = BaseBackPressedListener(activity as FragmentActivity)
+
     searched_recyclerView.layoutManager = LinearLayoutManager(activity)
 
-    val recipePresenter = RecipePresenter(activity, view!!, items)
+
     searched_recipe_progressBar.indeterminateDrawable.setColorFilter(resources.getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY)
     recipePresenter.setLoadEventListener(object : RecipePresenter.LoadEventListener {
       override fun onLoadStart() { searched_recipe_progressBar?.visibility = View.VISIBLE }
@@ -47,5 +53,17 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
   override fun onResume() {
     super.onResume()
     (activity as MainActivity).changeSelectedNavItem(MainActivity.NavMenuItems.icebox) // todo is ok
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    (activity as MainActivity).onBackPressedListener = null
+  }
+
+
+  interface OnBackPressedListener { fun doBack() }
+
+  class BaseBackPressedListener(private val activity: FragmentActivity): OnBackPressedListener {
+    override fun doBack() { activity.fragmentManager.popBackStack("icebox", 0) }
   }
 }

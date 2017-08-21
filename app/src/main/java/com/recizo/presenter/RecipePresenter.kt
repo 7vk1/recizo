@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
 import android.text.SpannableString
 import android.text.Spanned
@@ -23,7 +24,7 @@ import com.recizo.view.RecipeFragment
 import com.recizo.view.SearchItemView
 import java.util.*
 
-class RecipePresenter (val context: Activity,val view: View, val keywords: Set<String>){
+class RecipePresenter (val context: Activity,val view: View, val keywords: Set<String>) {
   private val recipeListView: RecyclerView = view.findViewById(R.id.searched_recyclerView)
   private var recizoRecipe: RecizoRecipeApi? = null
   private var loadEventListener: LoadEventListener? = null
@@ -31,11 +32,11 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
   private var recipeListMaster = mutableListOf<RecizoRecipe>()
   private val categoryList = mutableListOf<String>()
   private var previousTotal = 0
-  private var loading = true
+  private var isLoading = true
 
   init {
     recipeListView.adapter = recipeListAdapter
-    recipeListAdapter.setOnItemClickListener(object: RecipeListAdapter.OnItemClickListener {
+    recipeListAdapter.setOnItemClickListener(object : RecipeListAdapter.OnItemClickListener {
       override fun onItemClick(recipe: RecizoRecipe) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(recipe.cookpadLink)))
       }
@@ -49,27 +50,30 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
     recizoRecipe = RecizoRecipeApi(categoryList)
   }
 
-  fun setLoadEventListener(listener: LoadEventListener) { loadEventListener = listener }
+  fun setLoadEventListener(listener: LoadEventListener) {
+    loadEventListener = listener
+  }
 
   fun startRecipeListCreate() {
     val errorMes = view.findViewById<LinearLayout>(R.id.error_mes_box)
     errorMes.visibility = View.INVISIBLE
     loadEventListener?.onLoadStart()
-    recizoRecipe!!.get(object: RecizoRecipeApi.Callback {
+    recizoRecipe!!.get(object : RecizoRecipeApi.Callback {
       override fun onError(errCode: Http.ErrorCode) {
-        if(errCode == Http.ErrorCode.CONNECTION_ERROR) {
-          if(recipeListAdapter.itemCount != 0) { Toast.makeText(context, "インターネットアクセスに失敗しました。", Toast.LENGTH_SHORT).show() }
-          else {
+        if (errCode == Http.ErrorCode.CONNECTION_ERROR) {
+          if (recipeListAdapter.itemCount != 0) {
+            Toast.makeText(context, "インターネットアクセスに失敗しました。", Toast.LENGTH_SHORT).show()
+          } else {
             setErrorMesText(R.string.network_error_title, "Wifiまたはデータ通信がオフになっていませんか？\nオンになっている場合は", createSpannableStringToReload(" リロード "), "を試してください")
             view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
             recipeListAdapter.clearRecipe()
             errorMes.visibility = View.VISIBLE
           }
 
-        } else if(errCode == Http.ErrorCode.EMPTY_BODY) {
+        } else if (errCode == Http.ErrorCode.EMPTY_BODY) {
           setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
           errorMes.visibility = View.VISIBLE
-        } else  {
+        } else {
           setErrorMesText(R.string.other_error_title, R.string.other_error_detail)
           recipeListAdapter.clearRecipe()
           errorMes.visibility = View.VISIBLE
@@ -137,15 +141,17 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
 
   fun displaySearchedText(parent: LinearLayout) {
     keywords.map {
-      val view = SearchItemView(context ,it)
-      view.setOnCloseClickListener(object : SearchItemView.OnCloseClickListener{
-        override fun onClick(item: String) { eraseKeyword(item) }
+      val view = SearchItemView(context, it)
+      view.setOnCloseClickListener(object : SearchItemView.OnCloseClickListener {
+        override fun onClick(item: String) {
+          eraseKeyword(item)
+        }
       })
       parent.addView(view)
     }
   }
 
-  fun addRecipeList(recyclerView: RecyclerView?, dy: Int){
+  fun addRecipeList(recyclerView: RecyclerView?, dy: Int) {
     if (dy == 0 || recizoRecipe!!.isFinished()) return
     val layoutManager = recyclerView!!.layoutManager as android.support.v7.widget.LinearLayoutManager
     val totalItemCount = layoutManager.itemCount
@@ -153,17 +159,17 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
 
     val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val isConnection = connManager.activeNetworkInfo?.isConnectedOrConnecting ?: false
-    if(isConnection) {
-      if (loading) {
+    if (isConnection) {
+      if (isLoading) {
         if (totalItemCount > previousTotal) {
-          loading = false
+          isLoading = false
           previousTotal = totalItemCount
         }
       }
 
-      if (!loading && (totalItemCount - lastVisibleItem) <= 0) {
+      if (!isLoading && (totalItemCount - lastVisibleItem) <= 0) {
         startRecipeListCreate()
-        loading = true
+        isLoading = true
       }
     }
   }
@@ -175,7 +181,7 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
     transaction.commit()
   }
 
-  interface LoadEventListener{
+  interface LoadEventListener {
     fun onLoadStart()
     fun onLoadEnd()
   }
