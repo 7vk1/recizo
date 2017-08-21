@@ -1,10 +1,8 @@
 package com.recizo.view
 
-import android.app.Activity
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -59,7 +57,6 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
     super.onDestroyView()
     (activity as MainActivity).onBackPressedListener = null
   }
-
 
   interface OnBackPressedListener { fun doBack() }
 
