@@ -34,7 +34,6 @@ class RecipeFragment(val items: Set<String> = setOf()) : Fragment() {
       override fun onLoadEnd() { searched_recipe_progressBar?.visibility = View.INVISIBLE }
     })
     recipePresenter.startRecipeListCreate()
-    recipePresenter.startRecipeListCreate() // 先読み
     recipePresenter.displaySearchedText(searche_result_keyword_flame)
 
     searched_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

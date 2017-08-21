@@ -82,7 +82,6 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
         val recipeList: MutableList<RecizoRecipe> = mutableListOf()
         if (response == null || recizoRecipe!!.isFinished() && response.get("result")!!.isEmpty()) {
           recipeListAdapter.clearRecipe()
-          Thread.sleep(1)
           setErrorMesText(R.string.searched_notfound_title, "食材の組み合わせを変えるか時間を空けてから再度試してください。", createSpannableStringToReload(" リロード "), "を押すと更新されます")
           view.findViewById<TextView>(R.id.error_mes_detail).movementMethod = LinkMovementMethod.getInstance()
           errorMes.visibility = View.VISIBLE
@@ -162,7 +161,7 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
         }
       }
 
-      if (!loading && (totalItemCount - lastVisibleItem) <= 3) {
+      if (!loading && (totalItemCount - lastVisibleItem) <= 1) {
         startRecipeListCreate()
         loading = true
       }
