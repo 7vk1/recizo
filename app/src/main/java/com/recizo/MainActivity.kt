@@ -15,9 +15,13 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import com.recizo.module.AppContextHolder
 import com.recizo.module.Notification
+import com.recizo.presenter.RecipePresenter
 import com.recizo.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IceboxFragment.MoveToSearchFragment {
+  var onBackPressedListener: RecipeFragment.OnBackPressedListener? = null
+  set(value) {field = value}
+
   fun changeSelectedNavItem(v: NavMenuItems) {
     val navigationView = findViewById(R.id.nav_view) as NavigationView
     navigationView.menu.getItem(v.ordinal).isChecked = true
@@ -49,15 +53,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
   }
 
   override fun onBackPressed() {//todo change nav selected item
-    val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
-    if(drawer.isDrawerOpen(GravityCompat.START)) drawer.closeDrawer(GravityCompat.START)
-    if(fragmentManager.backStackEntryCount != 0) super.onBackPressed()
-    else {
-      AlertDialog.Builder(this)
-          .setMessage("アプリを終了しますか？")
-          .setPositiveButton("OK", { _, _ -> super.onBackPressed() })
-          .setNegativeButton("CANCEL", null)
-          .show()
+    if(onBackPressedListener != null) {
+      onBackPressedListener!!.doBack()
+    } else {
+      val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+      if(drawer.isDrawerOpen(GravityCompat.START)) drawer.closeDrawer(GravityCompat.START)
+      if(fragmentManager.backStackEntryCount != 0) super.onBackPressed()
+      else {
+        AlertDialog.Builder(this)
+            .setMessage("アプリを終了しますか？")
+            .setPositiveButton("OK", { _, _ -> super.onBackPressed() })
+            .setNegativeButton("CANCEL", null)
+            .show()
+      }
     }
   }
 
