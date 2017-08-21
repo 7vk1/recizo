@@ -13,10 +13,8 @@ import android.view.ViewGroup
 import com.recizo.R
 import com.recizo.model.entity.RecizoRecipe
 import com.recizo.model.viewholder.RecipeViewHolder
-import com.recizo.module.AppContextHolder
 import com.recizo.module.FavoriteRecipeDao
 import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch

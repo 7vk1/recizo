@@ -11,13 +11,17 @@ class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
     // リストが空の場合にEMPTY_BODYを起こすために空を入れる
     if(searchCategory.isEmpty()) {searchCategory.add("")}
     val url = "${BASE_URL}recipe?category=${searchCategory[0]}"
-    println("URL:$url")
     searchCategory = searchCategory.drop(1).toMutableList()
     val http = Http(url, API_KEY)
     val cb = object : Http.Callback {
       override fun onSuccess(body: String) {
         val typeToken = object : TypeToken<Map<String, Collection<Recipe>>>() {}
-        val res: Map<String, ArrayList<Recipe>> = Gson().fromJson(body, typeToken.type)
+        var res: Map<String, ArrayList<Recipe>>?
+        try { res = Gson().fromJson(body, typeToken.type)
+        } catch (e: Exception) {
+          e.printStackTrace()
+          res = null
+        }
         callback.onSuccess(res)
       }
       override fun onError(code: Http.ErrorCode) { callback.onError(code) }
@@ -41,7 +45,7 @@ class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
       )
 
   interface Callback {
-    fun onSuccess(response: Map<String, List<Recipe>>)
+    fun onSuccess(response: Map<String, List<Recipe>>?)
     fun onError(errCode: Http.ErrorCode)
   }
 

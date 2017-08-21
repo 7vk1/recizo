@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.text.SpannableString
@@ -22,6 +21,7 @@ import com.recizo.module.RecizoRecipeApi
 import com.recizo.module.Http
 import com.recizo.view.RecipeFragment
 import com.recizo.view.SearchItemView
+import java.util.*
 
 class RecipePresenter (val context: Activity,val view: View, val keywords: Set<String>){
   private val recipeListView: RecyclerView = view.findViewById(R.id.searched_recyclerView)
@@ -77,33 +77,33 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
         loadEventListener?.onLoadEnd()
       }
 
-      override fun onSuccess(response: Map<String, List<RecizoRecipeApi.Recipe>>) {
+      override fun onSuccess(response: Map<String, List<RecizoRecipeApi.Recipe>>?) {
         val SIZE_FORMAT = "?thum=51"
         val recipeList: MutableList<RecizoRecipe> = mutableListOf()
-
-        if(recizoRecipe!!.isFinished() && response.get("result")!!.isEmpty()) {
+        if (response == null || recizoRecipe!!.isFinished() && response.get("result")!!.isEmpty()) {
           setErrorMesText(R.string.searched_notfound_title, R.string.searched_notfound_detail)
           recipeListAdapter.clearRecipe()
           errorMes.visibility = View.VISIBLE
           loadEventListener?.onLoadEnd()
-        }
+        } else {
+          response.get("result")?.map {
+            val recipe = RecizoRecipe(
+                title = it.recipeTitle,
+                imgUrl = it.foodImageUrl + SIZE_FORMAT,
+                description = it.recipeDescription,
+                author = it.nickname,
+                cookpadLink = it.recipeUrl
+            )
+            var isDuplicate = false
+            recipeListMaster.forEach { if (it.title == recipe.title) isDuplicate = true }
+            if (!isDuplicate) recipeList.add(recipe)
 
-        response.get("result")?.map {
-          val recipe = RecizoRecipe(
-              title = it.recipeTitle,
-              imgUrl = it.foodImageUrl + SIZE_FORMAT,
-              description = it.recipeDescription,
-              author = it.nickname,
-              cookpadLink = it.recipeUrl
-          )
-          var isDuplicate = false
-          recipeListMaster.forEach { if(it.title == recipe.title) isDuplicate = true }
-          if(!isDuplicate) recipeList.add(recipe)
-
+          }
+          recipeListMaster = recipeListMaster.plus(recipeList).toMutableList()
+          Collections.shuffle(recipeList)
+          recipeList.forEach { recipeListAdapter.addRecipe(it) }
+          loadEventListener?.onLoadEnd()
         }
-        recipeListMaster = recipeListMaster.plus(recipeList).toMutableList()
-        recipeList.forEach { recipeListAdapter.addRecipe(it) }
-        loadEventListener?.onLoadEnd()
       }
     })
   }
@@ -150,10 +150,6 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
     val totalItemCount = layoutManager.itemCount
     val lastVisibleItem = layoutManager.findLastVisibleItemPosition() + 1
 
-    println("LOADING : $loading")
-    println("TOTAL : $totalItemCount")
-    println("PREV : $previousTotal")
-    println("LAST : $lastVisibleItem")
     val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val isConnection = connManager.activeNetworkInfo?.isConnectedOrConnecting ?: false
     if(isConnection) {
