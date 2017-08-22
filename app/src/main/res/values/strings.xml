@@ -72,7 +72,8 @@
   <string name="about_me_content2">http://recizo.com</string>
   <string name="about_me_content3">team.item.19@gmail.com</string>
   <string name="about_me_content4_1">ベジ探\n http://vegetan.alic.go.jp</string>
-  <string name="about_me_content4_2">楽天ウェブサービス\n https://webservice.rakuten.co.jp/</string>
+  <string name="about_me_content4_2">楽天ウェブサービス</string>
+  <string name="about_me_content4_2_url">https://webservice.rakuten.co.jp</string>
   <!--<string name="about_me_content4_3">Shufoo!（チラシ検索）\n http://www.shufoo.net</string>-->
   <string name="about_me_content5">Copyright © 2017 ITEM All Rights Reserved.</string>
 
