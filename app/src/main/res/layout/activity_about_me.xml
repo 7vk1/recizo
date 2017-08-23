@@ -95,14 +95,6 @@
           android:textSize="20sp"
           android:textStyle="bold"/>
 
-      <TextView
-          android:id="@+id/textView8"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:text="@string/about_me_content4_1"
-          android:textSize="16sp"/>
-
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -119,7 +111,7 @@
               android:id="@+id/textView12"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="@string/about_me_content4_2"
+              android:text="@string/about_me_content4_1"
               android:textSize="16sp"/>
 
           <ImageView
@@ -134,7 +126,7 @@
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/about_me_content4_2_url"
+            android:text="@string/about_me_content4_1_url"
             android:textSize="16sp"/>
       </LinearLayout>
 
