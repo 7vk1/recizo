@@ -16,7 +16,7 @@ class VegetableGraphPresenter(private val chart: LineChart) {
   var listener: LoadEventListener? = null
   val colors = HashMap<RecizoApi.Vegetables, Int>()
   init {
-    chart.description.text = "野菜の卸売価格　©︎ 2010 Agriculture & Livestock Industries Corporation"
+    chart.description.text = "野菜の卸売価格　alic「ベジ探」(原資料_農水省「青果物日別取扱高統計」)"
     chart.isHorizontalScrollBarEnabled = false
     chart.axisRight.setDrawLabels(false)
     chart.xAxis.axisMinimum = 0f

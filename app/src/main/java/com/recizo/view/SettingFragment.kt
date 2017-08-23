@@ -14,10 +14,6 @@ class SettingFragment : PreferenceFragment() {
     super.onCreate(savedInstanceState)
     addPreferencesFromResource(R.xml.preferences)
 
-    // postcode setting
-    val postalCode = findPreference("edit_postcode_key") as PostalCodePreference
-    postalCode.summary = postalCode.value
-
     // alert settings
     val isAlert = findPreference("isAlert") as CheckBoxPreference
     val alertDay = findPreference("alert_day") as ListPreference

@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     when (id) {
       R.id.nav_icebox_list -> changeFragment(IceboxFragment())
       R.id.nav_favorite_recipe -> changeFragment(FavoriteRecipeFragment())
-      R.id.nav_flyer -> onFlyerInNavDrawer()
       R.id.nav_season -> changeFragment(SeasonsFragment())
       R.id.nav_market_price -> changeFragment(VegetableGraphFragment())
       R.id.nav_settings -> changeFragment(SettingFragment())
@@ -84,19 +83,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     return true
   }
 
-  private fun onFlyerInNavDrawer() {
-    val postcode = PreferenceManager.getDefaultSharedPreferences(AppContextHolder.context).getString("edit_postcode_key", "")
-    val uri = Uri.parse("http://www.shufoo.net/pntweb/chirashiList.php?dummy=dummy&keyword=$postcode&categoryId=101")
-    AlertDialog.Builder(this)
-        .setMessage("チラシ検索のため外部サイトにジャンプします。\nよろしいですか？")
-        .setPositiveButton("OK", { _, _ -> startActivity(Intent(Intent.ACTION_VIEW, uri)) })
-        .setNegativeButton("CANCEL", null)
-        .show()
-  }
-
   override fun moveToSearchFragment(items: Set<String>) { changeFragment(RecipeFragment(items)) }
 
   enum class NavMenuItems {
-    icebox,favorite_recipe, flyer, season, market_price, setting,
+    icebox,favorite_recipe, season, market_price, setting,
   }
 }
