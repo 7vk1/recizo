@@ -1,5 +1,6 @@
 package com.recizo.presenter
 
+import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import com.daimajia.swipe.SwipeLayout
 import com.recizo.model.entity.IceboxItem
@@ -8,7 +9,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 
-class IceboxPresenter(val fragment: IceboxButtons) {
+class IceboxPresenter(private val activity: Activity, val fragment: IceboxButtons) {
   var onLengthChangeListener: ListLengthChangeListener? = null
   private var searchList = mutableSetOf<Long>()
   private var garbageList = mutableSetOf<Long>()
@@ -39,7 +40,10 @@ class IceboxPresenter(val fragment: IceboxButtons) {
       }
       override fun onItemClicked(item: IceboxItem) { fragment.toIceboxItemSetActivity(item) }
       override fun onDeleteClicked(itemId: Long) { removeItem(itemId) }
-      override fun onSearchClicked(item: IceboxItem) { fragment.toSearchActivity(getSearchItemList()) } // todo アイテム１つで検索？
+      override fun onSearchClicked(item: IceboxItem) {
+        activity.fragmentManager.beginTransaction().addToBackStack("icebox").commit()
+        fragment.toSearchActivity(getSearchItemList())
+      } // todo アイテム１つで検索？
     })
   }
 

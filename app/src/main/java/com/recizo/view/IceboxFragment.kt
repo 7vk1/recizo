@@ -22,12 +22,12 @@ import com.recizo.MainActivity
 import com.recizo.presenter.IceboxPresenter
 
 class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
-  var iceboxPresenter = IceboxPresenter(this)
+  var iceboxPresenter: IceboxPresenter? = null
   var isSortOpen = false
 
   private fun onSortMethodClicked(type: IceboxPresenter.Sort) {
     if(isSortOpen) {
-      iceboxPresenter.sortItems(type)
+      iceboxPresenter!!.sortItems(type)
       toggleSortBtn()
     }
   }
@@ -55,13 +55,14 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     super.onCreateView(inflater, container, savedInstanceState)
+    iceboxPresenter = IceboxPresenter(activity, this)
     return inflater!!.inflate(R.layout.fragment_icebox, container, false)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    iceboxPresenter.setRecyclerView(recyclerView)
-    iceboxPresenter.onLengthChangeListener = object : IceboxPresenter.ListLengthChangeListener {
+    iceboxPresenter!!.setRecyclerView(recyclerView)
+    iceboxPresenter!!.onLengthChangeListener = object : IceboxPresenter.ListLengthChangeListener {
       override fun onChange(len: Int) {
         empty_text.visibility = if(len == 0) View.VISIBLE else View.INVISIBLE
       }
@@ -73,17 +74,17 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
       AlertDialog.Builder(activity)
           .setMessage("削除してもよろしいですか？")
           .setPositiveButton("OK", { _, _ ->
-            iceboxPresenter.onDeleteClicked()
+            iceboxPresenter!!.onDeleteClicked()
           })
           .setNegativeButton("CANCEL", null)
           .show()
     }
     recipe_search_btn.setOnClickListener {
       activity.fragmentManager.beginTransaction().addToBackStack("icebox").commit()
-      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter.getSearchItemList())
+      (activity as MoveToSearchFragment).moveToSearchFragment(iceboxPresenter!!.getSearchItemList())
     }
     add_btn.setOnClickListener { activity.startActivity(Intent(activity, IceboxItemSetActivity::class.java)) }
-    undo_btn.setOnClickListener { iceboxPresenter.onUndoClicked() }
+    undo_btn.setOnClickListener { iceboxPresenter!!.onUndoClicked() }
     sort_btn.setOnClickListener { toggleSortBtn() }
     sort_by_name.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.NAME) }
     sort_by_date.setOnClickListener { onSortMethodClicked(IceboxPresenter.Sort.DATE) }
@@ -93,7 +94,7 @@ class IceboxFragment : Fragment(), IceboxPresenter.IceboxButtons {
 
   override fun onResume() {
     super.onResume()
-    iceboxPresenter.dataUpdated()
+    iceboxPresenter!!.dataUpdated()
     (activity as MainActivity).changeSelectedNavItem(MainActivity.NavMenuItems.icebox)
   }
 
