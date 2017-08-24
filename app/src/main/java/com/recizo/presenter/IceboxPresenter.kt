@@ -64,6 +64,9 @@ class IceboxPresenter(private val activity: Activity, val fragment: IceboxButton
   fun sortItems(type: Sort) {
     sort = type
     iceboxAdapter.setItemList(sortList(iceboxAdapter.getItemList(), sort))
+    searchList.clear()
+    garbageList.clear()
+    fragment.changeBtnVisibility(add = true)
     fragment.onSortMethodChange(sort)
   }
 

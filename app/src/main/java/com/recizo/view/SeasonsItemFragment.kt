@@ -44,7 +44,7 @@ class SeasonsItemFragment(val position: Int = 0): Fragment() {
     val seasonsList = parse.parseSeason()
     val seasonMonthList: MutableList<SeasonItem> = mutableListOf()
     var categoryCount: Int = -1
-    seasonsList[position].map {
+    seasonsList[position].forEach {
       if(isCategory(it)) {
         seasonMonthList.add(SeasonItem(category = it, item = mutableListOf()))
         categoryCount++
