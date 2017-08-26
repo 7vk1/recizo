@@ -1,5 +1,8 @@
 package com.recizo.module
 
+import android.content.Intent
+import android.net.Uri
+import android.support.v4.content.ContextCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.recizo.R
@@ -31,10 +34,18 @@ class RecizoApi {
     val url = "$BASE_URL${if(this.isRecent) "recent" else "past"}/${if(this.vegetable == Vegetables.all) "" else this.vegetable.name}"
     val http = Http(url, API_KEY)
     val cb = object : Http.Callback {
-      override fun onSuccess(body: String) {
-        val typeToken = object : TypeToken<Map<String, Collection<DairyData>>>() {}
-        val res: Map<String, ArrayList<DairyData>> = Gson().fromJson(body, typeToken.type)
-        callback.onSuccess(res) }
+      override fun onSuccess(response: Http.Response) {
+        if (response.headers["Content-Type"]?.indexOf("application/json") == -1) {
+          //move to browser
+          val uri = Uri.parse(response.url)
+          ContextCompat.startActivity(AppContextHolder.context, Intent(Intent.ACTION_VIEW, uri), null)
+          callback.onError(Http.ErrorCode.INCORRECT_CONTENT_TYPE)
+        } else {
+          val typeToken = object : TypeToken<Map<String, Collection<DairyData>>>() {}
+          val res: Map<String, ArrayList<DairyData>> = Gson().fromJson(response.body, typeToken.type)
+          callback.onSuccess(res)
+        }
+      }
       override fun onError(code: Http.ErrorCode) { callback.onError(code) }
     }
     http.setCallback(cb)
