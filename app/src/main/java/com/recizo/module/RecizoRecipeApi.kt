@@ -1,8 +1,13 @@
 package com.recizo.module
 
+import android.content.Intent
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
+import android.support.v4.content.ContextCompat.startActivity
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
+
 
 class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
   init { Collections.shuffle(searchCategory) }
@@ -14,15 +19,23 @@ class RecizoRecipeApi(private var searchCategory: MutableList<String>) {
     searchCategory = searchCategory.drop(1).toMutableList()
     val http = Http(url, API_KEY)
     val cb = object : Http.Callback {
-      override fun onSuccess(body: String) {
-        val typeToken = object : TypeToken<Map<String, Collection<Recipe>>>() {}
-        var res: Map<String, ArrayList<Recipe>>?
-        try { res = Gson().fromJson(body, typeToken.type)
-        } catch (e: Exception) {
-          e.printStackTrace()
-          res = null
+      override fun onSuccess(response: Http.Response) {
+        if(response.headers["Content-Type"]?.indexOf("application/json2") == -1) {
+          //move to browser
+          val uri = Uri.parse(response.url)
+          startActivity(AppContextHolder.context, Intent(ACTION_VIEW, uri), null)
+          callback.onError(Http.ErrorCode.INCORRECT_CONTENT_TYPE)
+        } else {
+          val typeToken = object : TypeToken<Map<String, Collection<Recipe>>>() {}
+          var res: Map<String, ArrayList<Recipe>>?
+          try {
+            res = Gson().fromJson(response.body, typeToken.type)
+          } catch (e: Exception) {
+            e.printStackTrace()
+            res = null
+          }
+          callback.onSuccess(res)
         }
-        callback.onSuccess(res)
       }
       override fun onError(code: Http.ErrorCode) { callback.onError(code) }
     }
