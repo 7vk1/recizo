@@ -93,9 +93,8 @@ class IceboxPresenter(private val activity: Activity, val fragment: IceboxButton
     else fragment.changeBtnVisibility(add = true)
   }
 
-  fun getSearchItemList(): Set<String> {
-    return searchList.map { id -> iceboxAdapter.getItemList().first { it.id.toLong() == id }.name }.toSet()
-  }
+  fun getSearchItemList(): Set<String> =
+      searchList.map { id -> iceboxAdapter.getItemList().first { it.id.toLong() == id }.name }.toSet()
 
   private fun checkHolder(holder: IceboxAdapter.IceboxViewHolder) = launch(UI) {
     delay(100)
@@ -116,13 +115,11 @@ class IceboxPresenter(private val activity: Activity, val fragment: IceboxButton
     }
   }
 
-  private fun sortList(list: List<IceboxItem>, type: Sort): List<IceboxItem> {
-    return when(type) {
-      Sort.NAME -> list.sortedBy { it.name }
-      Sort.DATE -> list.sortedBy { it.date }
-      Sort.CATEGORY -> list.sortedBy { it.category }
-      Sort.CREATED -> list.sortedBy { it.id }
-    }
+  private fun sortList(list: List<IceboxItem>, type: Sort): List<IceboxItem> = when(type) {
+    Sort.NAME -> list.sortedBy { it.name }
+    Sort.DATE -> list.sortedBy { it.date }
+    Sort.CATEGORY -> list.sortedBy { it.category }
+    Sort.CREATED -> list.sortedBy { it.id }
   }
 
   private fun removeItem(id: Long) {
@@ -131,6 +128,7 @@ class IceboxPresenter(private val activity: Activity, val fragment: IceboxButton
     val index: Int = iceboxAdapter.getItemList().indexOfFirst { it.id.toLong() == id }
     iceboxAdapter.removeItem(index)
     onLengthChangeListener?.onChange(iceboxAdapter.itemCount -1)
+    if(garbageList.size == 0) fragment.changeBtnVisibility(add = true)
   }
 
   enum class Sort {
