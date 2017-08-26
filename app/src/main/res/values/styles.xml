@@ -1,5 +1,5 @@
 <resources>
-  <string name="version">1.0.2</string>
+  <string name="version">1.0.3</string>
 
   <!-- Base application theme. -->
   <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
