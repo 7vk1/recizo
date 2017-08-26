@@ -35,7 +35,7 @@ class RecizoApi {
     val http = Http(url, API_KEY)
     val cb = object : Http.Callback {
       override fun onSuccess(response: Http.Response) {
-        if (response.headers["Content-Type"]?.indexOf("application/json2") == -1) {
+        if (response.headers["Content-Type"]?.indexOf("application/json") == -1) {
           //move to browser
           val uri = Uri.parse(response.url)
           ContextCompat.startActivity(AppContextHolder.context, Intent(Intent.ACTION_VIEW, uri), null)
