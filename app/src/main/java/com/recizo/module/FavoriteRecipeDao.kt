@@ -24,6 +24,12 @@ object FavoriteRecipeDao {
     close()
   }
 
+  fun remove(recipeId: Int) {
+    access()
+    favoriteRecipeDatabaseHelper!!.removeRecipe(recipeId)
+    close()
+  }
+
   fun getAll(): List<RecizoRecipe>? {
     access()
     val ret = favoriteRecipeDatabaseHelper?.getRecipeAll()

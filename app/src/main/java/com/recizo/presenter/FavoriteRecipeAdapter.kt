@@ -36,10 +36,12 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
   }
 
   fun onDeleteClicked() {
-    garbageList.sortedBy { it }.reversed().map {
-      FavoriteRecipeDao.remove(favoriteRecipeList[it.toInt()].title)
-      favoriteRecipeList.removeAt(it.toInt())
+    val deleteList = mutableListOf<Int>()
+    garbageList.sortedBy { it }.reversed().map { item ->
+      FavoriteRecipeDao.remove(item.toInt())
+      favoriteRecipeList.forEachIndexed { index, recizoRecipe -> if(recizoRecipe.id == item.toInt()) deleteList.add(index) }
     }
+    deleteList.map { favoriteRecipeList.removeAt(it) }
     notifyDataSetChanged()
     garbageList.clear()
     changeVisibility.changeButtonVisibility(remove = false, undo = false)
@@ -59,7 +61,9 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
   fun viewFavoriteList() {
     FavoriteRecipeDao.getAll()!!.forEach {
       favoriteRecipeList.add(
-          RecizoRecipe(title = it.title,
+          RecizoRecipe(
+              id = it.id,
+              title = it.title,
               cookpadLink = it.cookpadLink,
               author = it.author,
               description = it.description,
@@ -69,6 +73,14 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
     }
     if(isFavoriteEmpty()) changeVisibility.changeTextVisibility(true)
     else changeVisibility.changeTextVisibility(false)
+  }
+
+  private fun checkHolder(holder: FavoriteRecipeAdapter.FavoriteRecipeViewHolder?) = launch(UI) {
+    delay(100)
+    launch(UI) {
+      if (garbageList.contains(holder?.itemId)) holder?.swipeLayout?.open(true, false, SwipeLayout.DragEdge.Right)
+      else holder?.swipeLayout?.close(false)
+    }
   }
 
   private fun isFavoriteEmpty(): Boolean {
@@ -105,6 +117,17 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
       }
     }
     holder.cardFrame.setOnClickListener{ intent.onRecipe(Uri.parse(favoriteRecipeList[position].cookpadLink)) }
+    holder.del.setOnClickListener {
+      val id = holder.itemId
+      FavoriteRecipeDao.remove(favoriteRecipeList[position].title)
+      favoriteRecipeList.removeAt(position)
+      garbageList.remove(id)
+      notifyDataSetChanged()
+      if(!garbageList.isEmpty()) { changeVisibility.changeButtonVisibility(remove = true, undo = true)
+      } else { changeVisibility.changeButtonVisibility(remove = false, undo = false) }
+      if(isFavoriteEmpty()) changeVisibility.changeTextVisibility(true)
+      else changeVisibility.changeTextVisibility(false)
+    }
     holder.swipeLayout.addSwipeListener(object :SimpleSwipeListener(){
       override fun onOpen(layout: SwipeLayout?) {
         super.onOpen(layout)
@@ -143,15 +166,10 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
 
   override fun onViewAttachedToWindow(holder: FavoriteRecipeViewHolder?) {
     super.onViewAttachedToWindow(holder)
-    launch(UI) {
-      delay(100)
-      if (garbageList.contains(holder?.itemId)) holder?.swipeLayout?.open(true, false, SwipeLayout.DragEdge.Right)
-      else if (undoList.contains(holder?.itemId)) holder?.swipeLayout?.open(true, false, SwipeLayout.DragEdge.Left)
-      else holder?.swipeLayout?.close(false)
-    }
+    checkHolder(holder)
   }
 
-  override fun getItemId(position: Int): Long { return position.toLong() }
+  override fun getItemId(position: Int): Long { return favoriteRecipeList[position].id!!.toLong() }
 
   class FavoriteRecipeViewHolder(v: View): RecyclerView.ViewHolder(v) {
     val title: TextView = v.findViewById(R.id.recipe_title)
@@ -160,5 +178,6 @@ class FavoriteRecipeAdapter(val changeVisibility: FavoriteRecipePresenter.Change
     val imageUrl: ImageView = v.findViewById(R.id.recipe_image)
     val cardFrame: CardView = v.findViewById(R.id.favorite_recipe_surface_cardview)
     val swipeLayout: SwipeLayout = v.findViewById(R.id.swipelayout)
+    val del: CardView = v.findViewById(R.id.favorite_recipe_delete)
   }
 }

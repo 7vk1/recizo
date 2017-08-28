@@ -13,12 +13,13 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
   init { this.dbHelper = DatabaseHelper(context) }
 
   fun getRecipeAll(): MutableList<RecizoRecipe> {
-    val query = "SELECT title, description, author, imgurl, link FROM ${TABLE_NAME}"
+    val query = "SELECT _id, title, description, author, imgurl, link FROM ${TABLE_NAME}"
     val list = mutableListOf<RecizoRecipe>()
     this.readableOpen()
     db.rawQuery(query, null).use {
       while (it.moveToNext() ) {
         list.add(RecizoRecipe(
+            id = it.getInt(it.getColumnIndex("_id")),
             title = it.getString(it.getColumnIndex("title")),
             description = it.getString(it.getColumnIndex("description")),
             author = it.getString(it.getColumnIndex("author")),
@@ -38,6 +39,13 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
     db.close()
   }
 
+  fun removeRecipe(recipeId: Int) {
+    this.writableOpen()
+    val query = "DELETE FROM $TABLE_NAME WHERE _id=?"
+    db.execSQL(query, arrayOf(recipeId) )
+    db.close()
+  }
+
   fun addRecipe(recipe: RecizoRecipe) {
     val values = ContentValues()
     values.put("title", recipe.title)
@@ -52,11 +60,12 @@ class FavoriteRecipeDatabaseHelper(context: Context) {
 
   fun getRecipe(recipeTitle: String): RecizoRecipe? {
     this.readableOpen()
-    val query = "SELECT title, description, author, imgurl, link FROM $TABLE_NAME WHERE title=?"
+    val query = "SELECT _id, title, description, author, imgurl, link FROM $TABLE_NAME WHERE title=?"
     var recipe: RecizoRecipe? = null
     db.rawQuery(query, arrayOf(recipeTitle) ).use {
       while(it.moveToNext() ) {
         recipe = RecizoRecipe(
+            id = it.getInt(it.getColumnIndex("_id")),
             title = it.getString(it.getColumnIndex("title")),
             description = it.getString(it.getColumnIndex("description")),
             author = it.getString(it.getColumnIndex("author")),

@@ -69,7 +69,9 @@ class RecipeListAdapter(private val recyclerView: RecyclerView, private val view
     holder.starButton.setOnClickListener {
       if(holder.starButton.isChecked) {
         FavoriteRecipeDao.add(
-            RecizoRecipe(title = holder.title.text.toString(),
+            RecizoRecipe(
+                id = null,
+                title = holder.title.text.toString(),
                 author = holder.author.text.toString(),
                 description = holder.description.text.toString(),
                 imgUrl = recipeList[position].imgUrl,
