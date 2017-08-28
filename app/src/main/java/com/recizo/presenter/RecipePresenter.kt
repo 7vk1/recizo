@@ -93,6 +93,7 @@ class RecipePresenter (val context: Activity,val view: View, val keywords: Set<S
         } else {
           response.get("result")?.map {
             val recipe = RecizoRecipe(
+                id = null,
                 title = it.recipeTitle,
                 imgUrl = it.foodImageUrl + SIZE_FORMAT,
                 description = it.recipeDescription,

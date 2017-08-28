@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.design.widget.FloatingActionButton
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
@@ -46,7 +47,6 @@ class FavoriteRecipePresenter(val context: Context, val view: View) {
   fun setUpView() {
     removeBtn.setOnClickListener { favoriteRecipeAdapter.onDeleteClicked() }
     undoBtn.setOnClickListener { favoriteRecipeAdapter.onUndoClicked() }
-
   }
 
   private fun setErrorMesText(title: Int, detail: Int) {
